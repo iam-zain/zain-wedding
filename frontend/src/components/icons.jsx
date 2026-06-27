@@ -49,8 +49,8 @@ export const CalendarIcon = ({ active = false, ...p }) => (
 )
 
 export const HeartIcon = ({ filled = false, ...p }) => (
-  <Svg fill={filled ? 'currentColor' : 'none'} {...p}>
-    <path d="M12 20.5s-7.5-4.7-9.7-9.2C.9 8.1 2.3 4.8 5.5 4.5c2-.2 3.6 1 4.5 2.4.9-1.4 2.5-2.6 4.5-2.4 3.2.3 4.6 3.6 3.2 6.8C19.5 15.8 12 20.5 12 20.5z" />
+  <Svg fill={filled ? 'currentColor' : 'none'} strokeWidth={filled ? 0 : 1.8} {...p}>
+    <path d="M12 21C12 21 3.5 15.5 3.5 9.5a4.5 4.5 0 0 1 8.5-2 4.5 4.5 0 0 1 8.5 2C20.5 15.5 12 21 12 21z" />
   </Svg>
 )
 

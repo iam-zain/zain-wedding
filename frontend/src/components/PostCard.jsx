@@ -78,18 +78,18 @@ export default function PostCard({ post }) {
       {/* Action bar */}
       <div className="flex items-center justify-between px-3 pt-2.5">
         <div className="flex items-center gap-4">
-          <button type="button" aria-label="Like" aria-pressed={liked} onClick={like} className="active:scale-90">
+          <button type="button" aria-label="Like" aria-pressed={liked} onClick={like} className="outline-none active:scale-90">
             <HeartIcon filled={liked} size={26} className={liked ? 'text-ig-red' : 'text-ig-text'} />
           </button>
           <button
             type="button"
             aria-label="Comments"
             onClick={() => setCommentsOpen((v) => !v)}
-            className="active:scale-90"
+            className="outline-none active:scale-90"
           >
             <CommentIcon size={26} />
           </button>
-          <button type="button" aria-label="Share" onClick={share} className="active:scale-90">
+          <button type="button" aria-label="Share" onClick={share} className="outline-none active:scale-90">
             <ShareIcon size={26} />
           </button>
         </div>
@@ -98,7 +98,7 @@ export default function PostCard({ post }) {
           aria-label="Bookmark"
           aria-pressed={bookmarked}
           onClick={() => toggleBookmark(post.id)}
-          className="active:scale-90"
+          className="outline-none active:scale-90"
         >
           <BookmarkIcon filled={bookmarked} size={26} />
         </button>
