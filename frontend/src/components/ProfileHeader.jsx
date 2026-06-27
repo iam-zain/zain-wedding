@@ -3,6 +3,7 @@ import { siteConfig, SITE_URL } from '../config'
 import { shareUrl } from '../lib/share'
 import { useToast } from './toast-context'
 import { ExternalLinkIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
+import { useRecordPlayer } from '../lib/useRecordPlayer'
 
 function Stat({ value, label }) {
   return (
@@ -17,6 +18,7 @@ export default function ProfileHeader() {
   const { profile, menu = [] } = siteConfig
   const [menuOpen, setMenuOpen] = useState(false)
   const toast = useToast()
+  const { isPlaying, toggle: toggleMusic } = useRecordPlayer()
 
   async function onShareProfile() {
     const result = await shareUrl({
@@ -75,11 +77,23 @@ export default function ProfileHeader() {
 
       {/* Avatar + stats */}
       <div className="mt-4 flex items-center gap-5">
-        <img
-          src={profile.avatarUrl}
-          alt={profile.displayName}
-          className="h-[88px] w-[88px] shrink-0 rounded-full object-cover ring-2 ring-ig-border"
-        />
+        <button
+          type="button"
+          aria-label={isPlaying ? 'Pause music' : 'Play music'}
+          onClick={toggleMusic}
+          className="relative shrink-0 rounded-full focus:outline-none"
+        >
+          <img
+            src={profile.avatarUrl}
+            alt={profile.displayName}
+            className={`h-[88px] w-[88px] rounded-full object-cover ring-2 ring-ig-border transition-shadow duration-500 ${isPlaying ? 'animate-record-spin ring-purple-500/70 shadow-[0_0_18px_4px_rgba(168,85,247,0.45)]' : ''}`}
+          />
+          {isPlaying && (
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full bg-black/20">
+              <span className="text-xl leading-none">🎵</span>
+            </span>
+          )}
+        </button>
         <div className="flex flex-1 justify-around">
           <Stat value={profile.postCount} label="posts" />
           <Stat value={profile.followersCount} label="guests" />
