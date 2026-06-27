@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { siteConfig, SITE_URL } from '../config'
 import { shareUrl } from '../lib/share'
 import { useToast } from './toast-context'
-import { ExternalLinkIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
+import { DownloadIcon, ExternalLinkIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
 import { useRecordPlayer } from '../lib/useRecordPlayer'
 
 function Stat({ value, label }) {
@@ -53,10 +53,19 @@ export default function ProfileHeader() {
               role="menu"
               className="absolute right-0 top-9 z-50 w-60 overflow-hidden rounded-xl border border-ig-border bg-ig-card shadow-2xl"
             >
-              {menu.length === 0 && (
-                <div className="px-4 py-3 text-sm text-ig-muted">No links yet</div>
-              )}
-              {menu.map((item) => (
+              <a
+                href="/docs/wedding-invite.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="Zain-Wedding-Invite.pdf"
+                role="menuitem"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated border-b border-ig-border"
+              >
+                <span className="truncate">Download Wedding Invite</span>
+                <DownloadIcon size={16} className="shrink-0 text-ig-muted" />
+              </a>
+              {menu.length > 0 && menu.map((item) => (
                 <a
                   key={item.label + item.url}
                   href={item.url}

@@ -30,6 +30,16 @@ export const LOCAL_MODE = API_BASE_URL === ''
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '')
 
+// ── Easter egg ───────────────────────────────────────────────────────────────
+/** Secret messages shown on the countdown treasure hunt. One is picked at random. */
+export const SECRET_MESSAGES = [
+  "🤫 ye secret code-word hai: 'Harry porter ki pen' 🐙 — Isse Walima mein ek special dish milega! ✨",
+  "Shhh… the secret is out: love is in the air ✨",
+  "5 taps? Impressive. You clearly care. See you at the wedding 💍",
+  "A treasure hunter AND a wedding guest? You're invited twice 🎊",
+  "This message will self-destruct… just kidding. But come to the wedding!",
+]
+
 // ── Access control ───────────────────────────────────────────────────────────
 /** tierKey -> sharedSecret map baked into the bundle (intentional, deterrent only). */
 export const ACCESS_TIERS = siteConfig.accessTiers || {}

@@ -16,7 +16,6 @@
     "hashtag": "#ZainKiShaadi"
   },
   "menu": [
-    { "label": "Download Wedding Invite", "url": "https://cdn.example/invite.pdf" },
     { "label": "Venue on Maps", "url": "https://maps.google.com/?q=Wedding+Venue" },
     { "label": "Gift Registry", "url": "https://example.com/registry" }
   ],

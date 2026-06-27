@@ -95,6 +95,13 @@ export const ChevronRightIcon = (p) => (
   <Svg strokeWidth={2.4} {...p}><path d="M9 5l7 7-7 7" /></Svg>
 )
 
+export const DownloadIcon = (p) => (
+  <Svg {...p}>
+    <path d="M12 3v13M7 11l5 5 5-5" />
+    <path d="M5 21h14" />
+  </Svg>
+)
+
 export const ExternalLinkIcon = (p) => (
   <Svg {...p}>
     <path d="M14 5h5v5M19 5l-9 9" />
