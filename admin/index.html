@@ -104,12 +104,14 @@
 
       <div id="app" class="hidden">
         <div class="tabs">
-          <button id="tabPostsBtn" class="active" onclick="switchTab('posts')">Create posts</button>
-          <button id="tabStoriesBtn" onclick="switchTab('stories')">Create stories</button>
+          <button id="tabCreatePostsBtn" class="active" onclick="switchTab('createPosts')">Create posts</button>
+          <button id="tabAllPostsBtn" onclick="switchTab('allPosts')">All posts</button>
+          <button id="tabCreateStoriesBtn" onclick="switchTab('createStories')">Create stories</button>
+          <button id="tabAllStoriesBtn" onclick="switchTab('allStories')">All stories</button>
         </div>
 
-        <!-- POSTS TAB -->
-        <section id="tabPosts">
+        <!-- CREATE POSTS TAB -->
+        <section id="tabCreatePosts">
           <div class="card">
             <strong>New Post</strong>
             <label>Title / Caption</label>
@@ -145,15 +147,18 @@
               <span id="p_status" class="status"></span>
             </div>
           </div>
+        </section>
 
+        <!-- ALL POSTS TAB -->
+        <section id="tabAllPosts" class="hidden">
           <div class="card">
             <strong>All Posts</strong>
             <div id="postsList" class="spinner">—</div>
           </div>
         </section>
 
-        <!-- STORIES TAB -->
-        <section id="tabStories" class="hidden">
+        <!-- CREATE STORIES TAB -->
+        <section id="tabCreateStories" class="hidden">
           <div class="card">
             <strong>New Story</strong>
             <label>Image (single, portrait works best)</label>
@@ -174,7 +179,10 @@
               <span id="s_status" class="status"></span>
             </div>
           </div>
+        </section>
 
+        <!-- ALL STORIES TAB -->
+        <section id="tabAllStories" class="hidden">
           <div class="card">
             <strong>All Stories</strong>
             <div id="storiesList" class="spinner">—</div>
@@ -251,13 +259,14 @@
         TIERS.map((t) => t.n).filter((n) => $(containerId + '_' + n)?.checked)
 
       // ── Tabs ────────────────────────────────────────────────────────────────
+      const ALL_TABS = ['createPosts', 'allPosts', 'createStories', 'allStories']
       function switchTab(name) {
-        $('tabPosts').classList.toggle('hidden', name !== 'posts')
-        $('tabStories').classList.toggle('hidden', name !== 'stories')
-        $('tabPostsBtn').classList.toggle('active', name === 'posts')
-        $('tabStoriesBtn').classList.toggle('active', name === 'stories')
-        if (name === 'stories') loadStories()
-        else loadPosts()
+        ALL_TABS.forEach(t => {
+          $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.toggle('hidden', t !== name)
+          $('tab' + t.charAt(0).toUpperCase() + t.slice(1) + 'Btn').classList.toggle('active', t === name)
+        })
+        if (name === 'allPosts') loadPosts()
+        if (name === 'allStories') loadStories()
       }
 
       // ── Connect ──────────────────────────────────────────────────────────────
@@ -465,6 +474,10 @@
       // ── Init ────────────────────────────────────────────────────────────────
       renderAccess('p_access', [0])
       renderAccess('s_access', [0])
+      // Pre-fill "Active from" with the current local datetime
+      const nowLocal = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString().slice(0, 16)
+      $('p_from').value = nowLocal
       if (API) $('apiBase').value = API
       if (KEY) $('adminKey').value = KEY
       if (API && KEY) $('connectBtn').click()  // auto-connect; collapseConn() fires on success
