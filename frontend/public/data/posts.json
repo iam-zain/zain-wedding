@@ -1,0 +1,81 @@
+{
+  "posts": [
+    {
+      "id": "post_proposal",
+      "title": "Qubool hai... almost! 💍",
+      "description": "<p>Usne haan keh di! 🥹 Do families, ek kahani. Swipe karke dekho woh pehla moment.</p><p>📍 <a href=\"https://maps.google.com/?q=Royal+Lawns+Lucknow\">Royal Lawns, Lucknow</a></p>",
+      "images": ["/data/img/post1.svg", "/data/img/post5.svg"],
+      "likes_base": 214,
+      "access": [0],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-06-20T10:30:00Z"
+    },
+    {
+      "id": "post_roka",
+      "title": "Roka ho gaya ✨",
+      "description": "<p>Chhoti si rasm, badi si khushi. Ghar bhar gaya rishtedaaron se!</p>",
+      "images": ["/data/img/post2.svg"],
+      "likes_base": 156,
+      "access": [0],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-06-12T14:00:00Z"
+    },
+    {
+      "id": "post_save_the_date",
+      "title": "Save the date 🗓️ 12.12.2026",
+      "description": "<p>Apna calendar mark kar lo! Teen din, teen functions, ek perfect shaadi.</p><p>Details ke liye Events tab dekho 👇</p>",
+      "images": ["/data/img/post7.svg"],
+      "likes_base": 98,
+      "access": [0],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-06-05T09:00:00Z"
+    },
+    {
+      "id": "post_haldi_teaser",
+      "title": "Peeli peeli si... 💛",
+      "description": "<p>Haldi ki taiyaari shuru! Kaun kaun aa raha hai? Comments mein batao 👀</p>",
+      "images": ["/data/img/post6.svg", "/data/img/post3.svg"],
+      "likes_base": 73,
+      "access": [0],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-05-22T11:15:00Z"
+    },
+    {
+      "id": "post_sangeet_practice",
+      "title": "Sangeet practice = chaos 🎶😂",
+      "description": "<p>Team bride vs team groom. Trophy kiski hogi? 🏆 Dekhna mat bhoolna!</p>",
+      "images": ["/data/img/post4.svg"],
+      "likes_base": 61,
+      "access": [0],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-05-10T18:45:00Z"
+    },
+    {
+      "id": "post_family_close",
+      "title": "Close family only 🤍 (tier unlock)",
+      "description": "<p>Yeh post sirf family group ke liye hai. Agar dikh raha hai to aap andar ho 😉</p>",
+      "images": ["/data/img/post8.svg"],
+      "likes_base": 44,
+      "access": [1],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-04-28T08:00:00Z"
+    },
+    {
+      "id": "post_inner_circle",
+      "title": "Inner circle surprise 🤫 (tier unlock)",
+      "description": "<p>Shhh! Yeh ek secret plan hai. Sirf inner circle ko pata hona chahiye.</p>",
+      "images": ["/data/img/post5.svg"],
+      "likes_base": 19,
+      "access": [2],
+      "active_from": "2026-01-01T00:00:00Z",
+      "active_upto": "2027-12-31T00:00:00Z",
+      "created_at": "2026-04-15T08:00:00Z"
+    }
+  ]
+}

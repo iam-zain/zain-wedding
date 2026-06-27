@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="g100" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a1c47"/>
+      <stop offset="1" stop-color="#a83279"/>
+    </linearGradient>
+    <radialGradient id="v100" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#g100)"/>
+  <circle cx="866" cy="504" r="7" fill="#ffffff" opacity="0.076"/><circle cx="159" cy="1863" r="21" fill="#ffffff" opacity="0.057"/><circle cx="180" cy="1721" r="25" fill="#ffffff" opacity="0.046"/><circle cx="757" cy="552" r="7" fill="#ffffff" opacity="0.082"/><circle cx="236" cy="1105" r="18" fill="#ffffff" opacity="0.135"/><circle cx="44" cy="513" r="30" fill="#ffffff" opacity="0.126"/><circle cx="247" cy="955" r="18" fill="#ffffff" opacity="0.117"/><circle cx="153" cy="489" r="14" fill="#ffffff" opacity="0.066"/><circle cx="708" cy="513" r="13" fill="#ffffff" opacity="0.048"/><circle cx="58" cy="1075" r="31" fill="#ffffff" opacity="0.049"/><circle cx="630" cy="1296" r="26" fill="#ffffff" opacity="0.114"/><circle cx="731" cy="1083" r="18" fill="#ffffff" opacity="0.077"/><circle cx="908" cy="269" r="11" fill="#ffffff" opacity="0.043"/><circle cx="227" cy="965" r="20" fill="#ffffff" opacity="0.048"/><circle cx="835" cy="1581" r="11" fill="#ffffff" opacity="0.080"/><circle cx="278" cy="1740" r="27" fill="#ffffff" opacity="0.067"/><circle cx="744" cy="776" r="13" fill="#ffffff" opacity="0.134"/><circle cx="659" cy="1369" r="8" fill="#ffffff" opacity="0.124"/>
+  <rect width="1080" height="1920" fill="url(#v100)"/>
+  <text x="540" y="883.2" font-size="216" text-anchor="middle" dominant-baseline="middle">📍</text>
+  <text x="540" y="1190.4" font-family="Georgia, serif" font-size="59" fill="#ffffff" fill-opacity="0.95" text-anchor="middle" font-style="italic">Venue Reveal</text>
+  <text x="540" y="1324.8" font-family="Helvetica, Arial, sans-serif" font-size="35" fill="#ffffff" fill-opacity="0.7" text-anchor="middle" letter-spacing="2">ROYAL LAWNS</text>
+</svg>

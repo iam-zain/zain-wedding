@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a1c47"/>
+      <stop offset="1" stop-color="#a83279"/>
+    </linearGradient>
+    <radialGradient id="v1" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#g1)"/>
+  <circle cx="51" cy="545" r="26" fill="#ffffff" opacity="0.109"/><circle cx="953" cy="640" r="12" fill="#ffffff" opacity="0.105"/><circle cx="1025" cy="130" r="12" fill="#ffffff" opacity="0.065"/><circle cx="811" cy="2" r="30" fill="#ffffff" opacity="0.095"/><circle cx="460" cy="364" r="30" fill="#ffffff" opacity="0.130"/><circle cx="1038" cy="320" r="28" fill="#ffffff" opacity="0.059"/><circle cx="92" cy="739" r="18" fill="#ffffff" opacity="0.110"/><circle cx="887" cy="167" r="21" fill="#ffffff" opacity="0.108"/><circle cx="772" cy="111" r="23" fill="#ffffff" opacity="0.095"/><circle cx="772" cy="237" r="8" fill="#ffffff" opacity="0.123"/><circle cx="795" cy="771" r="28" fill="#ffffff" opacity="0.104"/><circle cx="946" cy="221" r="15" fill="#ffffff" opacity="0.138"/><circle cx="333" cy="294" r="17" fill="#ffffff" opacity="0.098"/><circle cx="902" cy="735" r="17" fill="#ffffff" opacity="0.085"/><circle cx="119" cy="292" r="20" fill="#ffffff" opacity="0.055"/><circle cx="573" cy="551" r="12" fill="#ffffff" opacity="0.102"/><circle cx="849" cy="779" r="31" fill="#ffffff" opacity="0.118"/><circle cx="93" cy="1042" r="30" fill="#ffffff" opacity="0.113"/>
+  <rect width="1080" height="1080" fill="url(#v1)"/>
+  <text x="540" y="496.8" font-size="216" text-anchor="middle" dominant-baseline="middle">💍</text>
+  <text x="540" y="669.6" font-family="Georgia, serif" font-size="59" fill="#ffffff" fill-opacity="0.95" text-anchor="middle" font-style="italic">The Proposal</text>
+  <text x="540" y="745.1999999999999" font-family="Helvetica, Arial, sans-serif" font-size="35" fill="#ffffff" fill-opacity="0.7" text-anchor="middle" letter-spacing="2">ZAIN ♡ AISHA</text>
+</svg>

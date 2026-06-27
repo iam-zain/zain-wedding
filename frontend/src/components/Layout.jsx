@@ -1,0 +1,16 @@
+import { Outlet } from 'react-router-dom'
+import BottomNav from './BottomNav'
+
+export default function Layout() {
+  return (
+    <div className="min-h-screen bg-ig-black text-ig-text">
+      <main
+        className="content-col"
+        style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom) + 1rem)' }}
+      >
+        <Outlet />
+      </main>
+      <BottomNav />
+    </div>
+  )
+}

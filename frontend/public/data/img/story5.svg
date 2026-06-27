@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="g104" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2d4739"/>
+      <stop offset="1" stop-color="#7bb274"/>
+    </linearGradient>
+    <radialGradient id="v104" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#g104)"/>
+  <circle cx="158" cy="853" r="30" fill="#ffffff" opacity="0.055"/><circle cx="432" cy="166" r="7" fill="#ffffff" opacity="0.078"/><circle cx="102" cy="443" r="27" fill="#ffffff" opacity="0.075"/><circle cx="155" cy="167" r="13" fill="#ffffff" opacity="0.059"/><circle cx="696" cy="522" r="27" fill="#ffffff" opacity="0.129"/><circle cx="833" cy="704" r="13" fill="#ffffff" opacity="0.058"/><circle cx="352" cy="262" r="30" fill="#ffffff" opacity="0.049"/><circle cx="1040" cy="808" r="8" fill="#ffffff" opacity="0.055"/><circle cx="83" cy="1321" r="9" fill="#ffffff" opacity="0.071"/><circle cx="389" cy="500" r="20" fill="#ffffff" opacity="0.090"/><circle cx="23" cy="382" r="20" fill="#ffffff" opacity="0.121"/><circle cx="733" cy="1654" r="7" fill="#ffffff" opacity="0.081"/><circle cx="986" cy="240" r="27" fill="#ffffff" opacity="0.050"/><circle cx="527" cy="524" r="28" fill="#ffffff" opacity="0.094"/><circle cx="264" cy="1062" r="24" fill="#ffffff" opacity="0.053"/><circle cx="703" cy="762" r="15" fill="#ffffff" opacity="0.095"/><circle cx="31" cy="596" r="23" fill="#ffffff" opacity="0.042"/><circle cx="474" cy="826" r="26" fill="#ffffff" opacity="0.055"/>
+  <rect width="1080" height="1920" fill="url(#v104)"/>
+  <text x="540" y="883.2" font-size="216" text-anchor="middle" dominant-baseline="middle">📸</text>
+  <text x="540" y="1190.4" font-family="Georgia, serif" font-size="59" fill="#ffffff" fill-opacity="0.95" text-anchor="middle" font-style="italic">BTS Moments</text>
+  <text x="540" y="1324.8" font-family="Helvetica, Arial, sans-serif" font-size="35" fill="#ffffff" fill-opacity="0.7" text-anchor="middle" letter-spacing="2">SNEAK PEEK</text>
+</svg>

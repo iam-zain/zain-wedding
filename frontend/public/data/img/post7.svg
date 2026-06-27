@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="g7" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3d2c1e"/>
+      <stop offset="1" stop-color="#d4af37"/>
+    </linearGradient>
+    <radialGradient id="v7" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#g7)"/>
+  <circle cx="68" cy="300" r="7" fill="#ffffff" opacity="0.076"/><circle cx="283" cy="828" r="17" fill="#ffffff" opacity="0.087"/><circle cx="908" cy="672" r="14" fill="#ffffff" opacity="0.109"/><circle cx="448" cy="217" r="25" fill="#ffffff" opacity="0.061"/><circle cx="610" cy="412" r="17" fill="#ffffff" opacity="0.122"/><circle cx="62" cy="482" r="16" fill="#ffffff" opacity="0.057"/><circle cx="788" cy="694" r="10" fill="#ffffff" opacity="0.108"/><circle cx="58" cy="436" r="24" fill="#ffffff" opacity="0.042"/><circle cx="375" cy="253" r="31" fill="#ffffff" opacity="0.080"/><circle cx="729" cy="292" r="31" fill="#ffffff" opacity="0.085"/><circle cx="425" cy="539" r="31" fill="#ffffff" opacity="0.114"/><circle cx="409" cy="703" r="25" fill="#ffffff" opacity="0.043"/><circle cx="989" cy="809" r="29" fill="#ffffff" opacity="0.058"/><circle cx="272" cy="363" r="28" fill="#ffffff" opacity="0.104"/><circle cx="883" cy="393" r="15" fill="#ffffff" opacity="0.114"/><circle cx="130" cy="806" r="20" fill="#ffffff" opacity="0.094"/><circle cx="319" cy="627" r="7" fill="#ffffff" opacity="0.080"/><circle cx="357" cy="44" r="18" fill="#ffffff" opacity="0.059"/>
+  <rect width="1080" height="1080" fill="url(#v7)"/>
+  <text x="540" y="496.8" font-size="216" text-anchor="middle" dominant-baseline="middle">🕌</text>
+  <text x="540" y="669.6" font-family="Georgia, serif" font-size="59" fill="#ffffff" fill-opacity="0.95" text-anchor="middle" font-style="italic">Nikah Day</text>
+  <text x="540" y="745.1999999999999" font-family="Helvetica, Arial, sans-serif" font-size="35" fill="#ffffff" fill-opacity="0.7" text-anchor="middle" letter-spacing="2">QUBOOL HAI</text>
+</svg>

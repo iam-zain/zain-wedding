@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Zain &amp; Aisha · Admin</title>
+    <style>
+      :root {
+        --black: #000;
+        --bg: #121212;
+        --card: #1e1e1e;
+        --card2: #262626;
+        --border: #363636;
+        --text: #fff;
+        --muted: #a8a8a8;
+        --faint: #737373;
+        --blue: #0095f6;
+        --green: #25d366;
+        --red: #ed4956;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--black);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+      }
+      a { color: var(--blue); }
+      header.top {
+        position: sticky; top: 0; z-index: 10;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 12px; padding: 12px 16px;
+        background: var(--black); border-bottom: 1px solid var(--border);
+      }
+      header.top h1 { font-size: 16px; margin: 0; font-weight: 600; }
+      .wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .grow { flex: 1; min-width: 160px; }
+      label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+      input, textarea, select, button {
+        font: inherit; color: var(--text);
+        background: var(--card2); border: 1px solid var(--border);
+        border-radius: 8px; padding: 9px 11px; width: 100%;
+      }
+      input:focus, textarea:focus { outline: none; border-color: var(--faint); }
+      textarea { min-height: 90px; resize: vertical; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; }
+      button { cursor: pointer; width: auto; background: var(--card2); font-weight: 600; }
+      button:hover { border-color: var(--faint); }
+      button.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+      button.green { background: var(--green); border-color: var(--green); color: #000; }
+      button.danger { background: transparent; border-color: var(--red); color: var(--red); }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+      .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+      .tabs button { flex: 1; }
+      .tabs button.active { background: var(--card2); border-color: var(--text); }
+      .pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--card2); color: var(--muted); margin: 2px 4px 2px 0; }
+      .pill.warn { color: var(--red); border: 1px solid var(--red); }
+      .thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: var(--card2); }
+      .item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+      .item:last-child { border-bottom: none; }
+      .item .meta { flex: 1; min-width: 0; }
+      .item .meta .t { font-weight: 600; }
+      .item .meta .s { color: var(--muted); font-size: 12px; margin-top: 2px; }
+      .checks { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+      .checks label { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--text); font-size: 13px; }
+      .checks input { width: auto; }
+      .muted { color: var(--muted); }
+      .status { font-size: 12px; }
+      .status.ok { color: var(--green); }
+      .status.err { color: var(--red); }
+      .thumbs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+      .hidden { display: none !important; }
+      .banner { background: #2a1a00; border: 1px solid #5a3a00; color: #ffcf80; padding: 10px 12px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
+      .spinner { color: var(--muted); padding: 16px 0; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <h1>💍 Zain &amp; Aisha · Admin</h1>
+      <span id="connStatus" class="status muted">not connected</span>
+    </header>
+
+    <div class="wrap">
+      <!-- Connection settings -->
+      <div class="card">
+        <div class="row">
+          <div class="grow">
+            <label>API Base URL</label>
+            <input id="apiBase" placeholder="https://xxxx.execute-api.region.amazonaws.com" />
+          </div>
+          <div class="grow">
+            <label>Admin Key (x-admin-key)</label>
+            <input id="adminKey" type="password" placeholder="admin secret" />
+          </div>
+        </div>
+        <div class="row" style="margin-top: 12px; align-items: center;">
+          <button class="primary" id="connectBtn">Connect &amp; Load</button>
+          <span id="settingsStatus" class="status muted"></span>
+        </div>
+      </div>
+
+      <div id="app" class="hidden">
+        <div class="tabs">
+          <button id="tabPostsBtn" class="active" onclick="switchTab('posts')">Posts</button>
+          <button id="tabStoriesBtn" onclick="switchTab('stories')">Stories</button>
+        </div>
+
+        <!-- POSTS TAB -->
+        <section id="tabPosts">
+          <div class="card">
+            <strong>New Post</strong>
+            <label>Title / Caption</label>
+            <input id="p_title" placeholder="Roka ceremony vibes ✨" />
+
+            <label>Description (HTML allowed — trusted)</label>
+            <textarea id="p_desc" placeholder="&lt;p&gt;Venue: &lt;a href='...'&gt;The Grand Lawn&lt;/a&gt;&lt;/p&gt;"></textarea>
+
+            <label>Images (first is the cover; multiple = carousel)</label>
+            <input id="p_images" type="file" accept="image/*" multiple />
+            <div id="p_thumbs" class="thumbs"></div>
+
+            <div class="row">
+              <div class="grow">
+                <label>Active from</label>
+                <input id="p_from" type="datetime-local" />
+              </div>
+              <div class="grow">
+                <label>Active up to</label>
+                <input id="p_upto" type="datetime-local" />
+              </div>
+              <div style="width: 120px;">
+                <label>Base likes</label>
+                <input id="p_likes" type="number" value="0" min="0" />
+              </div>
+            </div>
+
+            <label>Access tiers (who can see this)</label>
+            <div id="p_access" class="checks"></div>
+
+            <div class="row" style="margin-top: 14px; align-items: center;">
+              <button class="green" id="p_submit">Create Post</button>
+              <span id="p_status" class="status"></span>
+            </div>
+          </div>
+
+          <div class="card">
+            <strong>All Posts</strong>
+            <div id="postsList" class="spinner">—</div>
+          </div>
+        </section>
+
+        <!-- STORIES TAB -->
+        <section id="tabStories" class="hidden">
+          <div class="card">
+            <strong>New Story</strong>
+            <label>Image (single, portrait works best)</label>
+            <input id="s_image" type="file" accept="image/*" />
+            <div id="s_thumbs" class="thumbs"></div>
+
+            <label>Label (shown under the story circle)</label>
+            <input id="s_label" placeholder="venue" />
+
+            <label>Expires at</label>
+            <input id="s_expires" type="datetime-local" />
+
+            <label>Access tiers</label>
+            <div id="s_access" class="checks"></div>
+
+            <div class="row" style="margin-top: 14px; align-items: center;">
+              <button class="green" id="s_submit">Create Story</button>
+              <span id="s_status" class="status"></span>
+            </div>
+          </div>
+
+          <div class="card">
+            <strong>All Stories</strong>
+            <div id="storiesList" class="spinner">—</div>
+          </div>
+        </section>
+      </div>
+
+      <p class="muted" style="margin-top: 24px; font-size: 12px;">
+        Soft-delete only — items are hidden from the app, never erased. Comment text from
+        guests is always plain text; post descriptions are trusted HTML.
+      </p>
+    </div>
+
+    <script>
+      // ── Tiers shown in the access checkboxes ──────────────────────────────
+      const TIERS = [
+        { n: 0, label: 'Everyone' },
+        { n: 1, label: 'Tier 1' },
+        { n: 2, label: 'Tier 2' },
+        { n: 3, label: 'Tier 3' },
+        { n: 4, label: 'Tier 4' },
+        { n: 5, label: 'Tier 5' },
+      ]
+
+      const $ = (id) => document.getElementById(id)
+      let API = localStorage.getItem('zw_admin_api') || ''
+      let KEY = localStorage.getItem('zw_admin_key') || ''
+
+      function setStatus(el, msg, kind) {
+        el.textContent = msg
+        el.className = 'status ' + (kind || 'muted')
+      }
+
+      // ── API helper ────────────────────────────────────────────────────────
+      async function api(path, opts = {}) {
+        const res = await fetch(API.replace(/\/$/, '') + path, {
+          ...opts,
+          headers: { 'content-type': 'application/json', 'x-admin-key': KEY, ...(opts.headers || {}) },
+        })
+        if (!res.ok) {
+          const txt = await res.text().catch(() => '')
+          throw new Error(`${res.status} ${txt}`)
+        }
+        return res.json()
+      }
+
+      // ── Image upload via presigned PUT ──────────────────────────────────────
+      async function uploadFile(file) {
+        const q = `?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type || 'application/octet-stream')}`
+        const { uploadUrl, publicUrl } = await api('/admin/presign' + q)
+        const put = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': file.type || 'application/octet-stream' },
+          body: file,
+        })
+        if (!put.ok) throw new Error('S3 upload failed (' + put.status + ')')
+        return publicUrl
+      }
+
+      // ── datetime-local <-> ISO ──────────────────────────────────────────────
+      const toISO = (v) => (v ? new Date(v).toISOString() : '')
+
+      function renderAccess(containerId, defaultChecked = [0]) {
+        const c = $(containerId)
+        c.innerHTML = ''
+        TIERS.forEach((t) => {
+          const id = containerId + '_' + t.n
+          const lab = document.createElement('label')
+          lab.innerHTML = `<input type="checkbox" value="${t.n}" id="${id}" ${defaultChecked.includes(t.n) ? 'checked' : ''}/> ${t.label}`
+          c.appendChild(lab)
+        })
+      }
+      const getAccess = (containerId) =>
+        TIERS.map((t) => t.n).filter((n) => $(containerId + '_' + n)?.checked)
+
+      // ── Tabs ────────────────────────────────────────────────────────────────
+      function switchTab(name) {
+        $('tabPosts').classList.toggle('hidden', name !== 'posts')
+        $('tabStories').classList.toggle('hidden', name !== 'stories')
+        $('tabPostsBtn').classList.toggle('active', name === 'posts')
+        $('tabStoriesBtn').classList.toggle('active', name === 'stories')
+        if (name === 'stories') loadStories()
+        else loadPosts()
+      }
+
+      // ── Connect ──────────────────────────────────────────────────────────────
+      $('connectBtn').onclick = async () => {
+        API = $('apiBase').value.trim()
+        KEY = $('adminKey').value.trim()
+        if (!API || !KEY) return setStatus($('settingsStatus'), 'Enter API base + admin key', 'err')
+        localStorage.setItem('zw_admin_api', API)
+        localStorage.setItem('zw_admin_key', KEY)
+        setStatus($('settingsStatus'), 'Connecting…', 'muted')
+        try {
+          await api('/admin/posts')
+          setStatus($('settingsStatus'), 'Connected ✓', 'ok')
+          setStatus($('connStatus'), 'connected', 'ok')
+          $('app').classList.remove('hidden')
+          loadPosts()
+        } catch (e) {
+          setStatus($('settingsStatus'), 'Failed: ' + e.message, 'err')
+          setStatus($('connStatus'), 'error', 'err')
+        }
+      }
+
+      // ── Image previews ───────────────────────────────────────────────────────
+      let postFiles = []
+      let storyFile = null
+      $('p_images').onchange = (e) => {
+        postFiles = [...e.target.files]
+        $('p_thumbs').innerHTML = ''
+        postFiles.forEach((f) => {
+          const img = document.createElement('img')
+          img.className = 'thumb'
+          img.src = URL.createObjectURL(f)
+          $('p_thumbs').appendChild(img)
+        })
+      }
+      $('s_image').onchange = (e) => {
+        storyFile = e.target.files[0] || null
+        $('s_thumbs').innerHTML = ''
+        if (storyFile) {
+          const img = document.createElement('img')
+          img.className = 'thumb'
+          img.src = URL.createObjectURL(storyFile)
+          $('s_thumbs').appendChild(img)
+        }
+      }
+
+      // ── Create post ────────────────────────────────────────────────────────
+      $('p_submit').onclick = async () => {
+        const title = $('p_title').value.trim()
+        if (!postFiles.length) return setStatus($('p_status'), 'Add at least one image', 'err')
+        $('p_submit').disabled = true
+        setStatus($('p_status'), 'Uploading images…', 'muted')
+        try {
+          const images = []
+          for (const f of postFiles) images.push(await uploadFile(f))
+          setStatus($('p_status'), 'Saving post…', 'muted')
+          await api('/admin/post', {
+            method: 'POST',
+            body: JSON.stringify({
+              title,
+              description: $('p_desc').value,
+              images,
+              likes_base: Number($('p_likes').value || 0),
+              access: getAccess('p_access'),
+              active_from: toISO($('p_from').value) || undefined,
+              active_upto: toISO($('p_upto').value) || undefined,
+            }),
+          })
+          setStatus($('p_status'), 'Created ✓', 'ok')
+          $('p_title').value = ''
+          $('p_desc').value = ''
+          $('p_images').value = ''
+          $('p_thumbs').innerHTML = ''
+          postFiles = []
+          loadPosts()
+        } catch (e) {
+          setStatus($('p_status'), 'Error: ' + e.message, 'err')
+        } finally {
+          $('p_submit').disabled = false
+        }
+      }
+
+      // ── Create story ──────────────────────────────────────────────────────
+      $('s_submit').onclick = async () => {
+        if (!storyFile) return setStatus($('s_status'), 'Add an image', 'err')
+        $('s_submit').disabled = true
+        setStatus($('s_status'), 'Uploading…', 'muted')
+        try {
+          const imageUrl = await uploadFile(storyFile)
+          await api('/admin/story', {
+            method: 'POST',
+            body: JSON.stringify({
+              imageUrl,
+              label: $('s_label').value.trim() || undefined,
+              access: getAccess('s_access'),
+              expires_at: toISO($('s_expires').value) || undefined,
+            }),
+          })
+          setStatus($('s_status'), 'Created ✓', 'ok')
+          $('s_image').value = ''
+          $('s_label').value = ''
+          $('s_thumbs').innerHTML = ''
+          storyFile = null
+          loadStories()
+        } catch (e) {
+          setStatus($('s_status'), 'Error: ' + e.message, 'err')
+        } finally {
+          $('s_submit').disabled = false
+        }
+      }
+
+      // ── Lists ────────────────────────────────────────────────────────────────
+      const fmt = (iso) => (iso ? new Date(iso).toLocaleString() : '—')
+      const accessPills = (a) =>
+        (a || []).map((n) => `<span class="pill">${n === 0 ? 'Everyone' : 'Tier ' + n}</span>`).join('')
+
+      async function loadPosts() {
+        const el = $('postsList')
+        el.className = 'spinner'
+        el.textContent = 'Loading…'
+        try {
+          const data = await api('/admin/posts')
+          const posts = data.posts || []
+          if (!posts.length) { el.textContent = 'No posts yet.'; return }
+          el.className = ''
+          el.innerHTML = posts
+            .map(
+              (p) => `
+            <div class="item">
+              <img class="thumb" src="${(p.images && p.images[0]) || ''}" alt=""/>
+              <div class="meta">
+                <div class="t">${escapeHtml(p.title || '(untitled)')} ${p.hidden ? '<span class="pill warn">hidden</span>' : ''}</div>
+                <div class="s">${(p.images || []).length} image(s) · ${p.likes_base || 0} base likes</div>
+                <div class="s">Active: ${fmt(p.active_from)} → ${fmt(p.active_upto)}</div>
+                <div>${accessPills(p.access)}</div>
+              </div>
+              ${p.hidden ? '' : `<button class="danger" onclick="delPost('${p.id}')">Hide</button>`}
+            </div>`,
+            )
+            .join('')
+        } catch (e) {
+          el.className = 'status err'
+          el.textContent = 'Error: ' + e.message
+        }
+      }
+
+      async function loadStories() {
+        const el = $('storiesList')
+        el.className = 'spinner'
+        el.textContent = 'Loading…'
+        try {
+          const data = await api('/admin/stories')
+          const stories = data.stories || []
+          if (!stories.length) { el.textContent = 'No stories yet.'; return }
+          el.className = ''
+          el.innerHTML = stories
+            .map(
+              (s) => `
+            <div class="item">
+              <img class="thumb" src="${s.imageUrl || ''}" alt=""/>
+              <div class="meta">
+                <div class="t">${escapeHtml(s.label || s.id)} ${s.hidden ? '<span class="pill warn">hidden</span>' : ''}</div>
+                <div class="s">Expires: ${fmt(s.expires_at)}</div>
+                <div>${accessPills(s.access)}</div>
+              </div>
+              ${s.hidden ? '' : `<button class="danger" onclick="delStory('${s.id}')">Hide</button>`}
+            </div>`,
+            )
+            .join('')
+        } catch (e) {
+          el.className = 'status err'
+          el.textContent = 'Error: ' + e.message
+        }
+      }
+
+      async function delPost(id) {
+        if (!confirm('Hide this post from the app? (Not deleted — just hidden.)')) return
+        try { await api('/admin/post/' + id, { method: 'DELETE' }); loadPosts() }
+        catch (e) { alert('Error: ' + e.message) }
+      }
+      async function delStory(id) {
+        if (!confirm('Hide this story from the app?')) return
+        try { await api('/admin/story/' + id, { method: 'DELETE' }); loadStories() }
+        catch (e) { alert('Error: ' + e.message) }
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+      }
+
+      // ── Init ────────────────────────────────────────────────────────────────
+      renderAccess('p_access', [0])
+      renderAccess('s_access', [0])
+      if (API) $('apiBase').value = API
+      if (KEY) $('adminKey').value = KEY
+      if (API && KEY) $('connectBtn').click()
+    </script>
+  </body>
+</html>

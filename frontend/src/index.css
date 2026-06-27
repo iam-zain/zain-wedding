@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* ── Instagram-inspired dark theme tokens (Tailwind v4 @theme) ─────────────── */
+@theme {
+  --color-ig-black: #000000;       /* page background */
+  --color-ig-elevated: #121212;    /* bars / elevated surfaces */
+  --color-ig-card: #262626;        /* cards, inputs */
+  --color-ig-border: #363636;      /* hairline dividers */
+  --color-ig-text: #ffffff;        /* primary text */
+  --color-ig-muted: #a8a8a8;       /* secondary text */
+  --color-ig-faint: #737373;       /* tertiary / timestamps */
+  --color-ig-blue: #0095f6;        /* action blue */
+  --color-ig-red: #ed4956;         /* like heart */
+  --color-wa: #25d366;             /* WhatsApp green */
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --font-logo: "Grand Hotel", "Dancing Script", cursive;
+
+  /* Max width of the centered IG-style content column */
+  --content-max: 500px;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ig-black);
+    color: var(--color-ig-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Trusted admin-authored HTML inside post descriptions */
+  .post-html a {
+    color: #e0f1ff;
+    font-weight: 600;
+  }
+  .post-html p {
+    margin: 0 0 0.25rem;
+  }
+  .post-html p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Hide scrollbars (stories row, carousels) while keeping scroll */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Instagram unviewed-story gradient ring */
+  .story-ring {
+    background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+  }
+
+  /* Centered content column */
+  .content-col {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+  }
+
+  /* Carousel horizontal snap */
+  .snap-x-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+  .snap-center-child {
+    scroll-snap-align: center;
+  }
+
+  /* Double-tap like burst */
+  .like-burst {
+    animation: like-burst 0.9s ease-out forwards;
+  }
+}
+
+@keyframes like-burst {
+  0% { transform: scale(0); opacity: 0; }
+  15% { transform: scale(1.15); opacity: 0.95; }
+  30% { transform: scale(0.95); opacity: 0.95; }
+  45% { transform: scale(1); opacity: 0.9; }
+  80% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.1); opacity: 0; }
+}

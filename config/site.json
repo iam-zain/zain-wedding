@@ -1,0 +1,72 @@
+{
+  "profile": {
+    "username": "@zain.weds.2026",
+    "displayName": "Zain & Aisha 💍",
+    "bio": "Do dilon ka ek safar 🌙✨\nSave the date — pyaar, dawat aur dhamaal!\n#ZainKiShaadi",
+    "postCount": "108",
+    "followersCount": "1.4K",
+    "followingCount": "2",
+    "avatarUrl": "/assets/avatar.svg",
+    "link": "https://zainweds.example",
+    "linkLabel": "zainweds.example",
+    "whatsappGroupUrl": "https://chat.whatsapp.com/REPLACE_WITH_GROUP_INVITE"
+  },
+  "wedding": {
+    "date": "2026-12-12T19:00:00+05:30",
+    "hashtag": "#ZainKiShaadi"
+  },
+  "menu": [
+    { "label": "Download Wedding Invite", "url": "https://cdn.example/invite.pdf" },
+    { "label": "Venue on Maps", "url": "https://maps.google.com/?q=Wedding+Venue" },
+    { "label": "Gift Registry", "url": "https://example.com/registry" }
+  ],
+  "events": [
+    {
+      "id": "mehendi",
+      "name": "Mehendi",
+      "emoji": "🌿",
+      "date": "2026-12-10T16:00:00+05:30",
+      "venue": "Khan Residence, Lucknow",
+      "mapUrl": "https://maps.google.com/?q=Khan+Residence+Lucknow",
+      "dresscode": "Yellow / Green / Floral",
+      "rsvpWhatsappUrl": "https://chat.whatsapp.com/REPLACE_WITH_GROUP_INVITE"
+    },
+    {
+      "id": "sangeet",
+      "name": "Sangeet",
+      "emoji": "🎶",
+      "date": "2026-12-11T19:30:00+05:30",
+      "venue": "The Grand Ballroom, Lucknow",
+      "mapUrl": "https://maps.google.com/?q=The+Grand+Ballroom+Lucknow",
+      "dresscode": "Indo-Western Glam",
+      "rsvpWhatsappUrl": "https://chat.whatsapp.com/REPLACE_WITH_GROUP_INVITE"
+    },
+    {
+      "id": "nikah",
+      "name": "Nikah",
+      "emoji": "💍",
+      "date": "2026-12-12T19:00:00+05:30",
+      "venue": "Royal Lawns, Lucknow",
+      "mapUrl": "https://maps.google.com/?q=Royal+Lawns+Lucknow",
+      "dresscode": "Traditional Elegant",
+      "rsvpWhatsappUrl": "https://chat.whatsapp.com/REPLACE_WITH_GROUP_INVITE"
+    },
+    {
+      "id": "walima",
+      "name": "Walima",
+      "emoji": "🍽️",
+      "date": "2026-12-13T20:00:00+05:30",
+      "venue": "Royal Lawns, Lucknow",
+      "mapUrl": "https://maps.google.com/?q=Royal+Lawns+Lucknow",
+      "dresscode": "Formal Festive",
+      "rsvpWhatsappUrl": "https://chat.whatsapp.com/REPLACE_WITH_GROUP_INVITE"
+    }
+  ],
+  "accessTiers": {
+    "tier1": "secret1",
+    "tier2": "secret2",
+    "tier3": "secret3",
+    "tier4": "secret4",
+    "tier5": "secret5"
+  }
+}

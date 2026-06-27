@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="g8" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b2240"/>
+      <stop offset="1" stop-color="#8e7cc3"/>
+    </linearGradient>
+    <radialGradient id="v8" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#g8)"/>
+  <circle cx="970" cy="80" r="13" fill="#ffffff" opacity="0.071"/><circle cx="352" cy="320" r="13" fill="#ffffff" opacity="0.067"/><circle cx="889" cy="222" r="14" fill="#ffffff" opacity="0.066"/><circle cx="568" cy="973" r="7" fill="#ffffff" opacity="0.105"/><circle cx="455" cy="600" r="32" fill="#ffffff" opacity="0.070"/><circle cx="259" cy="1049" r="31" fill="#ffffff" opacity="0.090"/><circle cx="5" cy="867" r="26" fill="#ffffff" opacity="0.091"/><circle cx="279" cy="480" r="29" fill="#ffffff" opacity="0.114"/><circle cx="1029" cy="636" r="23" fill="#ffffff" opacity="0.111"/><circle cx="2" cy="481" r="9" fill="#ffffff" opacity="0.095"/><circle cx="543" cy="681" r="23" fill="#ffffff" opacity="0.065"/><circle cx="680" cy="783" r="9" fill="#ffffff" opacity="0.094"/><circle cx="199" cy="534" r="26" fill="#ffffff" opacity="0.085"/><circle cx="887" cy="841" r="30" fill="#ffffff" opacity="0.091"/><circle cx="1010" cy="50" r="31" fill="#ffffff" opacity="0.107"/><circle cx="236" cy="668" r="17" fill="#ffffff" opacity="0.126"/><circle cx="950" cy="602" r="16" fill="#ffffff" opacity="0.057"/><circle cx="580" cy="237" r="29" fill="#ffffff" opacity="0.117"/>
+  <rect width="1080" height="1080" fill="url(#v8)"/>
+  <text x="540" y="496.8" font-size="216" text-anchor="middle" dominant-baseline="middle">🍽️</text>
+  <text x="540" y="669.6" font-family="Georgia, serif" font-size="59" fill="#ffffff" fill-opacity="0.95" text-anchor="middle" font-style="italic">Walima Dawat</text>
+  <text x="540" y="745.1999999999999" font-family="Helvetica, Arial, sans-serif" font-size="35" fill="#ffffff" fill-opacity="0.7" text-anchor="middle" letter-spacing="2">FEAST MODE</text>
+</svg>

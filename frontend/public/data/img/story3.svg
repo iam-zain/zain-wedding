@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="g102" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f3a5f"/>
+      <stop offset="1" stop-color="#5b8fb9"/>
+    </linearGradient>
+    <radialGradient id="v102" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#g102)"/>
+  <circle cx="512" cy="1638" r="18" fill="#ffffff" opacity="0.066"/><circle cx="295" cy="55" r="14" fill="#ffffff" opacity="0.117"/><circle cx="141" cy="122" r="26" fill="#ffffff" opacity="0.060"/><circle cx="996" cy="1319" r="23" fill="#ffffff" opacity="0.071"/><circle cx="1006" cy="1774" r="22" fill="#ffffff" opacity="0.132"/><circle cx="438" cy="609" r="8" fill="#ffffff" opacity="0.092"/><circle cx="839" cy="1569" r="24" fill="#ffffff" opacity="0.083"/><circle cx="596" cy="648" r="24" fill="#ffffff" opacity="0.110"/><circle cx="935" cy="1877" r="24" fill="#ffffff" opacity="0.110"/><circle cx="763" cy="1747" r="12" fill="#ffffff" opacity="0.069"/><circle cx="867" cy="1799" r="10" fill="#ffffff" opacity="0.118"/><circle cx="192" cy="1368" r="12" fill="#ffffff" opacity="0.079"/><circle cx="407" cy="1215" r="32" fill="#ffffff" opacity="0.097"/><circle cx="377" cy="745" r="24" fill="#ffffff" opacity="0.121"/><circle cx="9" cy="362" r="17" fill="#ffffff" opacity="0.067"/><circle cx="491" cy="1251" r="21" fill="#ffffff" opacity="0.131"/><circle cx="927" cy="686" r="31" fill="#ffffff" opacity="0.088"/><circle cx="26" cy="137" r="30" fill="#ffffff" opacity="0.139"/>
+  <rect width="1080" height="1920" fill="url(#v102)"/>
+  <text x="540" y="883.2" font-size="216" text-anchor="middle" dominant-baseline="middle">🎉</text>
+  <text x="540" y="1190.4" font-family="Georgia, serif" font-size="59" fill="#ffffff" fill-opacity="0.95" text-anchor="middle" font-style="italic">Baraat Plan</text>
+  <text x="540" y="1324.8" font-family="Helvetica, Arial, sans-serif" font-size="35" fill="#ffffff" fill-opacity="0.7" text-anchor="middle" letter-spacing="2">DHOL TASHA</text>
+</svg>
