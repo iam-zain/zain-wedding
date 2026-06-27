@@ -108,8 +108,21 @@ export class WeddingStack extends cdk.Stack {
         customHeaders: [{ header: 'Cache-Control', value: 'public, max-age=300', override: true }],
       },
     })
+    const adminHeaders = new cloudfront.ResponseHeadersPolicy(this, 'AdminHeaders', {
+      customHeadersBehavior: {
+        customHeaders: [
+          { header: 'Cache-Control', value: 'no-store, no-cache, must-revalidate', override: true },
+        ],
+      },
+      securityHeadersBehavior: {
+        contentTypeOptions: { override: true },
+        frameOptions: { frameOption: cloudfront.HeadersFrameOption.DENY, override: true },
+        referrerPolicy: { referrerPolicy: cloudfront.HeadersReferrerPolicy.NO_REFERRER, override: true },
+        strictTransportSecurity: { accessControlMaxAge: cdk.Duration.days(365), includeSubdomains: true, override: true },
+      },
+    })
 
-    // ── CloudFront distribution: images (default) + *.json (data) ────────────
+    // ── CloudFront distribution: images (default) + *.json (data) + /admin* ──
     const mediaOrigin = origins.S3BucketOrigin.withOriginAccessControl(mediaBucket)
     const dataOrigin = origins.S3BucketOrigin.withOriginAccessControl(dataBucket)
 
@@ -132,6 +145,13 @@ export class WeddingStack extends cdk.Stack {
           responseHeadersPolicy: dataHeaders,
           allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         },
+        '/admin*': {
+          origin: dataOrigin,
+          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+          responseHeadersPolicy: adminHeaders,
+          allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+        },
       },
     })
     const cdnBaseUrl = `https://${distribution.distributionDomainName}`
@@ -141,7 +161,7 @@ export class WeddingStack extends cdk.Stack {
       exclude: ['*.md', '.gitignore', 'package-lock.json'],
     })
     const common: Omit<lambda.FunctionProps, 'handler'> = {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       architecture: lambda.Architecture.ARM_64,
       code: backendCode,
       memorySize: 256,
@@ -227,9 +247,9 @@ export class WeddingStack extends cdk.Stack {
         integration: new integrations.HttpLambdaIntegration(id, fn),
       })
 
-    // Public
-    route('LikeInt', '/like/{postId}', apigwv2.HttpMethod.POST, likeFn)
-    route('CommentInt', '/comment/{postId}', apigwv2.HttpMethod.POST, commentFn)
+    // Public — capture throttled routes so the stage can depend on them.
+    const likeRoutes    = route('LikeInt',    '/like/{postId}',    apigwv2.HttpMethod.POST, likeFn)
+    const commentRoutes = route('CommentInt', '/comment/{postId}', apigwv2.HttpMethod.POST, commentFn)
     route('GetCommentsInt', '/comments/{postId}', apigwv2.HttpMethod.GET, getCommentsFn)
     // Admin (single Lambda dispatches on routeKey)
     route('AdminPostsInt', '/admin/posts', apigwv2.HttpMethod.GET, adminFn)
@@ -249,6 +269,10 @@ export class WeddingStack extends cdk.Stack {
       'POST /like/{postId}': { ThrottlingRateLimit: 5, ThrottlingBurstLimit: 5 },
       'POST /comment/{postId}': { ThrottlingRateLimit: 2, ThrottlingBurstLimit: 2 },
     } as unknown as apigwv2.CfnStage['routeSettings']
+    // Stage must be created after the routes it references in routeSettings exist.
+    for (const r of [...likeRoutes, ...commentRoutes]) {
+      cfnStage.node.addDependency(r)
+    }
 
     // ── Outputs ──────────────────────────────────────────────────────────────
     new cdk.CfnOutput(this, 'ApiBaseUrl', { value: httpApi.apiEndpoint })

@@ -14,9 +14,9 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Zain & Aisha · Shaadi',
-        short_name: 'Zain & Aisha',
-        description: 'Zain & Aisha ki shaadi — stories, feed aur saare functions ek jagah.',
+        name: 'Zain & Uzma · Shaadi',
+        short_name: 'Zain & Uzma',
+        description: 'Zain & Uzma ki shaadi — stories, feed aur saare functions ek jagah.',
         theme_color: '#000000',
         background_color: '#000000',
         display: 'standalone',

@@ -5,12 +5,18 @@ import { WeddingStack } from '../lib/wedding-stack'
 const app = new cdk.App()
 
 // Context-driven config (override with `-c key=value` at synth/deploy time).
-const allowedOrigins = (app.node.tryGetContext('allowedOrigins') as string[] | undefined) ?? [
-  'http://localhost:5173',
-]
-const writeApiKey = (app.node.tryGetContext('writeApiKey') as string | undefined) ?? ''
-const adminApiKey = (app.node.tryGetContext('adminApiKey') as string | undefined) ?? 'CHANGE_ME_ADMIN_KEY'
-const adminOrigins = (app.node.tryGetContext('adminOrigins') as string[] | undefined) ?? ['*']
+// When a value comes from -c on the CLI it arrives as a raw string, even if it's JSON.
+// cdk.json values are pre-parsed. Handle both.
+const parseList = (raw: unknown, fallback: string[]): string[] => {
+  if (!raw) return fallback
+  if (Array.isArray(raw)) return raw as string[]
+  try { return JSON.parse(raw as string) } catch { return [raw as string] }
+}
+
+const allowedOrigins = parseList(app.node.tryGetContext('allowedOrigins'), ['http://localhost:5173'])
+const adminOrigins   = parseList(app.node.tryGetContext('adminOrigins'),   ['*'])
+const writeApiKey    = (app.node.tryGetContext('writeApiKey')  as string | undefined) ?? ''
+const adminApiKey    = (app.node.tryGetContext('adminApiKey')  as string | undefined) ?? 'CHANGE_ME_ADMIN_KEY'
 
 new WeddingStack(app, 'WeddingStack', {
   allowedOrigins,
