@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { siteConfig, SITE_URL } from '../config'
+import { siteConfig, SITE_URL, ACCESS_KEY_PARAM } from '../config'
 import { shareUrl } from '../lib/share'
+import { applyAccessKeyParam, useUnlockedTiers } from '../lib/access'
 import { useToast } from './toast-context'
-import { DownloadIcon, ExternalLinkIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
+import { DownloadIcon, ExternalLinkIcon, KeyIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
 import { useRecordPlayer } from '../lib/useRecordPlayer'
 
 function Stat({ value, label }) {
@@ -17,8 +18,35 @@ function Stat({ value, label }) {
 export default function ProfileHeader() {
   const { profile, menu = [] } = siteConfig
   const [menuOpen, setMenuOpen] = useState(false)
+  const [accessSheetOpen, setAccessSheetOpen] = useState(false)
+  const [accessInput, setAccessInput] = useState('')
   const toast = useToast()
   const { isPlaying, toggle: toggleMusic } = useRecordPlayer()
+  const unlockedTiers = useUnlockedTiers()
+  const tierLetters = 'ABCDE'
+  const versionStr = unlockedTiers
+    .filter((t) => t >= 1 && t <= 5)
+    .map((t) => tierLetters[t - 1])
+    .join('.')
+
+  function onAccessLinkSubmit() {
+    let keyParam = accessInput.trim()
+    // Accept a full URL or a raw key param value
+    try {
+      const parsed = new URL(keyParam)
+      keyParam = parsed.searchParams.get(ACCESS_KEY_PARAM) || keyParam
+    } catch {
+      // not a URL — treat the input as the raw key value
+    }
+    const count = applyAccessKeyParam(keyParam)
+    if (count > 0) {
+      toast('🔓 Content unlock ho gaya!')
+    } else {
+      toast('Link kaam nahi kiya 😕')
+    }
+    setAccessInput('')
+    setAccessSheetOpen(false)
+  }
 
   async function onShareProfile() {
     const result = await shareUrl({
@@ -73,12 +101,65 @@ export default function ProfileHeader() {
                   rel="noopener noreferrer"
                   role="menuitem"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated"
+                  className="flex items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated border-b border-ig-border"
                 >
                   <span className="truncate">{item.label}</span>
                   <ExternalLinkIcon size={16} className="shrink-0 text-ig-muted" />
                 </a>
               ))}
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => { setMenuOpen(false); setAccessSheetOpen(true) }}
+                className="flex w-full items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated"
+              >
+                <span className="truncate">Enter access link</span>
+                <KeyIcon size={16} className="shrink-0 text-ig-muted" />
+              </button>
+              <div className="border-t border-ig-border px-4 py-2 text-[10px] text-ig-faint">
+                {versionStr ? `Version: ${versionStr}` : 'Version: –'}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Access link bottom sheet */}
+        {accessSheetOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-40 bg-black/60"
+              onClick={() => setAccessSheetOpen(false)}
+            />
+            <div className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-ig-border bg-ig-elevated px-4 pb-10 pt-5">
+              <div className="mb-1 text-center text-base font-semibold">Access link</div>
+              <p className="mb-4 text-center text-sm text-ig-muted">
+                Paste your invite URL to unlock exclusive content
+              </p>
+              <input
+                type="url"
+                value={accessInput}
+                onChange={(e) => setAccessInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && onAccessLinkSubmit()}
+                placeholder="https://zain-wedding.pages.dev?key=…"
+                autoFocus
+                className="w-full rounded-xl border border-ig-border bg-ig-card px-3 py-2.5 text-sm text-ig-text placeholder:text-ig-faint outline-none focus:border-ig-muted"
+              />
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setAccessSheetOpen(false)}
+                  className="flex-1 rounded-xl bg-ig-card py-2.5 text-sm font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={onAccessLinkSubmit}
+                  className="flex-1 rounded-xl bg-ig-blue py-2.5 text-sm font-semibold text-white"
+                >
+                  Unlock
+                </button>
+              </div>
             </div>
           </>
         )}

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { siteConfig } from '../config'
-import { fetchPosts, fetchStories } from '../lib/api'
+import { fetchPosts, fetchPostsFresh, fetchStories, fetchStoriesFresh } from '../lib/api'
 import { hasAccess, isActiveNow, isExpired, useUnlockedTiers } from '../lib/access'
 import Countdown from '../components/Countdown'
 import ProfileHeader from '../components/ProfileHeader'
@@ -9,26 +9,64 @@ import PostCard from '../components/PostCard'
 
 const byCreatedDesc = (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
 
+// How long to wait before allowing another background refresh (ms).
+const REFRESH_COOLDOWN = 60_000
+
 export default function FeedPage() {
   const [posts, setPosts] = useState(null)
   const [stories, setStories] = useState(null)
   const [error, setError] = useState(false)
   const unlocked = useUnlockedTiers()
+  const lastFreshAt = useRef(0)
+
+  // Fetches fresh data bypassing the SW cache; updates state silently.
+  const applyFreshData = useCallback(async () => {
+    lastFreshAt.current = Date.now() // stamp early to block concurrent calls
+    try {
+      const [p, s] = await Promise.all([fetchPostsFresh(), fetchStoriesFresh()])
+      setPosts(p)
+      setStories(s)
+      setError(false)
+    } catch {
+      // Offline or CDN unreachable — reset so next visibility event can retry.
+      lastFreshAt.current = 0
+    }
+  }, [])
 
   async function load() {
     setError(false)
     try {
+      // Stale-while-revalidate: SW serves cached version instantly.
       const [p, s] = await Promise.all([fetchPosts(), fetchStories()])
       setPosts(p)
       setStories(s)
     } catch {
       setError(true)
     }
+    // Background fresh fetch so the app picks up whatever the SW just
+    // revalidated (or goes straight to CDN if SW cache is cold).
+    applyFreshData()
   }
 
   useEffect(() => {
     load()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Re-fetch when the user returns to the tab / app (debounced).
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible') return
+      if (Date.now() - lastFreshAt.current < REFRESH_COOLDOWN) return
+      applyFreshData()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('focus', onVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('focus', onVisible)
+    }
+  }, [applyFreshData])
 
   const visiblePosts = useMemo(() => {
     if (!posts) return []

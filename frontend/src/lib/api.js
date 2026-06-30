@@ -7,8 +7,9 @@ import { API_BASE_URL, API_KEY, DATA_BASE_URL, LOCAL_MODE } from '../config'
 import { readJSON, writeJSON } from './storage'
 
 // ── Content (posts.json / stories.json) ──────────────────────────────────────
-async function fetchJSON(url) {
-  const res = await fetch(url, { headers: { Accept: 'application/json' } })
+async function fetchJSON(url, opts = {}) {
+  const { headers: extraHeaders, ...rest } = opts
+  const res = await fetch(url, { ...rest, headers: { Accept: 'application/json', ...extraHeaders } })
   if (!res.ok) throw new Error(`Fetch failed ${res.status}: ${url}`)
   return res.json()
 }
@@ -20,6 +21,18 @@ export async function fetchPosts() {
 
 export async function fetchStories() {
   const data = await fetchJSON(`${DATA_BASE_URL}/stories.json`)
+  return Array.isArray(data) ? data : data.stories || []
+}
+
+// Bypass-SW variants: ?_fresh=1 skips the StaleWhileRevalidate rule;
+// cache:'no-store' also skips the browser HTTP cache. Always hits the CDN.
+export async function fetchPostsFresh() {
+  const data = await fetchJSON(`${DATA_BASE_URL}/posts.json?_fresh=1`, { cache: 'no-store' })
+  return Array.isArray(data) ? data : data.posts || []
+}
+
+export async function fetchStoriesFresh() {
+  const data = await fetchJSON(`${DATA_BASE_URL}/stories.json?_fresh=1`, { cache: 'no-store' })
   return Array.isArray(data) ? data : data.stories || []
 }
 

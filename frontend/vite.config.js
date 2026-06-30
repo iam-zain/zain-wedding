@@ -36,8 +36,10 @@ export default defineConfig({
         runtimeCaching: [
           {
             // posts.json / stories.json — fresh-ish but instant from cache.
+            // Requests with ?_fresh=1 bypass this rule and go straight to network.
             urlPattern: ({ url }) =>
-              url.pathname.endsWith('/posts.json') || url.pathname.endsWith('/stories.json'),
+              (url.pathname.endsWith('/posts.json') || url.pathname.endsWith('/stories.json')) &&
+              !url.searchParams.has('_fresh'),
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'wedding-data',

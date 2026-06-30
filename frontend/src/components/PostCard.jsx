@@ -133,7 +133,7 @@ export default function PostCard({ post }) {
 
       {/* Timestamp */}
       {post.created_at && (
-        <time className="block px-3 pt-0.5 text-[10px] uppercase tracking-wide text-ig-faint">
+        <time className="block px-3 pt-0.5 text-[10px] tracking-wide text-ig-faint">
           {relativeTime(post.created_at)}
         </time>
       )}

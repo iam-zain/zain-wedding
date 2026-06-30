@@ -108,6 +108,7 @@
           <button id="tabCreateStoriesBtn" onclick="switchTab('createStories')">Create stories</button>
           <button id="tabAllPostsBtn" onclick="switchTab('allPosts')">All posts</button>
           <button id="tabAllStoriesBtn" onclick="switchTab('allStories')">All stories</button>
+          <button id="tabShareLinksBtn" onclick="switchTab('shareLinks')">Share links</button>
         </div>
 
         <!-- CREATE POSTS TAB -->
@@ -188,6 +189,43 @@
             <div id="storiesList" class="spinner">—</div>
           </div>
         </section>
+
+        <!-- SHARE LINKS TAB -->
+        <section id="tabShareLinks" class="hidden">
+          <div class="card">
+            <strong>Generate Invite Links</strong>
+            <p style="color:var(--muted);font-size:12px;margin:6px 0 16px;">
+              Creates a signed URL that unlocks a tier when the guest opens it.
+              Paste secrets from <code>config/site.json → accessTiers</code>.
+              Secrets are saved in this browser only.
+            </p>
+
+            <label>Guest site URL</label>
+            <input id="sl_baseUrl" value="https://zain-wedding.pages.dev" />
+
+            <div id="sl_rows" style="margin-top:16px;"></div>
+          </div>
+
+          <div class="card">
+            <strong>Combined link</strong>
+            <p style="color:var(--muted);font-size:12px;margin:6px 0 14px;">
+              Select multiple tiers to generate one URL that unlocks all of them at once.
+            </p>
+            <div id="sl_combo_checks" class="checks"></div>
+            <div class="row" style="margin-top:14px;align-items:center;gap:8px;">
+              <button onclick="generateCombinedLink()" style="flex-shrink:0;white-space:nowrap;">Generate combined URL</button>
+              <span id="sl_combo_err" class="status err hidden"></span>
+            </div>
+            <div id="sl_combined_result" class="hidden" style="margin-top:10px;">
+              <div class="row" style="gap:6px;align-items:center;flex-wrap:nowrap;">
+                <input id="sl_combined_url" readonly
+                  style="font-size:11px;color:var(--muted);font-family:ui-monospace,monospace;flex:1;min-width:0;" />
+                <button id="sl_combined_copy" onclick="copyCombinedLink()" style="flex-shrink:0;white-space:nowrap;">Copy</button>
+                <button onclick="shareCombinedWhatsApp()" class="green" style="flex-shrink:0;white-space:nowrap;">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
       <p class="muted" style="margin-top: 24px; font-size: 12px;">
@@ -259,7 +297,7 @@
         TIERS.map((t) => t.n).filter((n) => $(containerId + '_' + n)?.checked)
 
       // ── Tabs ────────────────────────────────────────────────────────────────
-      const ALL_TABS = ['createPosts', 'allPosts', 'createStories', 'allStories']
+      const ALL_TABS = ['createPosts', 'allPosts', 'createStories', 'allStories', 'shareLinks']
       function switchTab(name) {
         ALL_TABS.forEach(t => {
           $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.toggle('hidden', t !== name)
@@ -467,6 +505,137 @@
         catch (e) { alert('Error: ' + e.message) }
       }
 
+      // ── Share Links ───────────────────────────────────────────────────────────
+      let savedSecrets = JSON.parse(localStorage.getItem('zw_admin_secrets') || '{}')
+
+      function renderShareLinks() {
+        // Per-tier checkboxes for the combined-link section
+        const checks = $('sl_combo_checks')
+        checks.innerHTML = ''
+        ;[1, 2, 3, 4, 5].forEach((n) => {
+          const lab = document.createElement('label')
+          lab.innerHTML = `<input type="checkbox" id="sl_combo_${n}" value="${n}" /> Tier ${n}`
+          checks.appendChild(lab)
+        })
+
+        const container = $('sl_rows')
+        container.innerHTML = ''
+        ;[1, 2, 3, 4, 5].forEach((n) => {
+          const secret = savedSecrets[n] || ''
+          const row = document.createElement('div')
+          row.style.cssText = 'padding:14px 0;border-bottom:1px solid var(--border);'
+          row.innerHTML = `
+            <div class="row" style="align-items:flex-end;gap:8px;flex-wrap:nowrap;">
+              <div style="flex:0 0 64px;">
+                <label>Tier ${n}</label>
+                <div style="padding:9px 11px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--muted);font-family:ui-monospace,monospace;">tier${n}</div>
+              </div>
+              <div class="grow">
+                <label>Secret</label>
+                <input id="sl_s_${n}" type="password" placeholder="from accessTiers in site.json"
+                  value="${escapeHtml(secret)}"
+                  oninput="savedSecrets[${n}]=this.value;localStorage.setItem('zw_admin_secrets',JSON.stringify(savedSecrets))" />
+              </div>
+              <button onclick="generateLink(${n})" style="flex-shrink:0;white-space:nowrap;">Generate</button>
+            </div>
+            <div id="sl_result_${n}" class="${secret ? '' : 'hidden'}" style="margin-top:10px;">
+              <div class="row" style="gap:6px;align-items:center;flex-wrap:nowrap;">
+                <input id="sl_url_${n}" readonly
+                  style="font-size:11px;color:var(--muted);font-family:ui-monospace,monospace;flex:1;min-width:0;" />
+                <button id="sl_copy_${n}" onclick="copyLink(${n})" style="flex-shrink:0;white-space:nowrap;">Copy</button>
+                <button onclick="shareWhatsApp(${n})" class="green" style="flex-shrink:0;white-space:nowrap;">WhatsApp</button>
+              </div>
+            </div>`
+          container.appendChild(row)
+          // Pre-fill URL if secret was already saved
+          if (secret) generateLink(n)
+        })
+      }
+
+      function generateLink(n) {
+        const secret = ($('sl_s_' + n) || {}).value?.trim()
+        if (!secret) { alert('Enter the secret for Tier ' + n); return }
+        const base = ($('sl_baseUrl').value || '').trim().replace(/\/$/, '') || 'https://zain-wedding.pages.dev'
+        let key
+        try { key = btoa('tier' + n + ':' + secret) }
+        catch { alert('Secret for Tier ' + n + ' contains unsupported characters. Use ASCII only.'); return }
+        const url = base + '?key=' + key
+        const urlInput = $('sl_url_' + n)
+        if (urlInput) urlInput.value = url
+        const result = $('sl_result_' + n)
+        if (result) result.classList.remove('hidden')
+        savedSecrets[n] = secret
+        localStorage.setItem('zw_admin_secrets', JSON.stringify(savedSecrets))
+      }
+
+      async function copyLink(n) {
+        const url = ($('sl_url_' + n) || {}).value || ''
+        const btn = $('sl_copy_' + n)
+        try {
+          await navigator.clipboard.writeText(url)
+        } catch {
+          const inp = $('sl_url_' + n)
+          inp.select(); inp.setSelectionRange(0, 9999)
+          document.execCommand('copy')
+        }
+        if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = 'Copy' }, 1800) }
+      }
+
+      function shareWhatsApp(n) {
+        const url = ($('sl_url_' + n) || {}).value || ''
+        if (!url) return
+        window.open('https://wa.me/?text=' + encodeURIComponent(url), '_blank')
+      }
+
+      function generateCombinedLink() {
+        const errEl = $('sl_combo_err')
+        errEl.classList.add('hidden')
+        const base = ($('sl_baseUrl').value || '').trim().replace(/\/$/, '') || 'https://zain-wedding.pages.dev'
+        const keys = []
+        let missingSecret = null
+        ;[1, 2, 3, 4, 5].forEach((n) => {
+          if (!$('sl_combo_' + n)?.checked) return
+          const secret = ($('sl_s_' + n) || {}).value?.trim()
+          if (!secret) { missingSecret = n; return }
+          let key
+          try { key = btoa('tier' + n + ':' + secret) }
+          catch { missingSecret = n; return }
+          keys.push(key)
+        })
+        if (missingSecret !== null) {
+          errEl.textContent = 'Enter secret for Tier ' + missingSecret + ' above first'
+          errEl.classList.remove('hidden')
+          return
+        }
+        if (!keys.length) {
+          errEl.textContent = 'Select at least one tier'
+          errEl.classList.remove('hidden')
+          return
+        }
+        const url = base + '?key=' + keys.join(',')
+        $('sl_combined_url').value = url
+        $('sl_combined_result').classList.remove('hidden')
+      }
+
+      async function copyCombinedLink() {
+        const url = $('sl_combined_url').value || ''
+        const btn = $('sl_combined_copy')
+        try {
+          await navigator.clipboard.writeText(url)
+        } catch {
+          const inp = $('sl_combined_url')
+          inp.select(); inp.setSelectionRange(0, 9999)
+          document.execCommand('copy')
+        }
+        if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => { btn.textContent = 'Copy' }, 1800) }
+      }
+
+      function shareCombinedWhatsApp() {
+        const url = $('sl_combined_url').value || ''
+        if (!url) return
+        window.open('https://wa.me/?text=' + encodeURIComponent(url), '_blank')
+      }
+
       function escapeHtml(s) {
         return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
       }
@@ -474,6 +643,7 @@
       // ── Init ────────────────────────────────────────────────────────────────
       renderAccess('p_access', [0])
       renderAccess('s_access', [0])
+      renderShareLinks()
       // Pre-fill "Active from" with the current local datetime
       const nowLocal = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString().slice(0, 16)

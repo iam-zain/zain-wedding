@@ -46,35 +46,48 @@ function addUnlockedTier(n) {
 }
 
 /**
- * Reads ?key= from the URL, validates it, unlocks the tier, and strips the key
- * from the address bar (replaceState). Returns the unlocked tier number or null.
- * Safe to call on every app load.
+ * Processes a comma-separated ?key= param value (one or many encoded keys).
+ * Validates each key, unlocks its tier, and returns the count unlocked.
+ * Safe to call from any context (URL, UI paste).
  */
-export function consumeAccessKeyFromUrl() {
-  if (typeof window === 'undefined') return null
-  const url = new URL(window.location.href)
-  const key = url.searchParams.get(ACCESS_KEY_PARAM)
-  if (!key) return null
-
-  let unlocked = null
-  const decoded = decodeBase64(key)
-  if (decoded && decoded.includes(':')) {
+export function applyAccessKeyParam(keyParam) {
+  if (!keyParam) return 0
+  const keys = keyParam.split(',').map((k) => k.trim()).filter(Boolean)
+  let count = 0
+  for (const key of keys) {
+    const decoded = decodeBase64(key)
+    if (!decoded || !decoded.includes(':')) continue
     const idx = decoded.indexOf(':')
     const tierKey = decoded.slice(0, idx)
     const secret = decoded.slice(idx + 1)
     const n = tierNumber(tierKey)
     if (n != null && ACCESS_TIERS[tierKey] != null && ACCESS_TIERS[tierKey] === secret) {
       addUnlockedTier(n)
-      unlocked = n
+      count++
     }
   }
+  return count
+}
+
+/**
+ * Reads ?key= from the URL (supports comma-separated multi-keys), unlocks each
+ * valid tier, strips the param from the address bar. Returns unlock count or null.
+ * Safe to call on every app load.
+ */
+export function consumeAccessKeyFromUrl() {
+  if (typeof window === 'undefined') return null
+  const url = new URL(window.location.href)
+  const keyParam = url.searchParams.get(ACCESS_KEY_PARAM)
+  if (!keyParam) return null
+
+  const count = applyAccessKeyParam(keyParam)
 
   // Always strip the key from the URL so it isn't visible / re-shared from the bar.
   url.searchParams.delete(ACCESS_KEY_PARAM)
   const qs = url.searchParams.toString()
   window.history.replaceState({}, '', url.pathname + (qs ? `?${qs}` : '') + url.hash)
 
-  return unlocked
+  return count > 0 ? count : null
 }
 
 /** Visible if the item targets the public tier or any unlocked tier. */
