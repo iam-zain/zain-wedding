@@ -9,6 +9,7 @@ const tabs = [
 export default function BottomNav() {
   return (
     <nav
+      data-testid="bottom-nav"
       className="fixed inset-x-0 bottom-0 z-30 border-t border-ig-border bg-ig-black/95 backdrop-blur"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
@@ -19,6 +20,7 @@ export default function BottomNav() {
             to={to}
             end={end}
             aria-label={label}
+            data-testid={`bottom-nav-tab-${label.toLowerCase()}`}
             className="flex flex-1 items-center justify-center text-ig-text"
           >
             {({ isActive }) => <Icon active={isActive} size={26} className={isActive ? '' : 'text-ig-text'} />}

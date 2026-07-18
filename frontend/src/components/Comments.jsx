@@ -70,8 +70,13 @@ export default function Comments({ postId, expanded, onToggle }) {
   const count = comments?.length
 
   return (
-    <div className="px-3 pb-1">
-      <button type="button" onClick={onToggle} className="py-1 text-sm text-ig-muted active:opacity-70">
+    <div data-testid={`comments-${postId}`} className="px-3 pb-1">
+      <button
+        type="button"
+        data-testid={`comments-toggle-${postId}`}
+        onClick={onToggle}
+        className="py-1 text-sm text-ig-muted active:opacity-70"
+      >
         {count === undefined
           ? 'View comments'
           : count === 0
@@ -85,13 +90,18 @@ export default function Comments({ postId, expanded, onToggle }) {
         <div className="pb-2">
           {loading && comments === null && <p className="py-2 text-sm text-ig-faint">Loading comments…</p>}
           {error && (
-            <button type="button" onClick={load} className="py-2 text-sm text-ig-blue">
+            <button
+              type="button"
+              data-testid={`comments-retry-${postId}`}
+              onClick={load}
+              className="py-2 text-sm text-ig-blue"
+            >
               Couldn’t load — tap to retry
             </button>
           )}
 
           {comments && comments.length > 0 && (
-            <ul className="space-y-2 py-1">
+            <ul data-testid={`comments-list-${postId}`} className="space-y-2 py-1">
               {comments.map((c) => (
                 <li key={c.id || c.createdAt + c.userId} className="text-sm leading-snug">
                   <span className="font-semibold">{c.userId === userId ? 'You' : c.userName}</span>{' '}
@@ -114,6 +124,7 @@ export default function Comments({ postId, expanded, onToggle }) {
                     onChange={(e) => setNameDraft(e.target.value)}
                     placeholder="Your name"
                     maxLength={40}
+                    data-testid={`comments-name-input-${postId}`}
                     className="w-full rounded-lg border border-ig-border bg-ig-card px-3 py-2 text-sm outline-none placeholder:text-ig-faint focus:border-ig-faint"
                   />
                 )}
@@ -123,11 +134,13 @@ export default function Comments({ postId, expanded, onToggle }) {
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Add a comment…"
                     maxLength={MAX_COMMENT_LENGTH}
+                    data-testid={`comments-text-input-${postId}`}
                     className="flex-1 rounded-lg border border-ig-border bg-ig-card px-3 py-2 text-sm outline-none placeholder:text-ig-faint focus:border-ig-faint"
                   />
                   <button
                     type="submit"
                     disabled={!canSubmit}
+                    data-testid={`comments-submit-${postId}`}
                     className="shrink-0 text-sm font-semibold text-ig-blue disabled:opacity-40"
                   >
                     {submitting ? '…' : 'Post'}

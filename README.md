@@ -54,7 +54,66 @@ VITE_SITE_URL=https://zain-wedding.pages.dev
 - **`config/site.json`** — profile, wedding date, events, menu links, access-tier
   secrets. Baked into the bundle at build time. Edit this for real wedding details.
 - **`frontend/src/config.js`** — all FE tunables in one place (max comments, endpoints,
-  data URL). Imported everywhere.
+  data URL). Imported everywhere. Also derives a couple of computed values from
+  `site.json` at load time (e.g. the random avatar pick below) so components never
+  need to know about that logic.
+
+## Housekeeping — day-to-day content changes
+
+Everything below is edited straight in the repo; no code changes needed. After
+editing, `npm run dev` picks it up on save (or redeploy for the live site).
+
+### Events & dress codes
+
+Edit the `events` array in **`config/site.json`**. Each event is:
+
+```json
+{
+  "id": "haldi",
+  "name": "Haldi",
+  "emoji": "🌻",
+  "date": "2026-10-26T19:00:00+05:30",
+  "venue": "Chittaranjan",
+  "mapUrl": "https://maps.app.goo.gl/...",
+  "dresscode": "Yellow, Mustard",
+  "dresscodeImage": "/assets/dresscode/haldi.svg"
+}
+```
+
+`dresscodeImage` points into `frontend/public/assets/dresscode/`. Placeholder SVGs
+are checked in per event (`haldi.svg`, `mehendi.svg`, `nikah.svg`, `walima.svg`) —
+replace them with real photos of the same filename (any image format works, just
+update the extension in `dresscodeImage`) when ready. If an event's image 404s,
+the UI falls back to `placeholder.svg` automatically.
+
+### Profile avatar
+
+`profile.avatarUrls` in **`config/site.json`** is an array, not a single URL. On
+every page load, `frontend/src/config.js` picks one at random and uses it
+everywhere (profile header, post avatars) — gives returning guests a fresh look
+each visit. It's not sticky across a refresh by design (simplicity over
+persistence); picking the same one twice in a row is fine.
+
+Placeholder variants live in `frontend/public/assets/avatars/avatar-{1..5}.svg`.
+To go live with real photos: drop new image files anywhere under
+`frontend/public/assets/avatars/`, then update the `avatarUrls` array in
+`site.json` to point at them (mix and match as many or as few as you like — one
+entry works too, it'll just always pick that one).
+
+### Mock feed data (local dev only)
+
+`frontend/public/data/posts.json` and `stories.json` are what LOCAL mode serves
+(see "Frontend — quick start" above) — not used in production, where real
+posts/stories come from the CDN (`VITE_DATA_BASE_URL`). Edit these to try out new
+post layouts (captions, multi-image carousels, access tiers) without touching the
+backend. Images for mock posts live in `frontend/public/data/img/*.svg` — reuse
+existing ones or add new placeholder SVGs the same way (repetition across posts
+is fine, e.g. a carousel post can reuse the same image path twice).
+
+### Access tiers
+
+See [Access control](#access-control-client-side-only-deterrent) below —
+`accessTiers` in `config/site.json`.
 
 ## Admin console
 

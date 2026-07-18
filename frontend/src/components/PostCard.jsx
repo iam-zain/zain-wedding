@@ -58,7 +58,7 @@ export default function PostCard({ post }) {
   }
 
   return (
-    <article className="mb-1 border-b border-ig-border pb-2">
+    <article data-testid={`post-card-${post.id}`} className="mb-1 border-b border-ig-border pb-2">
       {/* Header */}
       <header className="flex items-center gap-2.5 px-3 py-2">
         <img src={profile.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover ring-1 ring-ig-border" />
@@ -67,9 +67,12 @@ export default function PostCard({ post }) {
 
       {/* Media + double-tap burst */}
       <div className="relative">
-        <Carousel images={post.images} onDoubleTap={onDoubleTap} />
+        <Carousel images={post.images} onDoubleTap={onDoubleTap} testId={`post-carousel-${post.id}`} />
         {burst && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div
+            data-testid={`post-like-burst-${post.id}`}
+            className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          >
             <HeartIcon filled size={96} className="like-burst text-white drop-shadow-lg" />
           </div>
         )}
@@ -78,18 +81,32 @@ export default function PostCard({ post }) {
       {/* Action bar */}
       <div className="flex items-center justify-between px-3 pt-2.5">
         <div className="flex items-center gap-4">
-          <button type="button" aria-label="Like" aria-pressed={liked} onClick={like} className="outline-none active:scale-90">
+          <button
+            type="button"
+            aria-label="Like"
+            aria-pressed={liked}
+            data-testid={`post-like-button-${post.id}`}
+            onClick={like}
+            className="outline-none active:scale-90"
+          >
             <HeartIcon filled={liked} size={26} className={liked ? 'text-ig-red' : 'text-ig-text'} />
           </button>
           <button
             type="button"
             aria-label="Comments"
+            data-testid={`post-comment-button-${post.id}`}
             onClick={() => setCommentsOpen((v) => !v)}
             className="outline-none active:scale-90"
           >
             <CommentIcon size={26} />
           </button>
-          <button type="button" aria-label="Share" onClick={share} className="outline-none active:scale-90">
+          <button
+            type="button"
+            aria-label="Share"
+            data-testid={`post-share-button-${post.id}`}
+            onClick={share}
+            className="outline-none active:scale-90"
+          >
             <ShareIcon size={26} />
           </button>
         </div>
@@ -97,6 +114,7 @@ export default function PostCard({ post }) {
           type="button"
           aria-label="Bookmark"
           aria-pressed={bookmarked}
+          data-testid={`post-bookmark-button-${post.id}`}
           onClick={() => toggleBookmark(post.id)}
           className="outline-none active:scale-90"
         >
@@ -106,7 +124,7 @@ export default function PostCard({ post }) {
 
       {/* Likes */}
       {totalLikes > 0 && (
-        <div className="px-3 pt-2 text-sm font-semibold">
+        <div data-testid={`post-likes-count-${post.id}`} className="px-3 pt-2 text-sm font-semibold">
           {totalLikes.toLocaleString('en-IN')} {totalLikes === 1 ? 'like' : 'likes'}
         </div>
       )}
@@ -114,12 +132,13 @@ export default function PostCard({ post }) {
       {/* Caption + description */}
       <div className="px-3 pt-1">
         {post.title && (
-          <p className="text-sm leading-snug">
+          <p data-testid={`post-caption-${post.id}`} className="text-sm leading-snug">
             <span className="font-semibold">{profile.username}</span> {post.title}
           </p>
         )}
         {post.description && (
           <div
+            data-testid={`post-description-${post.id}`}
             className="post-html mt-1 text-sm leading-snug text-ig-text"
             dangerouslySetInnerHTML={{ __html: post.description }}
           />
@@ -133,7 +152,10 @@ export default function PostCard({ post }) {
 
       {/* Timestamp */}
       {post.created_at && (
-        <time className="block px-3 pt-0.5 text-[10px] tracking-wide text-ig-faint">
+        <time
+          data-testid={`post-timestamp-${post.id}`}
+          className="block px-3 pt-0.5 text-[10px] tracking-wide text-ig-faint"
+        >
           {relativeTime(post.created_at)}
         </time>
       )}
