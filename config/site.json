@@ -16,8 +16,7 @@
     "hashtag": "#ZainKiShaadi"
   },
   "menu": [
-    { "label": "Venue on Maps", "url": "https://maps.app.goo.gl/WxG9rkMQXyZSftA86" },
-    { "label": "Gift Registry", "url": "https://example.com/registry" }
+    { "label": "Venue on Maps", "url": "https://maps.app.goo.gl/WxG9rkMQXyZSftA86" }
   ],
   "events": [
     {
