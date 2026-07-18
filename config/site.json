@@ -2,7 +2,7 @@
   "profile": {
     "username": "@zain.weds.uzma",
     "displayName": "Zain & Uzma 💍",
-    "bio": "Do dilon ka ek safar 🌙✨\nSave the date — pyaar, dawat aur dhamaal!\n#ZainKiShaadi",
+    "bio": "🤍 Bismillah se shuru...\n💍 Nikah • 🍽️ Waleema • ❤️ Yaadein\nHar post ek nayi kahani...\nHar swipe ek nayi yaad. ✨\n👇 Wedding updates & details\n#ZainKiShaadi",
     "postCount": "108",
     "followersCount": "1.4K",
     "followingCount": "2",
@@ -16,48 +16,48 @@
     "hashtag": "#ZainKiShaadi"
   },
   "menu": [
-    { "label": "Venue on Maps", "url": "https://maps.google.com/?q=Wedding+Venue" },
+    { "label": "Venue on Maps", "url": "https://maps.app.goo.gl/WxG9rkMQXyZSftA86" },
     { "label": "Gift Registry", "url": "https://example.com/registry" }
   ],
   "events": [
     {
-      "id": "mehendi",
-      "name": "Mehendi",
-      "emoji": "🌿",
-      "date": "2026-10-26T16:00:00+05:30",
-      "venue": "Khan Residence, Lucknow",
-      "mapUrl": "https://maps.google.com/?q=Khan+Residence+Lucknow",
-      "dresscode": "Yellow / Green / Floral",
+      "id": "haldi",
+      "name": "Haldi",
+      "emoji": "🌻",
+      "date": "2026-10-26T19:00:00+05:30",
+      "venue": "Chittaranjan",
+      "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
+      "dresscode": "Yellow, Mustard",
       "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
     },
     {
-      "id": "sangeet",
-      "name": "Sangeet",
-      "emoji": "🎶",
-      "date": "2026-10-27T19:30:00+05:30",
-      "venue": "The Grand Ballroom, Lucknow",
-      "mapUrl": "https://maps.google.com/?q=The+Grand+Ballroom+Lucknow",
-      "dresscode": "Indo-Western Glam",
+      "id": "mehendi",
+      "name": "Mehendi",
+      "emoji": "🌿",
+      "date": "2026-10-27T19:00:00+05:30",
+      "venue": "Chittaranjan",
+      "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
+      "dresscode": "Pista Green / Floral",
       "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
-    },
+    },    
     {
       "id": "nikah",
       "name": "Nikah",
       "emoji": "💍",
       "date": "2026-10-28T19:00:00+05:30",
-      "venue": "Royal Lawns, Lucknow",
+      "venue": "Gaya, Bihar",
       "mapUrl": "https://maps.google.com/?q=Royal+Lawns+Lucknow",
-      "dresscode": "Traditional Elegant",
+      "dresscode": "Men: Beige Cream | Women: Rose Gold",
       "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
     },
     {
       "id": "walima",
       "name": "Walima",
       "emoji": "🍽️",
-      "date": "2026-10-29T20:00:00+05:30",
-      "venue": "Royal Lawns, Lucknow",
-      "mapUrl": "https://maps.google.com/?q=Royal+Lawns+Lucknow",
-      "dresscode": "Formal Festive",
+      "date": "2026-10-30T19:00:00+05:30",
+      "venue": "Area-8, Chittaranjan",
+      "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
+      "dresscode": "Men: Grey, Black | Women: Plum, Deep Teal",
       "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
     }
   ],
