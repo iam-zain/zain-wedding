@@ -3,8 +3,9 @@ import BottomNav from './BottomNav'
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-ig-black text-ig-text">
+    <div data-testid="app-shell" className="min-h-screen bg-ig-black text-ig-text">
       <main
+        data-testid="page-content"
         className="content-col"
         style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom) + 1rem)' }}
       >

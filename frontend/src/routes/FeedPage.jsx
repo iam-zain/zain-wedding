@@ -87,9 +87,9 @@ export default function FeedPage() {
   const loading = posts === null && !error
 
   return (
-    <div>
+    <div data-testid="feed-page">
       {/* Slim brand bar */}
-      <header className="sticky top-0 z-20 border-b border-ig-border bg-ig-black/90 backdrop-blur">
+      <header data-testid="feed-header" className="sticky top-0 z-20 border-b border-ig-border bg-ig-black/90 backdrop-blur">
         <div className="flex h-12 items-center justify-center px-4">
           <span className="font-logo text-2xl leading-none">{siteConfig.profile.displayName}</span>
         </div>
@@ -102,7 +102,7 @@ export default function FeedPage() {
       <div className="border-t border-ig-border" />
 
       {loading && (
-        <div className="space-y-4 px-3 py-6">
+        <div data-testid="feed-loading" className="space-y-4 px-3 py-6">
           {[0, 1].map((i) => (
             <div key={i} className="animate-pulse">
               <div className="mb-2 flex items-center gap-2">
@@ -116,10 +116,11 @@ export default function FeedPage() {
       )}
 
       {error && (
-        <div className="px-4 py-16 text-center">
+        <div data-testid="feed-error" className="px-4 py-16 text-center">
           <p className="text-ig-muted">Content load nahi hua 😕</p>
           <button
             type="button"
+            data-testid="feed-error-retry"
             onClick={load}
             className="mt-3 rounded-lg bg-ig-card px-4 py-2 text-sm font-semibold"
           >
@@ -129,14 +130,14 @@ export default function FeedPage() {
       )}
 
       {!loading && !error && visiblePosts.length === 0 && (
-        <div className="px-4 py-16 text-center">
+        <div data-testid="feed-empty" className="px-4 py-16 text-center">
           <p className="text-ig-muted">Abhi koi post nahi 🌙</p>
           <p className="mt-1 text-sm text-ig-faint">Thodi der mein wapas aana!</p>
         </div>
       )}
 
       {!error && visiblePosts.length > 0 && (
-        <div>
+        <div data-testid="feed-posts">
           {visiblePosts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}

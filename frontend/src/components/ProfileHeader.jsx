@@ -8,7 +8,7 @@ import { useRecordPlayer } from '../lib/useRecordPlayer'
 
 function Stat({ value, label }) {
   return (
-    <div className="text-center">
+    <div data-testid={`profile-stat-${label}`} className="text-center">
       <div className="text-base font-semibold leading-tight">{value}</div>
       <div className="text-xs text-ig-muted">{label}</div>
     </div>
@@ -59,15 +59,16 @@ export default function ProfileHeader() {
   }
 
   return (
-    <section className="px-4 pt-3">
+    <section data-testid="profile-header" className="px-4 pt-3">
       {/* Top row: username + ... menu */}
       <div className="relative flex items-center justify-between">
-        <span className="text-base font-semibold">{profile.username}</span>
+        <span data-testid="profile-username" className="text-base font-semibold">{profile.username}</span>
         <button
           type="button"
           aria-label="More options"
           aria-haspopup="menu"
           aria-expanded={menuOpen}
+          data-testid="profile-more-button"
           onClick={() => setMenuOpen((v) => !v)}
           className="-mr-1 rounded-full p-1.5 active:bg-ig-card"
         >
@@ -79,6 +80,7 @@ export default function ProfileHeader() {
             <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
             <div
               role="menu"
+              data-testid="profile-menu"
               className="absolute right-0 top-9 z-50 w-60 overflow-hidden rounded-xl border border-ig-border bg-ig-card shadow-2xl"
             >
               <a
@@ -87,19 +89,21 @@ export default function ProfileHeader() {
                 rel="noopener noreferrer"
                 download="Zain-Wedding-Invite.pdf"
                 role="menuitem"
+                data-testid="profile-menu-download-invite"
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated border-b border-ig-border"
               >
                 <span className="truncate">Download Wedding Invite</span>
                 <DownloadIcon size={16} className="shrink-0 text-ig-muted" />
               </a>
-              {menu.length > 0 && menu.map((item) => (
+              {menu.length > 0 && menu.map((item, i) => (
                 <a
                   key={item.label + item.url}
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   role="menuitem"
+                  data-testid={`profile-menu-item-${i}`}
                   onClick={() => setMenuOpen(false)}
                   className="flex items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated border-b border-ig-border"
                 >
@@ -110,6 +114,7 @@ export default function ProfileHeader() {
               <button
                 type="button"
                 role="menuitem"
+                data-testid="profile-menu-access-link"
                 onClick={() => { setMenuOpen(false); setAccessSheetOpen(true) }}
                 className="flex w-full items-center justify-between gap-3 px-4 py-3 text-sm active:bg-ig-elevated"
               >
@@ -130,7 +135,10 @@ export default function ProfileHeader() {
               className="fixed inset-0 z-40 bg-black/60"
               onClick={() => setAccessSheetOpen(false)}
             />
-            <div className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-ig-border bg-ig-elevated px-4 pb-10 pt-5">
+            <div
+              data-testid="access-sheet"
+              className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-ig-border bg-ig-elevated px-4 pb-10 pt-5"
+            >
               <div className="mb-1 text-center text-base font-semibold">Access link</div>
               <p className="mb-4 text-center text-sm text-ig-muted">
                 Paste your invite URL to unlock exclusive content
@@ -142,11 +150,13 @@ export default function ProfileHeader() {
                 onKeyDown={(e) => e.key === 'Enter' && onAccessLinkSubmit()}
                 placeholder="https://zain-wedding.pages.dev?key=…"
                 autoFocus
+                data-testid="access-sheet-input"
                 className="w-full rounded-xl border border-ig-border bg-ig-card px-3 py-2.5 text-sm text-ig-text placeholder:text-ig-faint outline-none focus:border-ig-muted"
               />
               <div className="mt-3 flex gap-2">
                 <button
                   type="button"
+                  data-testid="access-sheet-cancel"
                   onClick={() => setAccessSheetOpen(false)}
                   className="flex-1 rounded-xl bg-ig-card py-2.5 text-sm font-semibold"
                 >
@@ -154,6 +164,7 @@ export default function ProfileHeader() {
                 </button>
                 <button
                   type="button"
+                  data-testid="access-sheet-unlock"
                   onClick={onAccessLinkSubmit}
                   className="flex-1 rounded-xl bg-ig-blue py-2.5 text-sm font-semibold text-white"
                 >
@@ -170,12 +181,14 @@ export default function ProfileHeader() {
         <button
           type="button"
           aria-label={isPlaying ? 'Pause music' : 'Play music'}
+          data-testid="profile-avatar-button"
           onClick={toggleMusic}
           className="relative shrink-0 rounded-full focus:outline-none"
         >
           <img
             src={profile.avatarUrl}
             alt={profile.displayName}
+            data-testid="profile-avatar-image"
             className={`h-[88px] w-[88px] rounded-full object-cover ring-2 ring-ig-border transition-shadow duration-500 ${isPlaying ? 'animate-record-spin ring-purple-500/70 shadow-[0_0_18px_4px_rgba(168,85,247,0.45)]' : ''}`}
           />
           {isPlaying && (
@@ -193,15 +206,16 @@ export default function ProfileHeader() {
 
       {/* Name + bio + link */}
       <div className="mt-3">
-        <div className="text-sm font-semibold">{profile.displayName}</div>
+        <div data-testid="profile-display-name" className="text-sm font-semibold">{profile.displayName}</div>
         {profile.bio && (
-          <p className="mt-0.5 whitespace-pre-line text-sm leading-snug text-ig-text">{profile.bio}</p>
+          <p data-testid="profile-bio" className="mt-0.5 whitespace-pre-line text-sm leading-snug text-ig-text">{profile.bio}</p>
         )}
         {profile.link && (
           <a
             href={profile.link}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="profile-link"
             className="mt-0.5 inline-block text-sm font-semibold text-[#e0f1ff]"
           >
             {profile.linkLabel || profile.link}
@@ -215,6 +229,7 @@ export default function ProfileHeader() {
           href={profile.whatsappGroupUrl}
           target="_blank"
           rel="noopener noreferrer"
+          data-testid="profile-whatsapp-link"
           className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-wa px-3 py-1.5 text-sm font-semibold text-black active:opacity-90"
         >
           <WhatsAppIcon size={18} />
@@ -222,6 +237,7 @@ export default function ProfileHeader() {
         </a>
         <button
           type="button"
+          data-testid="profile-share-button"
           onClick={onShareProfile}
           className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-ig-card px-3 py-1.5 text-sm font-semibold text-ig-text active:opacity-90"
         >

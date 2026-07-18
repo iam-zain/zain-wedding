@@ -20,9 +20,9 @@ function calendarParts(targetMs, now) {
   return { months: Math.max(0, months), weeks: Math.floor(remDays / 7), days: remDays % 7 }
 }
 
-function Cell({ value, label }) {
+function Cell({ value, label, testId }) {
   return (
-    <div className="flex flex-col items-center">
+    <div data-testid={testId || `countdown-cell-${label}`} className="flex flex-col items-center">
       <span className="tabular-nums text-xl font-bold leading-none">
         {String(value).padStart(2, '0')}
       </span>
@@ -57,6 +57,7 @@ function SecretOverlay({ message, onDone }) {
 
   return (
     <div
+      data-testid="countdown-secret-overlay"
       className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
@@ -68,6 +69,7 @@ function SecretOverlay({ message, onDone }) {
         }`}
       >
         <button
+          data-testid="countdown-secret-close"
           onClick={close}
           className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full text-ig-muted hover:text-ig-text hover:bg-ig-border transition-colors"
           aria-label="Close"
@@ -75,7 +77,7 @@ function SecretOverlay({ message, onDone }) {
           ✕
         </button>
         <div className="mb-3 text-4xl">🗝️</div>
-        <p className="text-sm leading-relaxed text-ig-text">{message}</p>
+        <p data-testid="countdown-secret-message" className="text-sm leading-relaxed text-ig-text">{message}</p>
         <p className="mt-4 text-[10px] uppercase tracking-widest text-ig-muted">
           secret unlocked
         </p>
@@ -133,6 +135,7 @@ export default function Countdown() {
     <>
       <div className="px-4 py-4">
         <div
+          data-testid="countdown"
           className="rounded-xl border border-ig-border bg-ig-elevated px-4 py-3 cursor-pointer select-none transition-transform duration-150"
           style={{ transform: pressed ? 'scale(0.97)' : 'scale(1)', opacity: pressed ? 0.85 : 1 }}
           onClick={handleClick}
@@ -160,24 +163,24 @@ export default function Countdown() {
             <div className={`absolute inset-0 flex items-center justify-center gap-5 transition-all duration-300 ease-in-out ${
               alt ? 'opacity-0 -translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0'
             }`}>
-              <Cell value={day} label="days" />
+              <Cell value={day} label="days" testId="countdown-cell-days" />
               <span className="text-lg text-ig-faint">:</span>
-              <Cell value={hour} label="hrs" />
+              <Cell value={hour} label="hrs" testId="countdown-cell-hrs" />
               <span className="text-lg text-ig-faint">:</span>
-              <Cell value={min} label="min" />
+              <Cell value={min} label="min" testId="countdown-cell-min" />
               <span className="text-lg text-ig-faint">:</span>
-              <Cell value={sec} label="sec" />
+              <Cell value={sec} label="sec" testId="countdown-cell-sec" />
             </div>
 
             {/* alt: months · weeks · days */}
             <div className={`absolute inset-0 flex items-center justify-center gap-5 transition-all duration-300 ease-in-out ${
               alt ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
             }`}>
-              <Cell value={months} label="months" />
+              <Cell value={months} label="months" testId="countdown-cell-months" />
               <span className="text-lg text-ig-faint">·</span>
-              <Cell value={weeks} label="weeks" />
+              <Cell value={weeks} label="weeks" testId="countdown-cell-weeks" />
               <span className="text-lg text-ig-faint">·</span>
-              <Cell value={days} label="days" />
+              <Cell value={days} label="days" testId="countdown-cell-remainder-days" />
             </div>
           </div>
 

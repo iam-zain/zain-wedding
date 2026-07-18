@@ -10,13 +10,14 @@ export default function StoriesRow({ stories }) {
 
   return (
     <>
-      <div className="no-scrollbar flex gap-4 overflow-x-auto px-4 py-4">
+      <div data-testid="stories-row" className="no-scrollbar flex gap-4 overflow-x-auto px-4 py-4">
         {stories.map((story, i) => {
           const viewed = isViewed(story.id)
           return (
             <button
               key={story.id}
               type="button"
+              data-testid={`story-item-${story.id}`}
               onClick={() => setOpenAt(i)}
               className="flex w-16 shrink-0 flex-col items-center gap-1"
             >

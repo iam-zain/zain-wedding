@@ -6,7 +6,13 @@
     "postCount": "108",
     "followersCount": "1.4K",
     "followingCount": "2",
-    "avatarUrl": "/assets/avatar.png",
+    "avatarUrls": [
+      "/assets/avatars/avatar-1.svg",
+      "/assets/avatars/avatar-2.svg",
+      "/assets/avatars/avatar-3.svg",
+      "/assets/avatars/avatar-4.svg",
+      "/assets/avatars/avatar-5.svg"
+    ],
     "link": "https://zain-wedding.pages.dev",
     "linkLabel": "zain-wedding.pages.dev",
     "whatsappGroupUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
@@ -27,7 +33,7 @@
       "venue": "Chittaranjan",
       "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
       "dresscode": "Yellow, Mustard",
-      "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
+      "dresscodeImage": "/assets/dresscode/haldi.svg"
     },
     {
       "id": "mehendi",
@@ -37,8 +43,8 @@
       "venue": "Chittaranjan",
       "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
       "dresscode": "Pista Green / Floral",
-      "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
-    },    
+      "dresscodeImage": "/assets/dresscode/mehendi.svg"
+    },
     {
       "id": "nikah",
       "name": "Nikah",
@@ -47,7 +53,7 @@
       "venue": "Gaya, Bihar",
       "mapUrl": "https://maps.google.com/?q=Royal+Lawns+Lucknow",
       "dresscode": "Men: Beige Cream | Women: Rose Gold",
-      "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
+      "dresscodeImage": "/assets/dresscode/nikah.svg"
     },
     {
       "id": "walima",
@@ -57,7 +63,7 @@
       "venue": "Area-8, Chittaranjan",
       "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
       "dresscode": "Men: Grey, Black | Women: Plum, Deep Teal",
-      "rsvpWhatsappUrl": "https://chat.whatsapp.com/L18qavxwVCUGwMMdZ86AoQ?mode=gi_t"
+      "dresscodeImage": "/assets/dresscode/walima.svg"
     }
   ],
   "accessTiers": {

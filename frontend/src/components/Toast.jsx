@@ -2,6 +2,7 @@
 export default function Toast({ children }) {
   return (
     <div
+      data-testid="toast"
       className="pointer-events-none fixed inset-x-0 z-40 flex justify-center px-4"
       style={{ bottom: 'calc(3.5rem + env(safe-area-inset-bottom))' }}
     >

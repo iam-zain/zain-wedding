@@ -56,7 +56,7 @@
 
 /* ── Utilities ────────────────────────────────────────────────────────────── */
 @layer utilities {
-  /* Hide scrollbars (stories row, carousels) while keeping scroll */
+  /* Hide scrollbars (stories row) while keeping scroll */
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -75,14 +75,6 @@
     width: 100%;
     max-width: var(--content-max);
     margin-inline: auto;
-  }
-
-  /* Carousel horizontal snap */
-  .snap-x-mandatory {
-    scroll-snap-type: x mandatory;
-  }
-  .snap-center-child {
-    scroll-snap-align: center;
   }
 
   /* Double-tap like burst */
