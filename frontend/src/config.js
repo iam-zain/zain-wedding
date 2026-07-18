@@ -7,7 +7,7 @@ import siteConfig from '@config/site.json'
 // Pick one avatar per page load from `profile.avatarUrls` — gives returning
 // guests a fresh look each visit. No persistence needed; re-picking the same
 // one on a later refresh is fine.
-const AVATAR_FALLBACK = '/assets/avatars/avatar-1.svg'
+const AVATAR_FALLBACK = '/assets/avatars/avatar-1.png'
 const avatarUrls = siteConfig.profile?.avatarUrls
 siteConfig.profile.avatarUrl =
   Array.isArray(avatarUrls) && avatarUrls.length > 0
