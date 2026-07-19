@@ -52,6 +52,46 @@ export const SECRET_MESSAGES = [
   "🚂 Chittaranjan ka Railway Station code hai: CRJ. Ab quiz mein aa sakta hai. 😄",
 ]
 
+/** Fun messages for the profile-stats tap easter egg. One is picked at random per stat. */
+export const STAT_EASTER_EGGS = {
+  posts: [
+    "📸 Itne saare posts scroll kar liye — you deserve a virtual hug!",
+    "Behind every post, ek chhota sa kissa hai. Thanks for reading them all 🤍",
+  ],
+  guests: [
+    "🎉 Itne guests ke beech, tum ek khaas guest ho!",
+    "The more the merrier — glad you're one of them 💫",
+  ],
+  families: [
+    "👨‍👩‍👧‍👦 Do families, ek dil se jud rahi hain — welcome to it!",
+    "Families jud rahi hain, aur tum is jashn ka hissa ho ✨",
+  ],
+}
+
+/** Shown on a long-press of the profile avatar. One is picked at random. */
+export const AVATAR_LONGPRESS_MESSAGES = [
+  "🤍 Thoda ruk kar dekhne ke liye shukriya — dil se milte hain, waqt lagta hai.",
+  "🎵 Music ke peeche ek chhota sa raaz bhi hai — dhoondte rehna!",
+]
+
+/** Shown on the feed brand logo after several rapid taps. */
+export const LOGO_TAP_MESSAGE = "✨ Made with 🤍 for this big day — thanks for finding this!"
+
+/** Comment secret word — case-insensitive substring match triggers a fun reply toast. */
+export const COMMENT_EASTER_EGG = {
+  word: 'shaadi mubarak',
+  reply: '🎊 Aapko bhi shaadi mubarak — dhundne ke liye shukriya!',
+}
+
+/** Shown once per session when the app is opened on the wedding day itself. */
+export const WEDDING_DAY_MESSAGE = { title: 'Aaj wohi din hai! 🎉', subtitle: 'See you at the wedding 🤍' }
+
+/** Shown on a long-press inside the story viewer. One is picked at random. */
+export const STORY_LONGPRESS_MESSAGES = [
+  "🤍 Ruk gaye? Yeh moment bhi yaad rakhna.",
+  "📸 Har story ke peeche ek pal hai — dekhne ke liye shukriya.",
+]
+
 // ── Access control ───────────────────────────────────────────────────────────
 /** tierKey -> sharedSecret map baked into the bundle (intentional, deterrent only). */
 export const ACCESS_TIERS = siteConfig.accessTiers || {}

@@ -42,7 +42,7 @@ function EventCard({ ev, last }) {
                 src={ev.dresscodeImage || DRESSCODE_PLACEHOLDER}
                 alt={`Dress code for ${ev.name}: ${ev.dresscode}`}
                 data-testid={`event-dresscode-image-${ev.id}`}
-                className="aspect-[16/9] w-full object-cover"
+                className="aspect-square w-full object-contain"
                 loading="lazy"
                 onError={(e) => {
                   if (e.currentTarget.src !== window.location.origin + DRESSCODE_PLACEHOLDER) {

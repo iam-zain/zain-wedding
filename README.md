@@ -84,7 +84,9 @@ Edit the `events` array in **`config/site.json`**. Each event is:
 are checked in per event (`haldi.svg`, `mehendi.svg`, `nikah.svg`, `walima.svg`) —
 replace them with real photos of the same filename (any image format works, just
 update the extension in `dresscodeImage`) when ready. If an event's image 404s,
-the UI falls back to `placeholder.svg` automatically.
+the UI falls back to `placeholder.svg` automatically. Images render at a 1:1
+aspect ratio without cropping (`object-contain`) — a wide or tall source photo
+letterboxes on the card background rather than losing content.
 
 ### Profile avatar
 
@@ -134,6 +136,28 @@ Valid keys add the tier to `localStorage.unlockedTiers` (cumulative). Posts/stor
 carry an `access: [..]` array; tier `0` is visible to everyone. No server enforcement.
 
 Update `accessTiers` in `config/site.json` with real random secrets before going live.
+
+## Easter eggs 🥚
+
+Hidden interactions scattered through the guest app. Reveal messages live in
+`frontend/src/config.js` (the constants ending in `_MESSAGES`/`_EGG`), so tweaking
+the copy never needs a component change.
+
+| Egg | Where | Trigger |
+|---|---|---|
+| Treasure hunt | Countdown timer | tap 5× within 3s |
+| Profile stats | `posts` / `guests` / `families` counts | tap 5× within 3s |
+| Avatar secret | Profile avatar | long-press ~600ms |
+| Brand logo credits | Feed header logo | tap 7× within 3s |
+| Comment secret word | Any comment box | type "shaadi mubarak" |
+| Story whisper | Open story | long-press ~600ms |
+| Shake for confetti | Anywhere in the app | physically shake the phone (needs `devicemotion`; may stay silent on iOS Safari, which requires a permission prompt we intentionally don't add) |
+| Wedding-day reveal | Feed page, once per session | opening the app on the wedding date itself |
+| Hidden page | `/psst` | visiting the URL directly — no link in the app points to it |
+
+All reveals share one modal + confetti burst (`frontend/src/components/EasterEggModal.jsx`,
+`Confetti.jsx`) and a tiny synthesized chime (`lib/sound.js`) — no audio assets, no
+extra dependencies.
 
 ## PWA / offline
 

@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
+import { STORY_LONGPRESS_MESSAGES } from '../config'
+import { playChime } from '../lib/sound'
+import EasterEggModal from './EasterEggModal'
 import { CloseIcon } from './icons'
+
+const LONG_PRESS_MS = 600
 
 export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed }) {
   const [index, setIndex] = useState(startIndex)
   const touchStart = useRef(null)
+  const longPressTimerRef = useRef(null)
+  const [egg, setEgg] = useState(null)
 
   const current = stories[index]
 
@@ -33,6 +40,19 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
 
   if (!current) return null
 
+  function handleLongPressStart() {
+    clearTimeout(longPressTimerRef.current)
+    longPressTimerRef.current = setTimeout(() => {
+      const msg = STORY_LONGPRESS_MESSAGES[Math.floor(Math.random() * STORY_LONGPRESS_MESSAGES.length)]
+      setEgg(msg)
+      playChime()
+    }, LONG_PRESS_MS)
+  }
+
+  function handleLongPressEnd() {
+    clearTimeout(longPressTimerRef.current)
+  }
+
   function onTouchStart(e) {
     const t = e.touches[0]
     touchStart.current = { x: t.clientX, y: t.clientY }
@@ -61,6 +81,9 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
           w-full h-full
           sm:w-[400px] sm:h-[calc(100vh-48px)] sm:max-h-[860px] sm:rounded-2xl sm:overflow-hidden sm:shadow-2xl"
         onClick={(e) => e.stopPropagation()}
+        onPointerDown={handleLongPressStart}
+        onPointerUp={handleLongPressEnd}
+        onPointerLeave={handleLongPressEnd}
       >
         {/* Progress segments */}
         <div className="absolute inset-x-0 top-0 z-20 flex gap-1 px-2 pt-2" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 8px)' }}>
@@ -98,6 +121,10 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
         <button type="button" aria-label="Previous" data-testid="story-viewer-prev" onClick={prev} className="absolute inset-y-0 left-0 z-10 w-1/3" />
         <button type="button" aria-label="Next" data-testid="story-viewer-next" onClick={next} className="absolute inset-y-0 right-0 z-10 w-2/3" />
       </div>
+
+      {egg && (
+        <EasterEggModal message={egg} icon="🤍" onClose={() => setEgg(null)} testId="story-egg" />
+      )}
     </div>
   )
 }

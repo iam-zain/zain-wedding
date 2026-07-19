@@ -96,6 +96,12 @@
   100%      { transform: rotate(180deg); }
 }
 
+@keyframes confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
+}
+
 @keyframes like-burst {
   0% { transform: scale(0); opacity: 0; }
   15% { transform: scale(1.15); opacity: 0.95; }
