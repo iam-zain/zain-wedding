@@ -84,10 +84,10 @@ export default function ProfileHeader() {
               className="absolute right-0 top-9 z-50 w-60 overflow-hidden rounded-xl border border-ig-border bg-ig-card shadow-2xl"
             >
               <a
-                href="/docs/wedding-invite.pdf"
+                href="/docs/Zain-Wedding-Invite.jpeg"
                 target="_blank"
                 rel="noopener noreferrer"
-                download="Zain-Wedding-Invite.pdf"
+                download="Zain-Wedding-Invite.jpeg"
                 role="menuitem"
                 data-testid="profile-menu-download-invite"
                 onClick={() => setMenuOpen(false)}
