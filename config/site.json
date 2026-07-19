@@ -39,7 +39,7 @@
       "venue": "Chittaranjan",
       "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
       "dresscode": "Yellow, Mustard",
-      "dresscodeImage": "/assets/dresscode/haldi.svg"
+      "dresscodeImage": "/assets/dresscode/haldi.png"
     },
     {
       "id": "mehendi",
@@ -49,7 +49,7 @@
       "venue": "Chittaranjan",
       "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
       "dresscode": "Pista Green / Floral",
-      "dresscodeImage": "/assets/dresscode/mehendi.svg"
+      "dresscodeImage": "/assets/dresscode/mehendi.png"
     },
     {
       "id": "nikah",
@@ -59,7 +59,7 @@
       "venue": "Gaya, Bihar",
       "mapUrl": "https://maps.google.com/?q=Royal+Lawns+Lucknow",
       "dresscode": "Men: Beige Cream | Women: Rose Gold",
-      "dresscodeImage": "/assets/dresscode/nikah.svg"
+      "dresscodeImage": "/assets/dresscode/nikah.png"
     },
     {
       "id": "walima",
@@ -69,7 +69,7 @@
       "venue": "Area-8, Chittaranjan",
       "mapUrl": "https://maps.app.goo.gl/rBtB8Sd6RE5naki9A",
       "dresscode": "Men: Grey, Black | Women: Plum, Deep Teal",
-      "dresscodeImage": "/assets/dresscode/walima.svg"
+      "dresscodeImage": "/assets/dresscode/walima.png"
     }
   ],
   "accessTiers": {
