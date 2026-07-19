@@ -43,11 +43,13 @@ export const SITE_URL =
 // ── Easter egg ───────────────────────────────────────────────────────────────
 /** Secret messages shown on the countdown treasure hunt. One is picked at random. */
 export const SECRET_MESSAGES = [
-  "🤫 ye secret code-word hai: 'Harry porter ki pen' 🐙 — Isse Walima mein ek special dish milega! ✨",
-  "Shhh… the secret is out: love is in the air ✨",
-  "5 taps? Impressive. You clearly care. See you at the wedding 💍",
-  "A treasure hunter AND a wedding guest? You're invited twice 🎊",
-  "This message will self-destruct… just kidding. But come to the wedding!",
+  "🤫 Ye secret code-word hai: 'Harry porter ki pen' 🐙 — Isse Waleema mein ek special dish milega! ✨",
+  "🎉 Mubarak ho! Aap officially Wedding Detective ban gaye hain. 🕵️",
+  "🫣 Ab itna bhi mat tap karo... website sharma jayegi.",
+  "🏅 Achievement Unlocked: Curious Guest (+100 XP)",
+  "🤍 Har guest humare liye khaas hai... aur aap toh secret guest bhi nikle!",
+  "😊 Agar aap yahan tak aa gaye hain, toh hum waqai aapko wedding mein dekhna chahte hain.",
+  "🚂 Chittaranjan ka Railway Station code hai: CRJ. Ab quiz mein aa sakta hai. 😄",
 ]
 
 /** Fun messages for the profile-stats tap easter egg. One is picked at random per stat. */
