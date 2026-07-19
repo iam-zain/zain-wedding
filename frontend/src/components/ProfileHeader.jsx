@@ -18,7 +18,7 @@ function Stat({ value, label, onTap, popping }) {
       type="button"
       data-testid={`profile-stat-${label}`}
       onClick={onTap}
-      className={`text-center transition-transform duration-200 ${popping ? 'scale-125' : 'scale-100'}`}
+      className={`egg-tap text-center transition-transform duration-200 ${popping ? 'scale-125' : 'scale-100'}`}
     >
       <div className="text-base font-semibold leading-tight">{value}</div>
       <div className="text-xs text-ig-muted">{label}</div>
@@ -231,7 +231,7 @@ export default function ProfileHeader() {
           onPointerDown={handleAvatarPressStart}
           onPointerUp={handleAvatarPressEnd}
           onPointerLeave={handleAvatarPressEnd}
-          className="relative shrink-0 rounded-full focus:outline-none"
+          className="egg-tap relative shrink-0 rounded-full focus:outline-none"
         >
           <img
             src={profile.avatarUrl}

@@ -81,6 +81,14 @@
   .like-burst {
     animation: like-burst 0.9s ease-out forwards;
   }
+
+  /* Rapid-tap / long-press easter egg triggers — Tailwind's select-none alone
+     doesn't stop iOS Safari's long-press callout (Copy/Look Up popover). */
+  .egg-tap {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
 }
 
 @keyframes record-spin {
@@ -100,6 +108,27 @@
   0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
   8%   { opacity: 1; }
   100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
+}
+
+/* Chaos easter egg — a brief glitch jitter, then the app "falls apart". */
+@keyframes chaos-wobble {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-3px, 2px) rotate(-0.6deg); }
+  40% { transform: translate(3px, -2px) rotate(0.6deg); }
+  60% { transform: translate(-2px, 3px) rotate(-0.4deg); }
+  80% { transform: translate(2px, -3px) rotate(0.4deg); }
+}
+.chaos-wobble {
+  animation: chaos-wobble 0.25s ease-in-out;
+}
+.chaos-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes chaos-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(115vh) rotate(280deg); opacity: 0.85; }
 }
 
 @keyframes like-burst {

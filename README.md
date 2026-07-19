@@ -151,12 +151,26 @@ the copy never needs a component change.
 | Brand logo credits | Feed header logo | tap 7× within 3s |
 | Comment secret word | Any comment box | type "shaadi mubarak" |
 | Story whisper | Open story | long-press ~600ms |
-| Shake for confetti | Anywhere in the app | physically shake the phone (needs `devicemotion`; may stay silent on iOS Safari, which requires a permission prompt we intentionally don't add) |
+| Shake for confetti | Anywhere in the app | physically shake the phone (gentle) |
+| Chaos / vigorous shake | Anywhere in the app | shake it *much* harder — the UI visibly wobbles, its pieces detach and fall off screen, then reassembles with a reassuring "just kidding" reveal |
 | Wedding-day reveal | Feed page, once per session | opening the app on the wedding date itself |
 | Hidden page | `/psst` | visiting the URL directly — no link in the app points to it |
 
+Both shake tiers live in `frontend/src/components/ShakeEasterEgg.jsx` (one component,
+one `devicemotion` listener via `lib/useShake.js`, so a gentle vs. vigorous shake can
+never double-fire). The chaos effect never touches the real React tree — it samples
+a handful of currently-visible elements' positions/sizes and animates plain colored
+tiles in their place while the real UI fades out, then fades back in.
+
+**iOS motion permission:** Safari on iOS 13+ requires `DeviceMotionEvent.requestPermission()`
+to be called from a user gesture before `devicemotion` fires at all. `lib/useMotionPermission.js`
+piggybacks that request on the very first tap anywhere in the app, so there's no
+dedicated "enable motion" button to spoil the surprise — just the one-time native
+OS permission prompt. If a guest dismisses/denies it, both shake eggs stay silently
+inert on that device (no error, no visible sign anything's missing).
+
 All reveals share one modal + confetti burst (`frontend/src/components/EasterEggModal.jsx`,
-`Confetti.jsx`) and a tiny synthesized chime (`lib/sound.js`) — no audio assets, no
+`Confetti.jsx`) and tiny synthesized sound effects (`lib/sound.js`) — no audio assets, no
 extra dependencies.
 
 ## PWA / offline

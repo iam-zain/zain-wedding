@@ -92,6 +92,13 @@ export const STORY_LONGPRESS_MESSAGES = [
   "📸 Har story ke peeche ek pal hai — dekhne ke liye shukriya.",
 ]
 
+/** Shown after a very hard/vigorous shake "breaks" and reassembles the UI. One is picked at random. */
+export const CHAOS_EASTER_EGG_MESSAGES = [
+  "😅 Relax, relax — the app's fine! Bas thoda mazaak tha.",
+  "🫠 Panicked for a sec? Same. Sab kuch wapas normal hai.",
+  "🔧 Kuch nahi tuta — bas test kar rahe the kitna zor se hila sakte ho.",
+]
+
 // ── Access control ───────────────────────────────────────────────────────────
 /** tierKey -> sharedSecret map baked into the bundle (intentional, deterrent only). */
 export const ACCESS_TIERS = siteConfig.accessTiers || {}

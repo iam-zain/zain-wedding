@@ -77,7 +77,7 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
     >
       {/* Story card — full screen on mobile, phone-sized panel on desktop */}
       <div
-        className="relative flex flex-col bg-black
+        className="egg-tap relative flex flex-col bg-black
           w-full h-full
           sm:w-[400px] sm:h-[calc(100vh-48px)] sm:max-h-[860px] sm:rounded-2xl sm:overflow-hidden sm:shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -112,14 +112,14 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
             src={current.imageUrl}
             alt=""
             data-testid="story-viewer-image"
-            className="max-h-full max-w-full object-contain select-none"
+            className="egg-tap max-h-full max-w-full object-contain"
             draggable={false}
           />
         </div>
 
         {/* Tap zones */}
-        <button type="button" aria-label="Previous" data-testid="story-viewer-prev" onClick={prev} className="absolute inset-y-0 left-0 z-10 w-1/3" />
-        <button type="button" aria-label="Next" data-testid="story-viewer-next" onClick={next} className="absolute inset-y-0 right-0 z-10 w-2/3" />
+        <button type="button" aria-label="Previous" data-testid="story-viewer-prev" onClick={prev} className="egg-tap absolute inset-y-0 left-0 z-10 w-1/3" />
+        <button type="button" aria-label="Next" data-testid="story-viewer-next" onClick={next} className="egg-tap absolute inset-y-0 right-0 z-10 w-2/3" />
       </div>
 
       {egg && (
