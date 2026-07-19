@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import FeedPage from './routes/FeedPage'
 import EventsPage from './routes/EventsPage'
+import SecretPage from './routes/SecretPage'
 import { consumeAccessKeyFromUrl } from './lib/access'
 import { getUserId } from './lib/storage'
 import { useToast } from './components/toast-context'
@@ -26,6 +27,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<FeedPage />} />
         <Route path="/events" element={<EventsPage />} />
+        <Route path="/psst" element={<SecretPage />} />
         <Route path="*" element={<FeedPage />} />
       </Route>
     </Routes>

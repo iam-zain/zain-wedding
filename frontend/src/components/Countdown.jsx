@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { siteConfig, SECRET_MESSAGES } from '../config'
 import { countdownParts } from '../lib/time'
+import EasterEggModal from './EasterEggModal'
 
 const TARGET = Date.parse(siteConfig.wedding?.date)
 const SEEN_KEY = 'treasure_seen'
@@ -27,61 +28,6 @@ function Cell({ value, label, testId }) {
         {String(value).padStart(2, '0')}
       </span>
       <span className="mt-1 text-[10px] tracking-wider text-ig-muted">{label}</span>
-    </div>
-  )
-}
-
-function SecretOverlay({ message, onDone }) {
-  const [visible, setVisible] = useState(false)
-  const [closeable, setCloseable] = useState(false)
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => setVisible(true))
-    // Lock body scroll
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    // Ignore clicks for 600 ms so rapid taps don't instantly dismiss
-    const settle = setTimeout(() => setCloseable(true), 3000)
-    return () => {
-      cancelAnimationFrame(raf)
-      clearTimeout(settle)
-      document.body.style.overflow = prev
-    }
-  }, [])
-
-  function close() {
-    if (!closeable) return
-    setVisible(false)
-    setTimeout(onDone, 300)
-  }
-
-  return (
-    <div
-      data-testid="countdown-secret-overlay"
-      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${
-        visible ? 'opacity-100' : 'opacity-0'
-      }`}
-      style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }}
-    >
-      <div
-        className={`relative mx-6 rounded-2xl bg-ig-elevated border border-ig-border px-6 py-8 text-center shadow-2xl transition-all duration-300 ${
-          visible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-        }`}
-      >
-        <button
-          data-testid="countdown-secret-close"
-          onClick={close}
-          className="absolute top-3 right-3 flex h-7 w-7 items-center justify-center rounded-full text-ig-muted hover:text-ig-text hover:bg-ig-border transition-colors"
-          aria-label="Close"
-        >
-          ✕
-        </button>
-        <div className="mb-3 text-4xl">🗝️</div>
-        <p data-testid="countdown-secret-message" className="text-sm leading-relaxed text-ig-text">{message}</p>
-        <p className="mt-4 text-[10px] uppercase tracking-widest text-ig-muted">
-          secret unlocked
-        </p>
-      </div>
     </div>
   )
 }
@@ -193,7 +139,14 @@ export default function Countdown() {
       </div>
 
       {secret && (
-        <SecretOverlay message={secret} onDone={() => setSecret(null)} />
+        <EasterEggModal
+          message={secret}
+          icon="🗝️"
+          caption="secret unlocked"
+          settleMs={3000}
+          onClose={() => setSecret(null)}
+          testId="countdown-secret"
+        />
       )}
     </>
   )

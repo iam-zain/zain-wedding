@@ -1,16 +1,23 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { siteConfig } from '../config'
+import { siteConfig, LOGO_TAP_MESSAGE } from '../config'
 import { fetchPosts, fetchPostsFresh, fetchStories, fetchStoriesFresh } from '../lib/api'
 import { hasAccess, isActiveNow, isExpired, useUnlockedTiers } from '../lib/access'
+import { playChime } from '../lib/sound'
 import Countdown from '../components/Countdown'
 import ProfileHeader from '../components/ProfileHeader'
 import StoriesRow from '../components/StoriesRow'
 import PostCard from '../components/PostCard'
+import WeddingDayBanner from '../components/WeddingDayBanner'
+import EasterEggModal from '../components/EasterEggModal'
 
 const byCreatedDesc = (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
 
 // How long to wait before allowing another background refresh (ms).
 const REFRESH_COOLDOWN = 60_000
+
+// Brand-logo tap easter egg.
+const LOGO_TAP_WINDOW_MS = 3000
+const LOGO_TAPS_REQUIRED = 7
 
 export default function FeedPage() {
   const [posts, setPosts] = useState(null)
@@ -18,6 +25,19 @@ export default function FeedPage() {
   const [error, setError] = useState(false)
   const unlocked = useUnlockedTiers()
   const lastFreshAt = useRef(0)
+  const logoTapTimesRef = useRef([])
+  const [logoEgg, setLogoEgg] = useState(false)
+
+  function handleLogoTap() {
+    const now = Date.now()
+    const recent = logoTapTimesRef.current.filter((ts) => now - ts < LOGO_TAP_WINDOW_MS)
+    recent.push(now)
+    logoTapTimesRef.current = recent
+    if (recent.length < LOGO_TAPS_REQUIRED) return
+    logoTapTimesRef.current = []
+    setLogoEgg(true)
+    playChime()
+  }
 
   // Fetches fresh data bypassing the SW cache; updates state silently.
   const applyFreshData = useCallback(async () => {
@@ -91,12 +111,20 @@ export default function FeedPage() {
       {/* Slim brand bar */}
       <header data-testid="feed-header" className="sticky top-0 z-20 border-b border-ig-border bg-ig-black/90 backdrop-blur">
         <div className="flex h-12 items-center justify-center px-4">
-          <span className="font-logo text-2xl leading-none">{siteConfig.profile.displayName}</span>
+          <button
+            type="button"
+            data-testid="feed-logo"
+            onClick={handleLogoTap}
+            className="font-logo text-2xl leading-none"
+          >
+            {siteConfig.profile.displayName}
+          </button>
         </div>
       </header>
 
       <ProfileHeader />
       <Countdown />
+      <WeddingDayBanner />
       <StoriesRow stories={visibleStories} />
 
       <div className="border-t border-ig-border" />
@@ -142,6 +170,23 @@ export default function FeedPage() {
             <PostCard key={post.id} post={post} />
           ))}
         </div>
+      )}
+
+      {!error && visiblePosts.length > 0 && (
+        <div data-testid="feed-end-card" className="px-4 py-10 text-center">
+          <p className="text-2xl">🤍</p>
+          <p className="mt-2 text-sm text-ig-muted">You've reached the end of our story…</p>
+          <p className="mt-1 text-xs text-ig-faint">for now. See you at the wedding!</p>
+        </div>
+      )}
+
+      {logoEgg && (
+        <EasterEggModal
+          message={LOGO_TAP_MESSAGE}
+          icon="✨"
+          onClose={() => setLogoEgg(false)}
+          testId="feed-logo-egg"
+        />
       )}
     </div>
   )

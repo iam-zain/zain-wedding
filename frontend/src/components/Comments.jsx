@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { MAX_COMMENTS_PER_POST, MAX_COMMENT_LENGTH } from '../config'
+import { MAX_COMMENTS_PER_POST, MAX_COMMENT_LENGTH, COMMENT_EASTER_EGG } from '../config'
 import { getComments, postComment } from '../lib/api'
 import { getUserId, useUserName } from '../lib/storage'
+import { playChime } from '../lib/sound'
 import { useToast } from './toast-context'
+import EasterEggModal from './EasterEggModal'
 
 function plural(n) {
   return n === 1 ? '1 comment' : `${n} comments`
@@ -18,6 +20,7 @@ export default function Comments({ postId, expanded, onToggle }) {
   const [nameDraft, setNameDraft] = useState('')
   const [text, setText] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [egg, setEgg] = useState(false)
   const toast = useToast()
   const userId = getUserId()
 
@@ -55,6 +58,10 @@ export default function Comments({ postId, expanded, onToggle }) {
       setComments((cur) => [...(cur || []), created])
       setText('')
       setNameDraft('')
+      if (body.toLowerCase().includes(COMMENT_EASTER_EGG.word)) {
+        setEgg(true)
+        playChime()
+      }
     } catch (err) {
       if (err?.message === 'COMMENT_LIMIT') {
         toast('Is post pe comments full ho gaye 🙏')
@@ -70,6 +77,7 @@ export default function Comments({ postId, expanded, onToggle }) {
   const count = comments?.length
 
   return (
+    <>
     <div data-testid={`comments-${postId}`} className="px-3 pb-1">
       <button
         type="button"
@@ -151,5 +159,14 @@ export default function Comments({ postId, expanded, onToggle }) {
         </div>
       )}
     </div>
+    {egg && (
+      <EasterEggModal
+        message={COMMENT_EASTER_EGG.reply}
+        icon="🎊"
+        onClose={() => setEgg(false)}
+        testId={`comments-egg-${postId}`}
+      />
+    )}
+    </>
   )
 }

@@ -1,17 +1,28 @@
-import { useState } from 'react'
-import { siteConfig, SITE_URL, ACCESS_KEY_PARAM } from '../config'
+import { useRef, useState } from 'react'
+import { siteConfig, SITE_URL, ACCESS_KEY_PARAM, STAT_EASTER_EGGS, AVATAR_LONGPRESS_MESSAGES } from '../config'
 import { shareUrl } from '../lib/share'
 import { applyAccessKeyParam, useUnlockedTiers } from '../lib/access'
+import { playChime } from '../lib/sound'
 import { useToast } from './toast-context'
+import EasterEggModal from './EasterEggModal'
 import { DownloadIcon, ExternalLinkIcon, KeyIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
 import { useRecordPlayer } from '../lib/useRecordPlayer'
 
-function Stat({ value, label }) {
+const STAT_TAP_WINDOW_MS = 3000
+const STAT_TAPS_REQUIRED = 5
+const AVATAR_LONG_PRESS_MS = 600
+
+function Stat({ value, label, onTap, popping }) {
   return (
-    <div data-testid={`profile-stat-${label}`} className="text-center">
+    <button
+      type="button"
+      data-testid={`profile-stat-${label}`}
+      onClick={onTap}
+      className={`text-center transition-transform duration-200 ${popping ? 'scale-125' : 'scale-100'}`}
+    >
       <div className="text-base font-semibold leading-tight">{value}</div>
       <div className="text-xs text-ig-muted">{label}</div>
-    </div>
+    </button>
   )
 }
 
@@ -22,6 +33,10 @@ export default function ProfileHeader() {
   const [accessInput, setAccessInput] = useState('')
   const toast = useToast()
   const { isPlaying, toggle: toggleMusic } = useRecordPlayer()
+  const [poppingStat, setPoppingStat] = useState(null)
+  const [egg, setEgg] = useState(null)
+  const statTapTimesRef = useRef({})
+  const avatarPressTimerRef = useRef(null)
   const unlockedTiers = useUnlockedTiers()
   const tierLetters = 'ABCDE'
   const versionStr = unlockedTiers
@@ -48,6 +63,35 @@ export default function ProfileHeader() {
     setAccessSheetOpen(false)
   }
 
+  function handleStatTap(label) {
+    const now = Date.now()
+    const recent = (statTapTimesRef.current[label] || []).filter((ts) => now - ts < STAT_TAP_WINDOW_MS)
+    recent.push(now)
+    statTapTimesRef.current[label] = recent
+
+    if (recent.length < STAT_TAPS_REQUIRED) return
+    statTapTimesRef.current[label] = []
+
+    const messages = STAT_EASTER_EGGS[label]
+    if (messages?.length) setEgg({ message: messages[Math.floor(Math.random() * messages.length)], icon: '🎊' })
+    playChime()
+    setPoppingStat(label)
+    setTimeout(() => setPoppingStat(null), 400)
+  }
+
+  function handleAvatarPressStart() {
+    clearTimeout(avatarPressTimerRef.current)
+    avatarPressTimerRef.current = setTimeout(() => {
+      const msg = AVATAR_LONGPRESS_MESSAGES[Math.floor(Math.random() * AVATAR_LONGPRESS_MESSAGES.length)]
+      setEgg({ message: msg, icon: '🤍' })
+      playChime()
+    }, AVATAR_LONG_PRESS_MS)
+  }
+
+  function handleAvatarPressEnd() {
+    clearTimeout(avatarPressTimerRef.current)
+  }
+
   async function onShareProfile() {
     const result = await shareUrl({
       url: SITE_URL,
@@ -59,7 +103,8 @@ export default function ProfileHeader() {
   }
 
   return (
-    <section data-testid="profile-header" className="px-4 pt-3">
+    <>
+      <section data-testid="profile-header" className="px-4 pt-3">
       {/* Top row: username + ... menu */}
       <div className="relative flex items-center justify-between">
         <span data-testid="profile-username" className="text-base font-semibold">{profile.username}</span>
@@ -183,6 +228,9 @@ export default function ProfileHeader() {
           aria-label={isPlaying ? 'Pause music' : 'Play music'}
           data-testid="profile-avatar-button"
           onClick={toggleMusic}
+          onPointerDown={handleAvatarPressStart}
+          onPointerUp={handleAvatarPressEnd}
+          onPointerLeave={handleAvatarPressEnd}
           className="relative shrink-0 rounded-full focus:outline-none"
         >
           <img
@@ -198,9 +246,24 @@ export default function ProfileHeader() {
           )}
         </button>
         <div className="flex flex-1 justify-around">
-          <Stat value={profile.postCount} label="posts" />
-          <Stat value={profile.followersCount} label="guests" />
-          <Stat value={profile.followingCount} label="families" />
+          <Stat
+            value={profile.postCount}
+            label="posts"
+            onTap={() => handleStatTap('posts')}
+            popping={poppingStat === 'posts'}
+          />
+          <Stat
+            value={profile.followersCount}
+            label="guests"
+            onTap={() => handleStatTap('guests')}
+            popping={poppingStat === 'guests'}
+          />
+          <Stat
+            value={profile.followingCount}
+            label="families"
+            onTap={() => handleStatTap('families')}
+            popping={poppingStat === 'families'}
+          />
         </div>
       </div>
 
@@ -245,6 +308,15 @@ export default function ProfileHeader() {
           Share Profile
         </button>
       </div>
-    </section>
+      </section>
+      {egg && (
+        <EasterEggModal
+          message={egg.message}
+          icon={egg.icon}
+          onClose={() => setEgg(null)}
+          testId="profile-egg"
+        />
+      )}
+    </>
   )
 }
