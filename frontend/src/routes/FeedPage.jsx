@@ -115,7 +115,7 @@ export default function FeedPage() {
             type="button"
             data-testid="feed-logo"
             onClick={handleLogoTap}
-            className="font-logo text-2xl leading-none"
+            className="egg-tap font-logo text-2xl leading-none"
           >
             {siteConfig.profile.displayName}
           </button>

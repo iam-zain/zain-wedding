@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom'
+import { useMotionPermission } from '../lib/useMotionPermission'
 import BottomNav from './BottomNav'
 import ShakeEasterEgg from './ShakeEasterEgg'
 
 export default function Layout() {
+  useMotionPermission()
+
   return (
-    <div data-testid="app-shell" className="min-h-screen bg-ig-black text-ig-text">
+    <div data-testid="app-shell" className="min-h-screen bg-ig-black text-ig-text transition-opacity duration-300">
       <main
         data-testid="page-content"
         className="content-col"

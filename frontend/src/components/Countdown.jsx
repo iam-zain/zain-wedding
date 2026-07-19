@@ -82,7 +82,7 @@ export default function Countdown() {
       <div className="px-4 py-4">
         <div
           data-testid="countdown"
-          className="rounded-xl border border-ig-border bg-ig-elevated px-4 py-3 cursor-pointer select-none transition-transform duration-150"
+          className="egg-tap rounded-xl border border-ig-border bg-ig-elevated px-4 py-3 cursor-pointer transition-transform duration-150"
           style={{ transform: pressed ? 'scale(0.97)' : 'scale(1)', opacity: pressed ? 0.85 : 1 }}
           onClick={handleClick}
         >
