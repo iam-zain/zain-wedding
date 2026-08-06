@@ -138,19 +138,21 @@ export default function Countdown() {
         </div>
       </div>
 
-      <div className="mt-3 rounded-xl border border-[#2A2A2A] bg-[#181818] px-7 py-7">
-        <div className="flex items-stretch gap-4">
-          <div className="flex-1 border-r border-[#2A2A2A] pr-4 text-center">
-            <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Nikah</p>
-            <p className="mt-2 text-[20px] font-semibold leading-none text-white">28 October 2026</p>
-            <p className="mt-2 text-sm font-medium text-ig-faint">Wednesday</p>
-            <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
-          </div>
-          <div className="flex-1 pl-4 text-center">
-            <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Waleema</p>
-            <p className="mt-2 text-[20px] font-semibold leading-none text-white">30 October 2026</p>
-            <p className="mt-2 text-sm font-medium text-ig-faint">Friday</p>
-            <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
+      <div className="px-4 py-4">
+        <div className="mt-3 rounded-xl border border-ig-border bg-ig-elevated px-4 py-3">
+          <div className="flex items-stretch gap-4">
+            <div className="flex-1 border-r border-ig-border pr-4 text-center">
+              <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Nikah</p>
+              <p className="mt-2 text-[20px] font-semibold leading-none text-white">28 October 2026</p>
+              <p className="mt-2 text-sm font-medium text-ig-faint">Wednesday</p>
+              <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
+            </div>
+            <div className="flex-1 pl-4 text-center">
+              <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Waleema</p>
+              <p className="mt-2 text-[20px] font-semibold leading-none text-white">30 October 2026</p>
+              <p className="mt-2 text-sm font-medium text-ig-faint">Friday</p>
+              <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
+            </div>
           </div>
         </div>
       </div>
