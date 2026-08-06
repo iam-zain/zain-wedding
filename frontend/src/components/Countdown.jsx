@@ -139,7 +139,7 @@ export default function Countdown() {
       </div>
 
       <div className="px-4 py-4">
-        <div className="mt-3 rounded-xl border border-ig-border bg-ig-elevated px-4 py-3">
+        <div className="rounded-xl border border-ig-border bg-ig-elevated px-4 py-3">
           <div className="flex items-stretch gap-4">
             <div className="flex-1 border-r border-ig-border pr-4 text-center">
               <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Nikah</p>
