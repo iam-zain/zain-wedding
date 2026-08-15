@@ -53,6 +53,17 @@ export async function likePost(postId, userId) {
   return { count: typeof data.count === 'number' ? data.count : null }
 }
 
+export async function getLikeCount(postId) {
+  if (LOCAL_MODE) return { count: null }
+  const res = await fetch(`${API_BASE_URL}/like/${encodeURIComponent(postId)}`, {
+    method: 'GET',
+    headers: { 'x-api-key': API_KEY },
+  })
+  if (!res.ok) throw new Error(`Get like count failed: ${res.status}`)
+  const data = await res.json().catch(() => ({}))
+  return { count: typeof data.count === 'number' ? data.count : null }
+}
+
 // ── Comments ──────────────────────────────────────────────────────────────────
 const localCommentsKey = (postId) => `localComments:${postId}`
 

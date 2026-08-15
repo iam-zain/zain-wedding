@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { siteConfig, SITE_URL } from '../config'
-import { likePost } from '../lib/api'
+import { likePost, getLikeCount } from '../lib/api'
 import { shareUrl } from '../lib/share'
 import { relativeTime } from '../lib/time'
 import { getUserId, useBookmarkedPosts, useLikedPosts } from '../lib/storage'
@@ -24,6 +24,30 @@ export default function PostCard({ post }) {
   const [liveCount, setLiveCount] = useState(liked ? 1 : 0)
   const [burst, setBurst] = useState(false)
   const [commentsOpen, setCommentsOpen] = useState(false)
+
+  // Fetch authoritative live delta on mount and poll periodically so counts
+  // converge across devices. This merges server-side delta into local state.
+  useEffect(() => {
+    let mounted = true
+    let timer = null
+
+    async function fetchCount() {
+      try {
+        const { count } = await getLikeCount(post.id)
+        if (!mounted || count == null) return
+        setLiveCount(count)
+      } catch (err) {
+        // ignore network errors; keep optimistic UI
+      }
+    }
+
+    fetchCount()
+    timer = setInterval(fetchCount, 30000)
+    return () => {
+      mounted = false
+      if (timer) clearInterval(timer)
+    }
+  }, [post.id])
 
   const totalLikes = (post.likes_base || 0) + liveCount
 

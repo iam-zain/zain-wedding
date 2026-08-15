@@ -249,6 +249,7 @@ export class WeddingStack extends cdk.Stack {
 
     // Public — capture throttled routes so the stage can depend on them.
     const likeRoutes    = route('LikeInt',    '/like/{postId}',    apigwv2.HttpMethod.POST, likeFn)
+    const likeGetRoute  = route('GetLikeInt', '/like/{postId}',    apigwv2.HttpMethod.GET,  likeFn)
     const commentRoutes = route('CommentInt', '/comment/{postId}', apigwv2.HttpMethod.POST, commentFn)
     route('GetCommentsInt', '/comments/{postId}', apigwv2.HttpMethod.GET, getCommentsFn)
     // Admin (single Lambda dispatches on routeKey)
@@ -270,7 +271,7 @@ export class WeddingStack extends cdk.Stack {
       'POST /comment/{postId}': { ThrottlingRateLimit: 2, ThrottlingBurstLimit: 2 },
     } as unknown as apigwv2.CfnStage['routeSettings']
     // Stage must be created after the routes it references in routeSettings exist.
-    for (const r of [...likeRoutes, ...commentRoutes]) {
+    for (const r of [...likeRoutes, ...likeGetRoute, ...commentRoutes]) {
       cfnStage.node.addDependency(r)
     }
 
