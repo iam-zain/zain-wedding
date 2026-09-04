@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { siteConfig, LOGO_TAP_MESSAGE } from '../config'
+import { siteConfig, LOGO_TAP_MESSAGE, PULL_REFRESH_EGG_MESSAGE, FEED_END_MESSAGE } from '../config'
 import { fetchPosts, fetchPostsFresh, fetchStories, fetchStoriesFresh } from '../lib/api'
 import { hasAccess, isActiveNow, isExpired, useUnlockedTiers } from '../lib/access'
 import { playChime } from '../lib/sound'
@@ -9,6 +9,7 @@ import StoriesRow from '../components/StoriesRow'
 import PostCard from '../components/PostCard'
 import WeddingDayBanner from '../components/WeddingDayBanner'
 import EasterEggModal from '../components/EasterEggModal'
+import PullToRefresh from '../components/PullToRefresh'
 
 const byCreatedDesc = (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
 
@@ -27,6 +28,9 @@ export default function FeedPage() {
   const lastFreshAt = useRef(0)
   const logoTapTimesRef = useRef([])
   const [logoEgg, setLogoEgg] = useState(false)
+  const [pullEgg, setPullEgg] = useState(false)
+  const [endCardVisible, setEndCardVisible] = useState(false)
+  const endCardRef = useRef(null)
 
   function handleLogoTap() {
     const now = Date.now()
@@ -105,6 +109,25 @@ export default function FeedPage() {
   }, [stories, unlocked])
 
   const loading = posts === null && !error
+  const hasEndCard = !error && visiblePosts.length > 0
+
+  // Reveal the end-of-feed note only once it actually scrolls into view.
+  useEffect(() => {
+    if (!hasEndCard) return
+    const el = endCardRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setEndCardVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.5 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasEndCard])
 
   return (
     <div data-testid="feed-page">
@@ -122,62 +145,85 @@ export default function FeedPage() {
         </div>
       </header>
 
-      <ProfileHeader />
-      <Countdown />
-      <WeddingDayBanner />
-      <StoriesRow stories={visibleStories} />
+      <PullToRefresh
+        onRefresh={applyFreshData}
+        onEgg={() => {
+          setPullEgg(true)
+          playChime()
+        }}
+      >
+        <ProfileHeader />
+        <Countdown />
+        <WeddingDayBanner />
+        <StoriesRow stories={visibleStories} />
 
-      <div className="border-t border-ig-border" />
+        <div className="border-t border-ig-border" />
 
-      {loading && (
-        <div data-testid="feed-loading" className="space-y-4 px-3 py-6">
-          {[0, 1].map((i) => (
-            <div key={i} className="animate-pulse">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-ig-card" />
-                <div className="h-3 w-24 rounded bg-ig-card" />
+        {loading && (
+          <div data-testid="feed-loading" className="space-y-4 px-3 py-6">
+            {[0, 1].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full bg-ig-card" />
+                  <div className="h-3 w-24 rounded bg-ig-card" />
+                </div>
+                <div className="aspect-square w-full rounded bg-ig-card" />
               </div>
-              <div className="aspect-square w-full rounded bg-ig-card" />
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-      {error && (
-        <div data-testid="feed-error" className="px-4 py-16 text-center">
-          <p className="text-ig-muted">Content load nahi hua 😕</p>
-          <button
-            type="button"
-            data-testid="feed-error-retry"
-            onClick={load}
-            className="mt-3 rounded-lg bg-ig-card px-4 py-2 text-sm font-semibold"
+        {error && (
+          <div data-testid="feed-error" className="px-4 py-16 text-center">
+            <p className="text-ig-muted">Content load nahi hua 😕</p>
+            <button
+              type="button"
+              data-testid="feed-error-retry"
+              onClick={load}
+              className="mt-3 rounded-lg bg-ig-card px-4 py-2 text-sm font-semibold"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && visiblePosts.length === 0 && (
+          <div data-testid="feed-empty" className="px-4 py-16 text-center">
+            <p className="text-ig-muted">Abhi koi post nahi 🌙</p>
+            <p className="mt-1 text-sm text-ig-faint">Thodi der mein wapas aana!</p>
+          </div>
+        )}
+
+        {!error && visiblePosts.length > 0 && (
+          <div data-testid="feed-posts">
+            {visiblePosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        )}
+
+        {hasEndCard && (
+          <div
+            ref={endCardRef}
+            data-testid="feed-end-card"
+            className={`px-4 py-10 text-center transition-all duration-700 ease-out ${
+              endCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+            }`}
           >
-            Retry
-          </button>
-        </div>
-      )}
+            <p className={`text-2xl ${endCardVisible ? 'feed-end-heart' : ''}`}>🤍</p>
+            <p className="mt-2 text-sm text-ig-muted">{FEED_END_MESSAGE.title}</p>
+            <p className="mt-1 text-xs text-ig-faint">{FEED_END_MESSAGE.subtitle}</p>
+          </div>
+        )}
+      </PullToRefresh>
 
-      {!loading && !error && visiblePosts.length === 0 && (
-        <div data-testid="feed-empty" className="px-4 py-16 text-center">
-          <p className="text-ig-muted">Abhi koi post nahi 🌙</p>
-          <p className="mt-1 text-sm text-ig-faint">Thodi der mein wapas aana!</p>
-        </div>
-      )}
-
-      {!error && visiblePosts.length > 0 && (
-        <div data-testid="feed-posts">
-          {visiblePosts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
-      )}
-
-      {!error && visiblePosts.length > 0 && (
-        <div data-testid="feed-end-card" className="px-4 py-10 text-center">
-          <p className="text-2xl">🤍</p>
-          <p className="mt-2 text-sm text-ig-muted">You've reached the end of our story…</p>
-          <p className="mt-1 text-xs text-ig-faint">for now. See you at the wedding!</p>
-        </div>
+      {pullEgg && (
+        <EasterEggModal
+          message={PULL_REFRESH_EGG_MESSAGE}
+          icon="🤍"
+          onClose={() => setPullEgg(false)}
+          testId="pull-refresh-egg"
+        />
       )}
 
       {logoEgg && (

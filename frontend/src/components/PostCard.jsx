@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react'
-import { siteConfig, SITE_URL } from '../config'
+import { useState, useEffect, useRef } from 'react'
+import { siteConfig, SITE_URL, isLikeMilestone, likeMilestoneMessage } from '../config'
 import { likePost, getLikeCount } from '../lib/api'
 import { shareUrl } from '../lib/share'
 import { relativeTime } from '../lib/time'
 import { getUserId, useBookmarkedPosts, useLikedPosts } from '../lib/storage'
 import Carousel from './Carousel'
 import Comments from './Comments'
+import EasterEggModal from './EasterEggModal'
 import { useToast } from './toast-context'
 import { BookmarkIcon, CommentIcon, HeartIcon, ShareIcon } from './icons'
+
+// Holding the like button this long triggers the big reaction burst, same as a double-tap.
+const HEART_LONG_PRESS_MS = 450
 
 export default function PostCard({ post }) {
   const { profile } = siteConfig
@@ -24,6 +28,12 @@ export default function PostCard({ post }) {
   const [liveCount, setLiveCount] = useState(liked ? 1 : 0)
   const [burst, setBurst] = useState(false)
   const [commentsOpen, setCommentsOpen] = useState(false)
+  const [likeEgg, setLikeEgg] = useState(null)
+  const [buttonReact, setButtonReact] = useState(false)
+  const [heartHolding, setHeartHolding] = useState(false)
+  const lastMilestoneRef = useRef(null)
+  const longPressTimerRef = useRef(null)
+  const longPressFiredRef = useRef(false)
 
   // Fetch authoritative live delta on mount and poll periodically so counts
   // converge across devices. This merges server-side delta into local state.
@@ -51,13 +61,28 @@ export default function PostCard({ post }) {
 
   const totalLikes = (post.likes_base || 0) + liveCount
 
+  // Fires at most once per milestone total (guards against the optimistic
+  // bump and the later authoritative count both landing on the same number).
+  function checkLikeMilestone(count) {
+    const total = (post.likes_base || 0) + count
+    if (isLikeMilestone(total) && lastMilestoneRef.current !== total) {
+      lastMilestoneRef.current = total
+      setLikeEgg(likeMilestoneMessage(total))
+    }
+  }
+
   async function like() {
     if (liked) return // like-once (backend only increments)
     addLike(post.id)
-    setLiveCount((c) => c + 1)
+    const optimisticCount = liveCount + 1
+    setLiveCount(optimisticCount)
+    checkLikeMilestone(optimisticCount)
     try {
       const { count } = await likePost(post.id, userId)
-      if (count != null) setLiveCount(count) // authoritative live delta
+      if (count != null) {
+        setLiveCount(count) // authoritative live delta
+        checkLikeMilestone(count)
+      }
     } catch {
       removeLike(post.id)
       setLiveCount((c) => Math.max(0, c - 1))
@@ -65,10 +90,65 @@ export default function PostCard({ post }) {
     }
   }
 
-  function onDoubleTap() {
+  // Big centered burst over the photo — the classic double-tap-to-like moment.
+  function triggerPhotoBurst() {
     setBurst(true)
     setTimeout(() => setBurst(false), 900)
+  }
+
+  // Floating reaction anchored right at the like button — used for every
+  // button-triggered interaction, so feedback always appears where the
+  // thumb actually is (rather than up on the photo, easy to miss).
+  function triggerButtonReaction() {
+    setButtonReact(true)
+    setTimeout(() => setButtonReact(false), 850)
+  }
+
+  function onDoubleTap() {
+    triggerPhotoBurst()
     if (!liked) like()
+  }
+
+  // Single tap on the heart button: first like also reacts; re-tapping an
+  // already-liked post reacts again instead of doing nothing (like() itself
+  // is a no-op once liked).
+  function onLikeButtonClick() {
+    if (longPressFiredRef.current) {
+      longPressFiredRef.current = false // long-press already reacted for this press
+      return
+    }
+    triggerButtonReaction()
+    if (!liked) like()
+  }
+
+  function onLikeButtonDoubleClick() {
+    triggerButtonReaction()
+    if (!liked) like()
+  }
+
+  // Holding the heart, Instagram-DM-reaction style: a slow grow while held,
+  // and the floating reaction once the hold clears the threshold.
+  function onHeartPointerDown() {
+    longPressFiredRef.current = false
+    setHeartHolding(true)
+    clearTimeout(longPressTimerRef.current)
+    longPressTimerRef.current = setTimeout(() => {
+      longPressFiredRef.current = true
+      setHeartHolding(false)
+      triggerButtonReaction()
+      if (!liked) like()
+    }, HEART_LONG_PRESS_MS)
+  }
+
+  function endHeartPress() {
+    clearTimeout(longPressTimerRef.current)
+    setHeartHolding(false)
+  }
+
+  useEffect(() => () => clearTimeout(longPressTimerRef.current), [])
+
+  function onPinchZoom() {
+    toast('🤍 Itna zoom mat karo, sab kuch dil se dikhta hai!')
   }
 
   async function share() {
@@ -91,13 +171,16 @@ export default function PostCard({ post }) {
 
       {/* Media + double-tap burst */}
       <div className="relative">
-        <Carousel images={post.images} onDoubleTap={onDoubleTap} testId={`post-carousel-${post.id}`} />
+        <Carousel images={post.images} onDoubleTap={onDoubleTap} onPinch={onPinchZoom} testId={`post-carousel-${post.id}`} />
         {burst && (
           <div
             data-testid={`post-like-burst-${post.id}`}
             className="pointer-events-none absolute inset-0 flex items-center justify-center"
           >
-            <HeartIcon filled size={96} className="like-burst text-white drop-shadow-lg" />
+            <span className="relative flex h-28 w-28 items-center justify-center">
+              <span className="like-burst-glow absolute inset-0 rounded-full" />
+              <HeartIcon filled size={96} className="like-burst relative text-white" />
+            </span>
           </div>
         )}
       </div>
@@ -110,10 +193,33 @@ export default function PostCard({ post }) {
             aria-label="Like"
             aria-pressed={liked}
             data-testid={`post-like-button-${post.id}`}
-            onClick={like}
-            className="outline-none active:scale-90"
+            onClick={onLikeButtonClick}
+            onDoubleClick={onLikeButtonDoubleClick}
+            onPointerDown={onHeartPointerDown}
+            onPointerUp={endHeartPress}
+            onPointerLeave={endHeartPress}
+            onPointerCancel={endHeartPress}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{ touchAction: 'manipulation' }}
+            className="egg-tap relative outline-none active:scale-90"
           >
-            <HeartIcon filled={liked} size={26} className={liked ? 'text-ig-red' : 'text-ig-text'} />
+            <HeartIcon
+              filled={liked}
+              size={26}
+              className={`transition-transform duration-[450ms] ease-out ${heartHolding ? 'scale-150' : 'scale-100'} ${
+                liked ? 'text-ig-red' : 'text-ig-text'
+              }`}
+            />
+            {buttonReact && (
+              <span
+                aria-hidden="true"
+                data-testid={`post-like-react-${post.id}`}
+                className="pointer-events-none absolute -top-1 left-1/2 flex h-9 w-9 -translate-x-1/2 items-center justify-center"
+              >
+                <span className="like-react-glow absolute inset-0 rounded-full" />
+                <HeartIcon filled size={34} className="like-react-pop relative text-ig-red" />
+              </span>
+            )}
           </button>
           <button
             type="button"
@@ -182,6 +288,15 @@ export default function PostCard({ post }) {
         >
           {relativeTime(post.created_at)}
         </time>
+      )}
+
+      {likeEgg && (
+        <EasterEggModal
+          message={likeEgg}
+          icon="🎊"
+          onClose={() => setLikeEgg(null)}
+          testId={`post-like-egg-${post.id}`}
+        />
       )}
     </article>
   )

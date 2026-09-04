@@ -2,6 +2,11 @@ import { Outlet } from 'react-router-dom'
 import { useMotionPermission } from '../lib/useMotionPermission'
 import BottomNav from './BottomNav'
 import ShakeEasterEgg from './ShakeEasterEgg'
+import TypeAnywhereEasterEgg from './TypeAnywhereEasterEgg'
+import HeartGestureEasterEgg from './HeartGestureEasterEgg'
+import IdleEasterEgg from './IdleEasterEgg'
+import TimeOfDayEasterEgg from './TimeOfDayEasterEgg'
+import BatteryEasterEgg from './BatteryEasterEgg'
 
 export default function Layout() {
   useMotionPermission()
@@ -17,6 +22,11 @@ export default function Layout() {
       </main>
       <BottomNav />
       <ShakeEasterEgg />
+      <TypeAnywhereEasterEgg />
+      <HeartGestureEasterEgg />
+      <IdleEasterEgg />
+      <TimeOfDayEasterEgg />
+      <BatteryEasterEgg />
     </div>
   )
 }

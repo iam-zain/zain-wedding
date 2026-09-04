@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { siteConfig, SECRET_MESSAGES } from '../config'
+import { siteConfig, SECRET_MESSAGES, NIKAH_EGG_MESSAGE, WALEEMA_EGG_MESSAGE } from '../config'
 import { countdownParts } from '../lib/time'
+import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
 
 const TARGET = Date.parse(siteConfig.wedding?.date)
@@ -37,6 +38,8 @@ export default function Countdown() {
   const [alt, setAlt] = useState(false)
   const [pressed, setPressed] = useState(false)
   const [secret, setSecret] = useState(null)
+  const [nikahEgg, setNikahEgg] = useState(false)
+  const [waleemaEgg, setWaleemaEgg] = useState(false)
   const clickTimesRef = useRef([])
   const pressTimerRef = useRef(null)
 
@@ -77,9 +80,19 @@ export default function Countdown() {
     }
   }
 
+  function handleNikahDoubleTap() {
+    setNikahEgg(true)
+    playChime()
+  }
+
+  function handleWaleemaTap() {
+    setWaleemaEgg(true)
+    playChime()
+  }
+
   return (
     <>
-      <div className="px-4 py-4">
+      <div className="px-4 pt-4 pb-2">
         <div
           data-testid="countdown"
           className="egg-tap rounded-xl border border-ig-border bg-ig-elevated px-4 py-3 cursor-pointer transition-transform duration-150"
@@ -138,16 +151,24 @@ export default function Countdown() {
         </div>
       </div>
 
-      <div className="px-4 py-4">
+      <div className="px-4 pt-2 pb-4">
         <div className="rounded-xl border border-ig-border bg-ig-elevated px-4 py-3">
           <div className="flex items-stretch gap-4">
-            <div className="flex-1 border-r border-ig-border pr-4 text-center">
+            <div
+              data-testid="nikah-card"
+              onDoubleClick={handleNikahDoubleTap}
+              className="egg-tap flex-1 border-r border-ig-border pr-4 text-center"
+            >
               <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Nikah</p>
               <p className="mt-2 text-[20px] font-semibold leading-none text-white">28 October 2026</p>
               <p className="mt-2 text-sm font-medium text-ig-faint">Wednesday</p>
               <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
             </div>
-            <div className="flex-1 pl-4 text-center">
+            <div
+              data-testid="waleema-card"
+              onClick={handleWaleemaTap}
+              className="egg-tap flex-1 pl-4 text-center"
+            >
               <p className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#9CA3AF]">Waleema</p>
               <p className="mt-2 text-[20px] font-semibold leading-none text-white">30 October 2026</p>
               <p className="mt-2 text-sm font-medium text-ig-faint">Friday</p>
@@ -165,6 +186,24 @@ export default function Countdown() {
           settleMs={3000}
           onClose={() => setSecret(null)}
           testId="countdown-secret"
+        />
+      )}
+
+      {nikahEgg && (
+        <EasterEggModal
+          message={NIKAH_EGG_MESSAGE}
+          icon="🕌"
+          onClose={() => setNikahEgg(false)}
+          testId="nikah-egg"
+        />
+      )}
+
+      {waleemaEgg && (
+        <EasterEggModal
+          message={WALEEMA_EGG_MESSAGE}
+          icon="🎊"
+          onClose={() => setWaleemaEgg(false)}
+          testId="waleema-egg"
         />
       )}
     </>

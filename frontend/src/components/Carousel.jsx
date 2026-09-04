@@ -8,19 +8,22 @@ const DRAG_INTENT_PX = 6
 const EDGE_RESISTANCE = 0.35
 const WHEEL_STEP_PX = 40
 const WHEEL_LOCK_MS = 450
+const PINCH_TRIGGER_DELTA_PX = 40 // change in two-finger spread that counts as a deliberate pinch
 
 // Square image carousel: one image moves per swipe/drag/wheel gesture, with
 // prev/next buttons and clickable dots. Mouse, touch and trackpad all drag
 // via Pointer Events; touch-action: pan-y leaves vertical feed scroll to the
 // browser so a horizontal swipe here never fights the page scroll.
 // onDoubleTap is forwarded from the parent (double-tap-to-like).
-export default function Carousel({ images, onDoubleTap, testId = 'carousel' }) {
+// onPinch is forwarded too — fires once per pinch-in/out gesture on the image.
+export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carousel' }) {
   const list = images && images.length ? images : []
   const multiple = list.length > 1
 
   const containerRef = useRef(null)
   const dragRef = useRef(null)
   const wheelRef = useRef({ accum: 0, locked: false })
+  const pinchStartRef = useRef(null)
 
   const [index, setIndex] = useState(0)
   const [dragX, setDragX] = useState(0)
@@ -119,6 +122,47 @@ export default function Carousel({ images, onDoubleTap, testId = 'carousel' }) {
       clearTimeout(w.unlockTimer)
     }
   }, [list.length])
+
+  // Two-finger pinch — plain (native) Touch Events, since Pointer Events
+  // track one finger at a time. Passive/read-only: never blocks the page's
+  // own pinch-zoom, just notices the gesture and reports it once.
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el || !onPinch) return
+
+    function spread(touches) {
+      const dx = touches[0].clientX - touches[1].clientX
+      const dy = touches[0].clientY - touches[1].clientY
+      return Math.hypot(dx, dy)
+    }
+
+    function onTouchStart(e) {
+      if (e.touches.length === 2) pinchStartRef.current = spread(e.touches)
+    }
+
+    function onTouchMove(e) {
+      if (e.touches.length !== 2 || pinchStartRef.current == null) return
+      if (Math.abs(spread(e.touches) - pinchStartRef.current) > PINCH_TRIGGER_DELTA_PX) {
+        pinchStartRef.current = null // one notice per gesture
+        onPinch()
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (e.touches.length < 2) pinchStartRef.current = null
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true })
+    el.addEventListener('touchmove', onTouchMove, { passive: true })
+    el.addEventListener('touchend', onTouchEnd, { passive: true })
+    el.addEventListener('touchcancel', onTouchEnd, { passive: true })
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchmove', onTouchMove)
+      el.removeEventListener('touchend', onTouchEnd)
+      el.removeEventListener('touchcancel', onTouchEnd)
+    }
+  }, [onPinch])
 
   const dragPercent = dragRef.current?.width ? (dragX / dragRef.current.width) * 100 : 0
 
