@@ -53,8 +53,16 @@ export function useSwipeTabNav() {
       if (start.horizontal === null) {
         if (Math.abs(dx) < INTENT_PX && Math.abs(dy) < INTENT_PX) return
         start.horizontal = Math.abs(dx) > Math.abs(dy) * HORIZONTAL_DOMINANCE
-        if (!start.horizontal) start = null // vertical intent — abandon for good, this is a scroll
+        if (!start.horizontal) {
+          start = null // vertical intent — abandon for good, this is a scroll
+          return
+        }
       }
+      // Confirmed horizontal — stop the browser from taking this touch over
+      // for its own scroll/back-navigation gesture partway through, which
+      // on mobile fires pointercancel and silently kills the swipe before
+      // it reaches MIN_DISTANCE_PX. Carousel's own drag does the same.
+      e.preventDefault()
     }
 
     function onUp(e) {
@@ -113,7 +121,7 @@ export function useSwipeTabNav() {
     }
 
     window.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointermove', onMove, { passive: false })
     window.addEventListener('pointerup', onUp)
     window.addEventListener('pointercancel', onCancel)
     window.addEventListener('wheel', onWheel, { passive: false })
