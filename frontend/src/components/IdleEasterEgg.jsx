@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { IDLE_EASTER_EGG_MESSAGE } from '../config'
+import { IDLE_EASTER_EGG_MESSAGES } from '../config'
 import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
 
-const IDLE_MS = 15000
+const IDLE_MS = 25000
 const ACTIVITY_EVENTS = ['mousemove', 'touchstart', 'keydown', 'scroll', 'wheel', 'pointerdown']
 
-/** Global — mount once in Layout. Shows a centered reveal once per session after ~15s of no interaction. */
+/** Global — mount once in Layout. Shows a centered reveal once per session after ~25s of no interaction. */
 export default function IdleEasterEgg() {
-  const [egg, setEgg] = useState(false)
+  const [message, setMessage] = useState(null)
   const shownRef = useRef(false)
   const timerRef = useRef(null)
 
@@ -18,7 +18,7 @@ export default function IdleEasterEgg() {
       clearTimeout(timerRef.current)
       timerRef.current = setTimeout(() => {
         shownRef.current = true
-        setEgg(true)
+        setMessage(IDLE_EASTER_EGG_MESSAGES[Math.floor(Math.random() * IDLE_EASTER_EGG_MESSAGES.length)])
         playChime()
       }, IDLE_MS)
     }
@@ -31,6 +31,6 @@ export default function IdleEasterEgg() {
     }
   }, [])
 
-  if (!egg) return null
-  return <EasterEggModal message={IDLE_EASTER_EGG_MESSAGE} icon="👀" onClose={() => setEgg(false)} testId="idle-egg" />
+  if (!message) return null
+  return <EasterEggModal message={message} icon="👀" onClose={() => setMessage(null)} testId="idle-egg" />
 }

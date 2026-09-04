@@ -8,8 +8,11 @@ import ProfileHeader from '../components/ProfileHeader'
 import StoriesRow from '../components/StoriesRow'
 import PostCard from '../components/PostCard'
 import WeddingDayBanner from '../components/WeddingDayBanner'
+import MilestoneBanner from '../components/MilestoneBanner'
 import EasterEggModal from '../components/EasterEggModal'
 import PullToRefresh from '../components/PullToRefresh'
+import HeroGlow from '../components/HeroGlow'
+import LiveViewers from '../components/LiveViewers'
 
 const byCreatedDesc = (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
 
@@ -100,6 +103,18 @@ export default function FeedPage() {
       .sort(byCreatedDesc)
   }, [posts, unlocked])
 
+  // "Fan favorite" badge — ranked by likes_base (synchronous, admin-seeded)
+  // rather than each PostCard's own live-polled count, so it doesn't need
+  // to wait on N separate network calls to settle.
+  const mostLovedPostId = useMemo(() => {
+    if (visiblePosts.length < 2) return null
+    const top = visiblePosts.reduce(
+      (best, p) => ((p.likes_base || 0) > (best.likes_base || 0) ? p : best),
+      visiblePosts[0],
+    )
+    return (top.likes_base || 0) > 0 ? top.id : null
+  }, [visiblePosts])
+
   const visibleStories = useMemo(() => {
     if (!stories) return []
     const now = Date.now()
@@ -130,18 +145,24 @@ export default function FeedPage() {
   }, [hasEndCard])
 
   return (
-    <div data-testid="feed-page">
+    <div data-testid="feed-page" className="relative">
+      <HeroGlow />
+
       {/* Slim brand bar */}
       <header data-testid="feed-header" className="sticky top-0 z-20 border-b border-ig-border bg-ig-black/90 backdrop-blur">
-        <div className="flex h-12 items-center justify-center px-4">
+        <div className="grid h-12 grid-cols-[1fr_auto_1fr] items-center px-4">
+          <span aria-hidden="true" />
           <button
             type="button"
             data-testid="feed-logo"
             onClick={handleLogoTap}
-            className="egg-tap font-logo text-2xl leading-none"
+            className="egg-tap font-logo text-2xl leading-none justify-self-center"
           >
             {siteConfig.profile.displayName}
           </button>
+          <span className="justify-self-end">
+            <LiveViewers />
+          </span>
         </div>
       </header>
 
@@ -155,6 +176,7 @@ export default function FeedPage() {
         <ProfileHeader />
         <Countdown />
         <WeddingDayBanner />
+        <MilestoneBanner />
         <StoriesRow stories={visibleStories} />
 
         <div className="border-t border-ig-border" />
@@ -197,7 +219,7 @@ export default function FeedPage() {
         {!error && visiblePosts.length > 0 && (
           <div data-testid="feed-posts">
             {visiblePosts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} isMostLoved={post.id === mostLovedPostId} />
             ))}
           </div>
         )}

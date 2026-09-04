@@ -93,10 +93,26 @@
   animation: record-spin 10s linear infinite;
 }
 
-@keyframes hourglass-flip {
-  0%, 40%   { transform: rotate(0deg); }
-  50%, 90%  { transform: rotate(180deg); }
-  100%      { transform: rotate(180deg); }
+/* Subtle Instagram-ish slide+fade when a page mounts via swipe (or the bottom-nav tap). */
+@keyframes page-slide-from-right {
+  from { transform: translateX(28px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes page-slide-from-left {
+  from { transform: translateX(-28px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+.page-slide-from-right {
+  animation: page-slide-from-right 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.page-slide-from-left {
+  animation: page-slide-from-left 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Hourglass replacement — the arc itself is computed frame-by-frame in JS
+   (exact trigonometry, no dasharray/dashoffset tricks), this is just the glow. */
+.ring-progress-arc {
+  filter: drop-shadow(0 0 3px rgba(237, 73, 86, 0.35));
 }
 
 @keyframes confetti-fall {
@@ -127,8 +143,9 @@
 }
 
 /* Floating heart reaction anchored above the like button — covers first
-   like, re-tap-when-liked, double-click and long-press-hold. Instagram-DM
-   -reaction styled: spring bounce + soft glow + gentle rotation + float-up. */
+   like, re-tap-when-liked, and double-click (long-press has its own rising-
+   hearts shower instead). Instagram-DM-reaction styled: spring bounce +
+   soft glow + gentle rotation + float-up. */
 @keyframes like-react-pop {
   0%   { transform: translateY(0) scale(0.4) rotate(-14deg); opacity: 0; }
   18%  { transform: translateY(-4px) scale(1.4) rotate(8deg); opacity: 1; }
@@ -148,6 +165,42 @@
 .like-react-glow {
   background: radial-gradient(circle, rgba(237, 73, 86, 0.55) 0%, rgba(237, 73, 86, 0) 72%);
   animation: like-react-glow 0.85s ease-out forwards;
+}
+
+/* YouTube-like-button burst: short lines radiate outward from the heart's
+   center, evenly spaced every 45°, rotated to their angle then pushed out
+   and faded along that same rotated axis. */
+@keyframes burst-line-out {
+  0%   { opacity: 1; transform: rotate(var(--burst-angle)) translateY(-9px); }
+  100% { opacity: 0; transform: rotate(var(--burst-angle)) translateY(-19px); }
+}
+.burst-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 6px;
+  margin-left: -1px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #feda75, #ed4956);
+  transform: rotate(var(--burst-angle)) translateY(-9px);
+  animation: burst-line-out 0.55s ease-out forwards;
+}
+
+/* Long-press: a handful of small hearts rise from the button toward the top
+   of the screen with random size/drift/duration (set inline per heart),
+   fading out before they get there. */
+@keyframes floating-heart-rise {
+  0%   { opacity: 0; transform: translate(-50%, -50%) translate(0, 0) scale(0.6); }
+  15%  { opacity: 1; transform: translate(-50%, -50%) translate(calc(var(--drift-x) * 0.2), -14px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--drift-x), -70vh) scale(0.85); }
+}
+.floating-heart {
+  animation-name: floating-heart-rise;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  filter: drop-shadow(0 2px 6px rgba(237, 73, 86, 0.45));
 }
 
 /* Gentle one-shot heartbeat on the end-of-feed note once it scrolls into view. */

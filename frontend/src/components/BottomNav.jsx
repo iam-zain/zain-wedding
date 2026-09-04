@@ -1,9 +1,11 @@
 import { NavLink } from 'react-router-dom'
 import { CalendarIcon, HomeIcon } from './icons'
 
+// swipeDir mirrors the swipe gesture's directions, so a bottom-nav tap
+// animates the same way a swipe between these two tabs would.
 const tabs = [
-  { to: '/', label: 'Feed', Icon: HomeIcon, end: true },
-  { to: '/events', label: 'Events', Icon: CalendarIcon, end: false },
+  { to: '/', label: 'Feed', Icon: HomeIcon, end: true, swipeDir: 'left' },
+  { to: '/events', label: 'Events', Icon: CalendarIcon, end: false, swipeDir: 'right' },
 ]
 
 export default function BottomNav() {
@@ -14,10 +16,11 @@ export default function BottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="content-col flex h-12 items-stretch">
-        {tabs.map(({ to, label, Icon, end }) => (
+        {tabs.map(({ to, label, Icon, end, swipeDir }) => (
           <NavLink
             key={to}
             to={to}
+            state={{ swipeDir }}
             end={end}
             aria-label={label}
             data-testid={`bottom-nav-tab-${label.toLowerCase()}`}

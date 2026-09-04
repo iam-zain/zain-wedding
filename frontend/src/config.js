@@ -142,8 +142,14 @@ export const FEED_END_MESSAGE = {
 /** Shown when a heart-shaped drag gesture is recognized anywhere on screen. */
 export const HEART_GESTURE_MESSAGE = "❤️ Dil banaya aapne? Humein bhi mehsoos hua — shukriya itna pyaar dikhane ke liye."
 
-/** Shown once per session after ~15s of no interaction. */
-export const IDLE_EASTER_EGG_MESSAGE = "👀 Abhi bhi wahin ho? Hum bhi wahin hain, guest ka intezaar karte huye."
+/** Shown once per session after ~25s of no interaction. One picked at random. */
+export const IDLE_EASTER_EGG_MESSAGES = [
+  "👀 Abhi bhi wahin ho? Hum bhi wahin hain, guest ka intezaar karte huye.",
+  "🤍 Thoda scroll karo, kahin kuch chhoot na jaye!",
+  "😴 Neend aa rahi hai kya? Utho, shaadi ki taiyari abhi baaki hai!",
+  "🎉 Ruk kyun gaye? Aage bhi bahut kuch dekhna baaki hai!",
+  "🫠 Screen ko itni der ghoor rahe ho... hum bhi thoda sharma gaye.",
+]
 
 /** Shown once per session for visitors browsing very late at night. */
 export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe ho? Neend bhi zaroori hai — subah shaadi ki tayyari bhi toh karni hai!"
@@ -154,11 +160,38 @@ export const BATTERY_LOW_MESSAGE = "🔋 Battery kam hai — thodi charge kar lo
 /** Printed to the browser console on app start — a little something for curious devs. */
 export const CONSOLE_EASTER_EGG_MESSAGE = "Aap yahan tak dhundte huye aa gaye? Milte hain shaadi mein! 🎉"
 
-/** Shown on a double-tap of the Nikah side of the events card. */
-export const NIKAH_EGG_MESSAGE = "🕌 Nikah ke woh chand lamhe humesha yaad rahenge — jald milte hain!"
+/** Shown inline on the Nikah side of the events card for 5s on a double-tap. One picked at random. */
+export const NIKAH_EGG_MESSAGES = [
+  "🕌 Nikah ke woh chand lamhe humesha yaad rahenge — jald milte hain!",
+  "💍 Do dilon ki ek kahani shuru hone wali hai — Nikah ka intezaar hai!",
+  "🤍 Nikah ki barkat sab par ho — aap zaroor aana!",
+  "📖 Ijab-o-qubool ka woh pal — sabse khaas lamha hoga.",
+]
 
-/** Shown on a tap of the Waleema side of the events card. */
-export const WALEEMA_EGG_MESSAGE = "🎊 Waleema ki dawat mein maza hi kuch aur hoga — miss mat karna!"
+/** Shown inline on the Waleema side of the events card for 5s on a tap. One picked at random. */
+export const WALEEMA_EGG_MESSAGES = [
+  "🎊 Waleema ki dawat mein maza hi kuch aur hoga — miss mat karna!",
+  "🍽️ Khaane ka poora intezaam hai — bas aap aa jao!",
+  "✨ Waleema wali raat khaas hogi — saath mein manaate hain!",
+  "🎶 Gaana-bajana, khaana aur ek yaadgaar shaam — Waleema mein zaroor aana!",
+]
+
+/** Day-counts (until an event) that trigger a milestone banner. 0 = the event's own day. */
+export const MILESTONE_DAYS = [50, 30, 20, 14, 10, 7, 3, 2, 1, 0]
+
+/** Builds a milestone message for a given event label/emoji and days remaining. */
+export function eventMilestoneMessage(label, emoji, days) {
+  if (days === 0) return `${emoji} Aaj ${label} hai! Milte hain wahin 🎉`
+  if (days === 1) return `${emoji} Kal ${label} hai — bas ek raat aur!`
+  if (days === 2) return `${emoji} 2 din baaki hain ${label} ke liye!`
+  if (days === 3) return `${emoji} Sirf 3 din baaki — taiyari shuru karo!`
+  if (days === 7) return `${emoji} 1 hafta baaki hai ${label} ke liye! 🎊`
+  if (days === 14) return `${emoji} 2 hafte baaki hain ${label} ke liye!`
+  return `${emoji} ${days} din baaki hain ${label} ke liye!`
+}
+
+/** Badge shown on the post with the most likes_base among currently visible posts. */
+export const MOST_LOVED_LABEL = 'Fan favorite'
 
 // ── Access control ───────────────────────────────────────────────────────────
 /** tierKey -> sharedSecret map baked into the bundle (intentional, deterrent only). */

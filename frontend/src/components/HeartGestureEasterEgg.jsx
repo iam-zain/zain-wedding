@@ -60,6 +60,10 @@ export default function HeartGestureEasterEgg() {
 
   useEffect(() => {
     function onDown(e) {
+      // Interactive controls (like the post like-button) have their own
+      // tap/double-tap/long-press gestures — never let this global heart-
+      // drawing recognizer compete with those.
+      if (e.target.closest?.('button, a, input, textarea, select')) return
       draggingRef.current = true
       startTimeRef.current = Date.now()
       pointsRef.current = [{ x: e.clientX, y: e.clientY }]

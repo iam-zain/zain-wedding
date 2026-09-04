@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { siteConfig, SITE_URL, isLikeMilestone, likeMilestoneMessage } from '../config'
+import { siteConfig, SITE_URL, isLikeMilestone, likeMilestoneMessage, MOST_LOVED_LABEL } from '../config'
 import { likePost, getLikeCount } from '../lib/api'
 import { shareUrl } from '../lib/share'
 import { relativeTime } from '../lib/time'
@@ -10,10 +10,14 @@ import EasterEggModal from './EasterEggModal'
 import { useToast } from './toast-context'
 import { BookmarkIcon, CommentIcon, HeartIcon, ShareIcon } from './icons'
 
-// Holding the like button this long triggers the big reaction burst, same as a double-tap.
+// Holding the like button this long triggers the rising-hearts shower.
 const HEART_LONG_PRESS_MS = 450
+const FLOAT_HEART_COUNT = 7
+const FLOAT_HEART_LIFE_MS = 1800
+// 8 evenly-spaced directions (every 45°) for the YouTube-style radiating burst.
+const BURST_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315]
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, isMostLoved = false }) {
   const { profile } = siteConfig
   const userId = getUserId()
   const toast = useToast()
@@ -30,10 +34,13 @@ export default function PostCard({ post }) {
   const [commentsOpen, setCommentsOpen] = useState(false)
   const [likeEgg, setLikeEgg] = useState(null)
   const [buttonReact, setButtonReact] = useState(false)
+  const [radiatingBurst, setRadiatingBurst] = useState(false)
+  const [floatingHearts, setFloatingHearts] = useState([])
   const [heartHolding, setHeartHolding] = useState(false)
   const lastMilestoneRef = useRef(null)
   const longPressTimerRef = useRef(null)
   const longPressFiredRef = useRef(false)
+  const heartButtonRef = useRef(null)
 
   // Fetch authoritative live delta on mount and poll periodically so counts
   // converge across devices. This merges server-side delta into local state.
@@ -104,6 +111,37 @@ export default function PostCard({ post }) {
     setTimeout(() => setButtonReact(false), 850)
   }
 
+  // YouTube-like-button style: short lines radiate outward from the heart, evenly spaced.
+  function triggerRadiatingBurst() {
+    setRadiatingBurst(true)
+    setTimeout(() => setRadiatingBurst(false), 600)
+  }
+
+  // A handful of small hearts, random size/drift/duration, rising from the
+  // button toward the top of the screen and fading — fixed-positioned (not
+  // relative to the button) so they can travel well past the post card.
+  function spawnFloatingHearts() {
+    const rect = heartButtonRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const originX = rect.left + rect.width / 2
+    const originY = rect.top + rect.height / 2
+    const batchId = Date.now()
+    const hearts = Array.from({ length: FLOAT_HEART_COUNT }, (_, i) => ({
+      id: `${batchId}-${i}`,
+      left: originX + (Math.random() * 36 - 18),
+      top: originY,
+      size: 8 + Math.random() * 14,
+      driftX: Math.random() * 70 - 35,
+      duration: 1100 + Math.random() * 600,
+      delay: Math.random() * 300,
+    }))
+    setFloatingHearts((cur) => [...cur, ...hearts])
+    const ids = new Set(hearts.map((h) => h.id))
+    setTimeout(() => {
+      setFloatingHearts((cur) => cur.filter((h) => !ids.has(h.id)))
+    }, FLOAT_HEART_LIFE_MS + 400)
+  }
+
   function onDoubleTap() {
     triggerPhotoBurst()
     if (!liked) like()
@@ -123,11 +161,12 @@ export default function PostCard({ post }) {
 
   function onLikeButtonDoubleClick() {
     triggerButtonReaction()
+    triggerRadiatingBurst()
     if (!liked) like()
   }
 
-  // Holding the heart, Instagram-DM-reaction style: a slow grow while held,
-  // and the floating reaction once the hold clears the threshold.
+  // Holding the heart: a slow grow while held, then a shower of small
+  // hearts rising off the screen once the hold clears the threshold.
   function onHeartPointerDown() {
     longPressFiredRef.current = false
     setHeartHolding(true)
@@ -135,7 +174,7 @@ export default function PostCard({ post }) {
     longPressTimerRef.current = setTimeout(() => {
       longPressFiredRef.current = true
       setHeartHolding(false)
-      triggerButtonReaction()
+      spawnFloatingHearts()
       if (!liked) like()
     }, HEART_LONG_PRESS_MS)
   }
@@ -172,6 +211,14 @@ export default function PostCard({ post }) {
       {/* Media + double-tap burst */}
       <div className="relative">
         <Carousel images={post.images} onDoubleTap={onDoubleTap} onPinch={onPinchZoom} testId={`post-carousel-${post.id}`} />
+        {isMostLoved && (
+          <div
+            data-testid={`post-most-loved-${post.id}`}
+            className="pointer-events-none absolute left-3 top-3 z-10 flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm"
+          >
+            <span aria-hidden="true">🏆</span> {MOST_LOVED_LABEL}
+          </div>
+        )}
         {burst && (
           <div
             data-testid={`post-like-burst-${post.id}`}
@@ -189,6 +236,7 @@ export default function PostCard({ post }) {
       <div className="flex items-center justify-between px-3 pt-2.5">
         <div className="flex items-center gap-4">
           <button
+            ref={heartButtonRef}
             type="button"
             aria-label="Like"
             aria-pressed={liked}
@@ -218,6 +266,17 @@ export default function PostCard({ post }) {
               >
                 <span className="like-react-glow absolute inset-0 rounded-full" />
                 <HeartIcon filled size={34} className="like-react-pop relative text-ig-red" />
+              </span>
+            )}
+            {radiatingBurst && (
+              <span
+                aria-hidden="true"
+                data-testid={`post-like-burst-lines-${post.id}`}
+                className="pointer-events-none absolute inset-0"
+              >
+                {BURST_ANGLES.map((angle) => (
+                  <span key={angle} className="burst-line" style={{ '--burst-angle': `${angle}deg` }} />
+                ))}
               </span>
             )}
           </button>
@@ -297,6 +356,30 @@ export default function PostCard({ post }) {
           onClose={() => setLikeEgg(null)}
           testId={`post-like-egg-${post.id}`}
         />
+      )}
+
+      {floatingHearts.length > 0 && (
+        <div
+          aria-hidden="true"
+          data-testid={`post-floating-hearts-${post.id}`}
+          className="pointer-events-none fixed inset-0 z-[70]"
+        >
+          {floatingHearts.map((h) => (
+            <HeartIcon
+              key={h.id}
+              filled
+              size={h.size}
+              className="floating-heart absolute text-ig-red"
+              style={{
+                left: h.left,
+                top: h.top,
+                '--drift-x': `${h.driftX}px`,
+                animationDuration: `${h.duration}ms`,
+                animationDelay: `${h.delay}ms`,
+              }}
+            />
+          ))}
+        </div>
       )}
     </article>
   )

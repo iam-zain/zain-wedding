@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { siteConfig, SITE_URL, ACCESS_KEY_PARAM, STAT_EASTER_EGGS, AVATAR_LONGPRESS_MESSAGES } from '../config'
 import { shareUrl } from '../lib/share'
 import { applyAccessKeyParam, useUnlockedTiers } from '../lib/access'
 import { playChime } from '../lib/sound'
 import { useToast } from './toast-context'
 import EasterEggModal from './EasterEggModal'
-import { DownloadIcon, ExternalLinkIcon, KeyIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
+import { DownloadIcon, ExternalLinkIcon, HangerIcon, KeyIcon, MoreIcon, RsvpIcon, ShareIcon, WhatsAppIcon } from './icons'
 import { useRecordPlayer } from '../lib/useRecordPlayer'
 
 const STAT_TAP_WINDOW_MS = 3000
@@ -307,6 +308,24 @@ export default function ProfileHeader() {
           <ShareIcon size={16} />
           Share Profile
         </button>
+      </div>
+      <div className="mt-2 flex gap-2">
+        <Link
+          to="/events"
+          data-testid="profile-dresscode-link"
+          className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-ig-card px-3 py-1.5 text-sm font-semibold text-ig-text active:opacity-90"
+        >
+          <HangerIcon size={16} />
+          Dress Code
+        </Link>
+        <Link
+          to="/rsvp"
+          data-testid="profile-rsvp-link"
+          className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-ig-card px-3 py-1.5 text-sm font-semibold text-ig-text active:opacity-90"
+        >
+          <RsvpIcon size={16} />
+          Confirmation
+        </Link>
       </div>
       </section>
       {egg && (

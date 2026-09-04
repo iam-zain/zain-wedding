@@ -170,6 +170,7 @@ export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carou
     <div
       ref={containerRef}
       data-testid={testId}
+      data-swipe-exempt="true"
       className="group relative select-none overflow-hidden bg-ig-black"
       style={{ touchAction: 'pan-y' }}
       onDoubleClick={onDoubleTap}
