@@ -40,14 +40,25 @@ export function useSwipeTabNav() {
     }
 
     // ── Touch / mouse drag ────────────────────────────────────────────────
-    let start = null // { x, y, t, horizontal: null|boolean } | null
+    let start = null // { x, y, t, pointerId, horizontal: null|boolean, captureEl } | null
+
+    function releaseCapture() {
+      if (!start?.captureEl) return
+      try {
+        start.captureEl.releasePointerCapture(start.pointerId)
+      } catch {
+        // already released/not captured — fine
+      }
+    }
 
     function onDown(e) {
-      start = isBlocked(e.target) ? null : { x: e.clientX, y: e.clientY, t: Date.now(), horizontal: null }
+      start = isBlocked(e.target)
+        ? null
+        : { x: e.clientX, y: e.clientY, t: Date.now(), pointerId: e.pointerId, horizontal: null, captureEl: null }
     }
 
     function onMove(e) {
-      if (!start || start.horizontal === false) return
+      if (!start || start.pointerId !== e.pointerId || start.horizontal === false) return
       const dx = e.clientX - start.x
       const dy = e.clientY - start.y
       if (start.horizontal === null) {
@@ -57,21 +68,29 @@ export function useSwipeTabNav() {
           start = null // vertical intent — abandon for good, this is a scroll
           return
         }
+        // Confirmed horizontal — grab the pointer so the browser can't hand
+        // this touch off to its own scroll/back-navigation gesture partway
+        // through (which fires pointercancel and silently kills the swipe
+        // before it reaches MIN_DISTANCE_PX). Carousel's own drag does the same.
+        try {
+          e.target.setPointerCapture(e.pointerId)
+          start.captureEl = e.target
+        } catch {
+          // unsupported on this target — preventDefault below still helps
+        }
       }
-      // Confirmed horizontal — stop the browser from taking this touch over
-      // for its own scroll/back-navigation gesture partway through, which
-      // on mobile fires pointercancel and silently kills the swipe before
-      // it reaches MIN_DISTANCE_PX. Carousel's own drag does the same.
       e.preventDefault()
     }
 
     function onUp(e) {
-      if (!start || !start.horizontal) {
+      if (!start || start.pointerId !== e.pointerId) return
+      if (!start.horizontal) {
         start = null
         return
       }
       const dx = e.clientX - start.x
       const duration = Date.now() - start.t
+      releaseCapture()
       start = null
       if (isBlocked(e.target)) return
       if (duration > MAX_DURATION_MS) return
@@ -79,7 +98,9 @@ export function useSwipeTabNav() {
       go(dx > 0 ? 'right' : 'left')
     }
 
-    function onCancel() {
+    function onCancel(e) {
+      if (!start || start.pointerId !== e.pointerId) return
+      releaseCapture()
       start = null
     }
 

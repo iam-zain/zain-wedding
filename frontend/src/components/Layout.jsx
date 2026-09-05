@@ -32,7 +32,7 @@ export default function Layout() {
       <main
         data-testid="page-content"
         className="content-col"
-        style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom) + 1rem)' }}
+        style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom) + 1rem)', touchAction: 'pan-y' }}
       >
         <PageTransition>
           <Outlet />
