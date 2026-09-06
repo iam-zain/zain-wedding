@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { siteConfig, SITE_URL, isLikeMilestone, likeMilestoneMessage, MOST_LOVED_LABEL } from '../config'
-import { likePost, getLikeCount } from '../lib/api'
+import { likePost } from '../lib/api'
 import { shareUrl } from '../lib/share'
 import { relativeTime } from '../lib/time'
 import { getUserId, useBookmarkedPosts, useLikedPosts } from '../lib/storage'
@@ -17,7 +17,7 @@ const FLOAT_HEART_LIFE_MS = 1800
 // 8 evenly-spaced directions (every 45°) for the YouTube-style radiating burst.
 const BURST_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315]
 
-export default function PostCard({ post, isMostLoved = false }) {
+export default function PostCard({ post, isMostLoved = false, liveCount = 0, onLiveCount }) {
   const { profile } = siteConfig
   const userId = getUserId()
   const toast = useToast()
@@ -28,8 +28,6 @@ export default function PostCard({ post, isMostLoved = false }) {
   const liked = isLiked(post.id)
   const bookmarked = isBookmarked(post.id)
 
-  // liveCount = likes beyond likes_base. Seed optimistically from local "liked".
-  const [liveCount, setLiveCount] = useState(liked ? 1 : 0)
   const [burst, setBurst] = useState(false)
   const [commentsOpen, setCommentsOpen] = useState(false)
   const [likeEgg, setLikeEgg] = useState(null)
@@ -42,31 +40,13 @@ export default function PostCard({ post, isMostLoved = false }) {
   const longPressFiredRef = useRef(false)
   const heartButtonRef = useRef(null)
 
-  // Fetch authoritative live delta on mount and poll periodically so counts
-  // converge across devices. This merges server-side delta into local state.
-  useEffect(() => {
-    let mounted = true
-    let timer = null
+  // liveCount = likes beyond likes_base, owned + polled by FeedPage. The floor
+  // keeps this device's own like visible in LOCAL_MODE, where there is no
+  // server count to report it back.
+  const setLiveCount = (count) => onLiveCount?.(post.id, count)
+  const shownLiveCount = Math.max(liveCount, liked ? 1 : 0)
 
-    async function fetchCount() {
-      try {
-        const { count } = await getLikeCount(post.id)
-        if (!mounted || count == null) return
-        setLiveCount(count)
-      } catch (err) {
-        // ignore network errors; keep optimistic UI
-      }
-    }
-
-    fetchCount()
-    timer = setInterval(fetchCount, 30000)
-    return () => {
-      mounted = false
-      if (timer) clearInterval(timer)
-    }
-  }, [post.id])
-
-  const totalLikes = (post.likes_base || 0) + liveCount
+  const totalLikes = (post.likes_base || 0) + shownLiveCount
 
   // Fires at most once per milestone total (guards against the optimistic
   // bump and the later authoritative count both landing on the same number).
@@ -81,7 +61,7 @@ export default function PostCard({ post, isMostLoved = false }) {
   async function like() {
     if (liked) return // like-once (backend only increments)
     addLike(post.id)
-    const optimisticCount = liveCount + 1
+    const optimisticCount = shownLiveCount + 1
     setLiveCount(optimisticCount)
     checkLikeMilestone(optimisticCount)
     try {
@@ -92,7 +72,7 @@ export default function PostCard({ post, isMostLoved = false }) {
       }
     } catch {
       removeLike(post.id)
-      setLiveCount((c) => Math.max(0, c - 1))
+      setLiveCount(Math.max(0, shownLiveCount))
       toast('Like nahi hua, dobara try karo')
     }
   }

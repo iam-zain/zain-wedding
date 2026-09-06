@@ -202,3 +202,17 @@ export const ACCESS_KEY_PARAM = 'key'
 
 /** Tier 0 = visible to everyone, always considered unlocked. */
 export const PUBLIC_TIER = 0
+
+/** Rotating one-liners on the launch splash. One shown every ~1.4s, in order. */
+export const SPLASH_MESSAGES = [
+  "🎩 Dulhe ko sherwani pehnaayi jaa rahi hai…",
+  "💃 Nachne walon ko warm-up karwa rahe hain…",
+  "🍢 Kebab ginti ho rahi hai… 3 aur mile!",
+  "📸 Photographer ko dhoondh rahe hain…",
+  "💐 Phoolon ka rate negotiate ho raha hai…",
+  "🎵 Band waale ko address bhej rahe hain…",
+  "🧿 Nazar utaari jaa rahi hai…",
+  "🚗 Baaraat GPS pe daali jaa rahi hai…",
+  "☕ Chachu ko chai di jaa rahi hai…",
+  "🤍 Bas do minute… matlab do second!",
+]

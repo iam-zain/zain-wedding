@@ -37,6 +37,9 @@ export async function fetchStoriesFresh() {
 }
 
 // ── Likes ─────────────────────────────────────────────────────────────────────
+// Requests per batch when refreshing many posts — under the API Gateway burst limit.
+const LIKE_FETCH_CHUNK = 4
+
 /**
  * Register a like. Returns { count } where count is the live DynamoDB count
  * (likes beyond likes_base), or null in LOCAL_MODE (caller does optimistic +1).
@@ -53,15 +56,41 @@ export async function likePost(postId, userId) {
   return { count: typeof data.count === 'number' ? data.count : null }
 }
 
+// GET /like is unauthenticated — sending x-api-key would force a CORS
+// preflight on every poll for nothing.
 export async function getLikeCount(postId) {
   if (LOCAL_MODE) return { count: null }
   const res = await fetch(`${API_BASE_URL}/like/${encodeURIComponent(postId)}`, {
     method: 'GET',
-    headers: { 'x-api-key': API_KEY },
+    cache: 'no-store',
   })
   if (!res.ok) throw new Error(`Get like count failed: ${res.status}`)
   const data = await res.json().catch(() => ({}))
   return { count: typeof data.count === 'number' ? data.count : null }
+}
+
+/**
+ * Fetches live like counts for many posts in one coordinated pass.
+ * Returns a { [postId]: count } map, skipping posts whose request failed —
+ * a partial refresh is better than dropping the whole cycle.
+ * TODO: replace the fan-out with a batch `GET /likes?ids=` endpoint.
+ */
+export async function getLikeCounts(postIds) {
+  if (LOCAL_MODE || postIds.length === 0) return {}
+  const counts = {}
+  // API Gateway's default burst limit for this stage is 5. Firing one request
+  // per post at once trips it the moment the feed grows past that, and the
+  // 429s are what stopped counts from ever refreshing — so go in chunks.
+  for (let i = 0; i < postIds.length; i += LIKE_FETCH_CHUNK) {
+    const chunk = postIds.slice(i, i + LIKE_FETCH_CHUNK)
+    const results = await Promise.allSettled(chunk.map((id) => getLikeCount(id)))
+    results.forEach((r, j) => {
+      if (r.status === 'fulfilled' && typeof r.value.count === 'number') {
+        counts[chunk[j]] = r.value.count
+      }
+    })
+  }
+  return counts
 }
 
 // ── Comments ──────────────────────────────────────────────────────────────────
