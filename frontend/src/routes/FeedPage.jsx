@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { siteConfig, LOGO_TAP_MESSAGE, PULL_REFRESH_EGG_MESSAGE, FEED_END_MESSAGE } from '../config'
-import { fetchPosts, fetchPostsFresh, fetchStories, fetchStoriesFresh } from '../lib/api'
 import { hasAccess, isActiveNow, isExpired, useUnlockedTiers } from '../lib/access'
+import { useFeedData } from '../lib/feedData'
 import { playChime } from '../lib/sound'
 import Countdown from '../components/Countdown'
 import ProfileHeader from '../components/ProfileHeader'
@@ -16,19 +16,13 @@ import LiveViewers from '../components/LiveViewers'
 
 const byCreatedDesc = (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
 
-// How long to wait before allowing another background refresh (ms).
-const REFRESH_COOLDOWN = 60_000
-
 // Brand-logo tap easter egg.
 const LOGO_TAP_WINDOW_MS = 3000
 const LOGO_TAPS_REQUIRED = 7
 
 export default function FeedPage() {
-  const [posts, setPosts] = useState(null)
-  const [stories, setStories] = useState(null)
-  const [error, setError] = useState(false)
+  const { posts, stories, likeCounts, error, offline, refresh, setLikeCount } = useFeedData()
   const unlocked = useUnlockedTiers()
-  const lastFreshAt = useRef(0)
   const logoTapTimesRef = useRef([])
   const [logoEgg, setLogoEgg] = useState(false)
   const [pullEgg, setPullEgg] = useState(false)
@@ -45,55 +39,6 @@ export default function FeedPage() {
     setLogoEgg(true)
     playChime()
   }
-
-  // Fetches fresh data bypassing the SW cache; updates state silently.
-  const applyFreshData = useCallback(async () => {
-    lastFreshAt.current = Date.now() // stamp early to block concurrent calls
-    try {
-      const [p, s] = await Promise.all([fetchPostsFresh(), fetchStoriesFresh()])
-      setPosts(p)
-      setStories(s)
-      setError(false)
-    } catch {
-      // Offline or CDN unreachable — reset so next visibility event can retry.
-      lastFreshAt.current = 0
-    }
-  }, [])
-
-  async function load() {
-    setError(false)
-    try {
-      // Stale-while-revalidate: SW serves cached version instantly.
-      const [p, s] = await Promise.all([fetchPosts(), fetchStories()])
-      setPosts(p)
-      setStories(s)
-    } catch {
-      setError(true)
-    }
-    // Background fresh fetch so the app picks up whatever the SW just
-    // revalidated (or goes straight to CDN if SW cache is cold).
-    applyFreshData()
-  }
-
-  useEffect(() => {
-    load()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // Re-fetch when the user returns to the tab / app (debounced).
-  useEffect(() => {
-    const onVisible = () => {
-      if (document.visibilityState !== 'visible') return
-      if (Date.now() - lastFreshAt.current < REFRESH_COOLDOWN) return
-      applyFreshData()
-    }
-    document.addEventListener('visibilitychange', onVisible)
-    window.addEventListener('focus', onVisible)
-    return () => {
-      document.removeEventListener('visibilitychange', onVisible)
-      window.removeEventListener('focus', onVisible)
-    }
-  }, [applyFreshData])
 
   const visiblePosts = useMemo(() => {
     if (!posts) return []
@@ -123,7 +68,6 @@ export default function FeedPage() {
       .sort(byCreatedDesc)
   }, [stories, unlocked])
 
-  const loading = posts === null && !error
   const hasEndCard = !error && visiblePosts.length > 0
 
   // Reveal the end-of-feed note only once it actually scrolls into view.
@@ -167,7 +111,7 @@ export default function FeedPage() {
       </header>
 
       <PullToRefresh
-        onRefresh={applyFreshData}
+        onRefresh={refresh}
         onEgg={() => {
           setPullEgg(true)
           playChime()
@@ -181,27 +125,13 @@ export default function FeedPage() {
 
         <div className="border-t border-ig-border" />
 
-        {loading && (
-          <div data-testid="feed-loading" className="space-y-4 px-3 py-6">
-            {[0, 1].map((i) => (
-              <div key={i} className="animate-pulse">
-                <div className="mb-2 flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-full bg-ig-card" />
-                  <div className="h-3 w-24 rounded bg-ig-card" />
-                </div>
-                <div className="aspect-square w-full rounded bg-ig-card" />
-              </div>
-            ))}
-          </div>
-        )}
-
         {error && (
           <div data-testid="feed-error" className="px-4 py-16 text-center">
             <p className="text-ig-muted">Content load nahi hua 😕</p>
             <button
               type="button"
               data-testid="feed-error-retry"
-              onClick={load}
+              onClick={refresh}
               className="mt-3 rounded-lg bg-ig-card px-4 py-2 text-sm font-semibold"
             >
               Retry
@@ -209,17 +139,29 @@ export default function FeedPage() {
           </div>
         )}
 
-        {!loading && !error && visiblePosts.length === 0 && (
+        {!error && visiblePosts.length === 0 && (
           <div data-testid="feed-empty" className="px-4 py-16 text-center">
             <p className="text-ig-muted">Abhi koi post nahi 🌙</p>
             <p className="mt-1 text-sm text-ig-faint">Thodi der mein wapas aana!</p>
           </div>
         )}
 
+        {offline && (
+          <div data-testid="feed-offline-note" className="px-4 py-2 text-center text-xs text-ig-faint">
+            📵 Offline — purana content dikha rahe hain
+          </div>
+        )}
+
         {!error && visiblePosts.length > 0 && (
           <div data-testid="feed-posts">
             {visiblePosts.map((post) => (
-              <PostCard key={post.id} post={post} isMostLoved={post.id === mostLovedPostId} />
+              <PostCard
+                key={post.id}
+                post={post}
+                isMostLoved={post.id === mostLovedPostId}
+                liveCount={likeCounts[post.id] || 0}
+                onLiveCount={setLikeCount}
+              />
             ))}
           </div>
         )}

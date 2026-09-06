@@ -7,7 +7,7 @@ import { playChime } from '../lib/sound'
 import { useToast } from './toast-context'
 import EasterEggModal from './EasterEggModal'
 import { DownloadIcon, ExternalLinkIcon, HangerIcon, KeyIcon, MoreIcon, RsvpIcon, ShareIcon, WhatsAppIcon } from './icons'
-import { useRecordPlayer } from '../lib/useRecordPlayer'
+import { useMusic } from '../lib/musicPlayer'
 
 const STAT_TAP_WINDOW_MS = 3000
 const STAT_TAPS_REQUIRED = 5
@@ -33,7 +33,7 @@ export default function ProfileHeader() {
   const [accessSheetOpen, setAccessSheetOpen] = useState(false)
   const [accessInput, setAccessInput] = useState('')
   const toast = useToast()
-  const { isPlaying, toggle: toggleMusic } = useRecordPlayer()
+  const { isPlaying, toggle: toggleMusic } = useMusic()
   const [poppingStat, setPoppingStat] = useState(null)
   const [egg, setEgg] = useState(null)
   const statTapTimesRef = useRef({})
