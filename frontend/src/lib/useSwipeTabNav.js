@@ -30,6 +30,21 @@ const WHEEL_LOCK_MS = 600 // cooldown after a nav-triggering swipe so one long f
 const EXEMPT_SELECTOR = '[data-swipe-exempt]'
 const BOTH = new Set(['left', 'right'])
 
+// ── Two vocabularies, deliberately kept apart ────────────────────────────────
+// FINGER direction — which way the fingers physically moved. `claims` are
+// keyed by this, because a carousel reasons about its own drag.
+// TAB direction — which side the incoming page slides in from, which is also
+// how stepTo() reads it ('right' = further along the tab bar).
+//
+// They are opposites: dragging the fingers LEFT pulls the NEXT tab in from the
+// right, exactly as every mobile tab UI behaves. Conflating the two is what
+// made swiping go the wrong way.
+const fingerDirFromDrag = (dx) => (dx > 0 ? 'right' : 'left')
+// Wheel deltaX is the scroll amount, which runs opposite to the fingers:
+// a two-finger swipe LEFT reports deltaX > 0.
+const fingerDirFromWheel = (deltaX) => (deltaX > 0 ? 'left' : 'right')
+const tabDirFor = (fingerDir) => (fingerDir === 'left' ? 'right' : 'left')
+
 /** Directions already claimed by whatever sits under the finger, or null. */
 function claimedDirections(target) {
   const el = target?.closest?.(EXEMPT_SELECTOR)
@@ -95,7 +110,7 @@ export function useSwipeTabNav() {
         }
         // Whatever is under the finger can still move this way itself (a
         // carousel that has another photo in that direction) — let it.
-        if (g.claims?.has(dx > 0 ? 'right' : 'left')) {
+        if (g.claims?.has(fingerDirFromDrag(dx))) {
           g = null
           return false
         }
@@ -114,7 +129,7 @@ export function useSwipeTabNav() {
       const far = Math.abs(dx) >= MIN_DISTANCE_PX
       const flick = Math.abs(dx) >= FLICK_DISTANCE_PX && duration <= FLICK_MAX_MS
       if (!far && !flick) return
-      go(dx > 0 ? 'right' : 'left')
+      go(tabDirFor(fingerDirFromDrag(dx)))
     }
 
     // ── Touch ─────────────────────────────────────────────────────────────
@@ -204,16 +219,16 @@ export function useSwipeTabNav() {
       wheelAccum += e.deltaX
       if (Math.abs(wheelAccum) < WHEEL_TRIGGER_PX) return
 
-      const dir = wheelAccum > 0 ? 'right' : 'left'
+      const fingerDir = fingerDirFromWheel(wheelAccum)
       wheelAccum = 0
-      if (claims?.has(dir)) return // the carousel under the cursor pages this way itself
+      if (claims?.has(fingerDir)) return // the carousel under the cursor pages this way itself
       wheelLocked = true
       clearTimeout(wheelLockTimer)
       wheelLockTimer = setTimeout(() => {
         wheelLocked = false
       }, WHEEL_LOCK_MS)
 
-      go(dir)
+      go(tabDirFor(fingerDir))
     }
 
     window.addEventListener('touchstart', onTouchStart, { passive: true })
