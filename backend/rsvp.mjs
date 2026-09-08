@@ -5,10 +5,10 @@ import { checkAdminKey, checkWriteKey, stripHtml } from './lib/sanitize.mjs'
 
 // Windows live in env so the dates can move without a code change. Inclusive,
 // 'YYYY-MM-DD'. Keep in step with RSVP_* in frontend/src/config.js.
-const ARRIVAL_FROM = process.env.RSVP_ARRIVAL_FROM || '2026-10-23'
+const ARRIVAL_FROM = process.env.RSVP_ARRIVAL_FROM || '2026-10-24'
 const ARRIVAL_TO = process.env.RSVP_ARRIVAL_TO || '2026-10-30'
 const DEPARTURE_FROM = process.env.RSVP_DEPARTURE_FROM || '2026-10-28'
-const DEPARTURE_TO = process.env.RSVP_DEPARTURE_TO || '2026-11-06'
+const DEPARTURE_TO = process.env.RSVP_DEPARTURE_TO || '2026-11-03'
 
 const PLACES = new Set(['chittaranjan', 'gaya'])
 const MAX_NAME = 80

@@ -409,7 +409,7 @@ export default function RSVPPage() {
             testId="rsvp-arrival-section"
             emoji="🛬"
             title="Aana — arrival"
-            subtitle="23 Oct se 30 Oct ke beech"
+            subtitle="24 Oct se 30 Oct ke beech"
           >
             <div>
               <FieldLabel done={!!arrivalPlace}>Kahan pahunch rahe ho?</FieldLabel>
@@ -436,7 +436,7 @@ export default function RSVPPage() {
             testId="rsvp-departure-section"
             emoji="🛫"
             title="Jaana — departure"
-            subtitle="28 Oct se 6 Nov ke beech"
+            subtitle="28 Oct se 3 Nov ke beech"
           >
             <div>
               <FieldLabel done={!!departurePlace}>Wapsi kahan se?</FieldLabel>
