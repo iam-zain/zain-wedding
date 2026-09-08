@@ -225,8 +225,8 @@ export const RSVP_LOCATIONS = [
 ]
 
 /** Inclusive date windows (YYYY-MM-DD) guests may pick from. */
-export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-23', end: '2026-10-30' }
-export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-06' }
+export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-24', end: '2026-10-30' }
+export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-03' }
 
 /** Pre-filled time so a guest only has to adjust it, never type it from scratch. */
 export const RSVP_DEFAULT_TIME = '12:00'
