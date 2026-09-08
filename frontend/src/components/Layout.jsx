@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useMotionPermission } from '../lib/useMotionPermission'
+import { stopMusic } from '../lib/musicPlayer'
 import { useSwipeTabNav } from '../lib/useSwipeTabNav'
 import BottomNav from './BottomNav'
 import ShakeEasterEgg from './ShakeEasterEgg'
@@ -24,15 +26,25 @@ function PageTransition({ children }) {
 }
 
 export default function Layout() {
+  const { pathname } = useLocation()
   useMotionPermission()
   useSwipeTabNav()
+
+  // The record player lives on the feed's avatar, and that's the only place
+  // with a control to stop it — so leaving the feed stops the track rather
+  // than stranding a guest on another tab with unstoppable music.
+  useEffect(() => {
+    if (pathname !== '/') stopMusic()
+  }, [pathname])
 
   return (
     <div data-testid="app-shell" className="min-h-screen bg-ig-black text-ig-text transition-opacity duration-300">
       <main
         data-testid="page-content"
         className="content-col"
-        style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom) + 1rem)', touchAction: 'pan-y' }}
+        // pan-y hands us the horizontal axis (see useSwipeTabNav); pinch-zoom keeps
+        // two-finger zoom working, which a bare `pan-y` would have disabled.
+        style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom) + 1rem)', touchAction: 'pan-y pinch-zoom' }}
       >
         <PageTransition>
           <Outlet />

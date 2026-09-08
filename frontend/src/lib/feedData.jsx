@@ -42,20 +42,20 @@ export function FeedDataProvider({ children }) {
   const likeIdsRef = useRef([])
   const likesInFlightRef = useRef(null)
 
-  // Merges server counts in, but never lets a stale server value pull a count
-  // below what this device already shows (its own like may not be in the
-  // response yet). Coalesces concurrent callers onto one in-flight pass.
+  // The server is authoritative. An earlier version clamped each count with
+  // Math.max(server, current), which meant a device could only ever revise a
+  // count upward — once it had shown 94 it would ignore the server saying 94
+  // was wrong, and any overshoot became permanent. PostCard still floors the
+  // display at this device's own like, which covers the sub-second window
+  // between an optimistic bump and the POST that confirms it.
+  // Coalesces concurrent callers onto one in-flight pass.
   const refreshLikes = useCallback(() => {
     const ids = likeIdsRef.current
     if (ids.length === 0) return Promise.resolve()
     if (likesInFlightRef.current) return likesInFlightRef.current
     const run = getLikeCounts(ids)
       .then((fresh) => {
-        setLikeCounts((cur) => {
-          const next = { ...cur }
-          for (const [id, count] of Object.entries(fresh)) next[id] = Math.max(count, cur[id] || 0)
-          return next
-        })
+        setLikeCounts((cur) => ({ ...cur, ...fresh }))
       })
       .catch(() => {}) // partial/failed refresh — keep showing what we have
       .finally(() => { likesInFlightRef.current = null })

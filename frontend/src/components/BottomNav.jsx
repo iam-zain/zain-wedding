@@ -1,14 +1,17 @@
-import { NavLink } from 'react-router-dom'
-import { CalendarIcon, HomeIcon } from './icons'
+import { NavLink, useLocation } from 'react-router-dom'
+import { CalendarIcon, HomeIcon, RsvpIcon } from './icons'
+import { TABS, tabIndexFor } from '../lib/tabs'
 
-// swipeDir mirrors the swipe gesture's directions, so a bottom-nav tap
-// animates the same way a swipe between these two tabs would.
-const tabs = [
-  { to: '/', label: 'Feed', Icon: HomeIcon, end: true, swipeDir: 'left' },
-  { to: '/events', label: 'Events', Icon: CalendarIcon, end: false, swipeDir: 'right' },
-]
+const ICONS = {
+  feed: HomeIcon,
+  events: CalendarIcon,
+  rsvp: RsvpIcon,
+}
 
 export default function BottomNav() {
+  const { pathname } = useLocation()
+  const currentIndex = tabIndexFor(pathname)
+
   return (
     <nav
       data-testid="bottom-nav"
@@ -16,19 +19,25 @@ export default function BottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="content-col flex h-12 items-stretch">
-        {tabs.map(({ to, label, Icon, end, swipeDir }) => (
-          <NavLink
-            key={to}
-            to={to}
-            state={{ swipeDir }}
-            end={end}
-            aria-label={label}
-            data-testid={`bottom-nav-tab-${label.toLowerCase()}`}
-            className="flex flex-1 items-center justify-center text-ig-text"
-          >
-            {({ isActive }) => <Icon active={isActive} size={26} className={isActive ? '' : 'text-ig-text'} />}
-          </NavLink>
-        ))}
+        {TABS.map(({ id, to, label, end }, i) => {
+          const Icon = ICONS[id]
+          // Animate a tap the same way a swipe to that tab would: forward in
+          // the tab order slides in from the right, backward from the left.
+          const swipeDir = currentIndex === -1 || i === currentIndex ? undefined : i > currentIndex ? 'right' : 'left'
+          return (
+            <NavLink
+              key={to}
+              to={to}
+              state={{ swipeDir }}
+              end={end}
+              aria-label={label}
+              data-testid={`bottom-nav-tab-${label.toLowerCase()}`}
+              className="flex flex-1 items-center justify-center text-ig-text"
+            >
+              {({ isActive }) => <Icon active={isActive} size={26} className={isActive ? '' : 'text-ig-text'} />}
+            </NavLink>
+          )
+        })}
       </div>
     </nav>
   )

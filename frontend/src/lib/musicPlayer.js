@@ -46,6 +46,18 @@ export function toggleMusic() {
   el.play().catch(() => emit()) // autoplay blocked — element stays paused
 }
 
+/**
+ * Stops playback outright. No-op when nothing is playing.
+ *
+ * Clears `pausedByTabSwitch` deliberately: a stop the guest asked for must not
+ * come back to life the next time the tab regains focus.
+ */
+export function stopMusic() {
+  if (!audio || audio.paused) return
+  pausedByTabSwitch = false
+  audio.pause()
+}
+
 // Tab switch / app background: pause, and resume only if *we* paused it.
 if (typeof document !== 'undefined') {
   document.addEventListener('visibilitychange', () => {

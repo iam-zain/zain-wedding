@@ -216,3 +216,26 @@ export const SPLASH_MESSAGES = [
   "☕ Chachu ko chai di jaa rahi hai…",
   "🤍 Bas do minute… matlab do second!",
 ]
+
+// ── Guest confirmation (RSVP) ────────────────────────────────────────────────
+/** The only two places guests arrive at / leave from — everything runs between them. */
+export const RSVP_LOCATIONS = [
+  { id: 'chittaranjan', name: 'Chittaranjan', emoji: '🚉', hint: 'Haldi • Mehendi • Walima' },
+  { id: 'gaya', name: 'Gaya', emoji: '🕌', hint: 'Nikah' },
+]
+
+/** Inclusive date windows (YYYY-MM-DD) guests may pick from. */
+export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-23', end: '2026-10-30' }
+export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-06' }
+
+/** Pre-filled time so a guest only has to adjust it, never type it from scratch. */
+export const RSVP_DEFAULT_TIME = '12:00'
+
+/** Contact number: Indian national format — 10 digits starting 6-9. */
+export const RSVP_DIAL_CODE = '+91'
+export const RSVP_PHONE_DIGITS = 10
+
+/** True for a plausible Indian mobile number (digits only, no dial code). */
+export function isValidPhone(digits) {
+  return /^[6-9]\d{9}$/.test(String(digits || ''))
+}

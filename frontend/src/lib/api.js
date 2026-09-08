@@ -69,18 +69,11 @@ export async function getLikeCount(postId) {
   return { count: typeof data.count === 'number' ? data.count : null }
 }
 
-/**
- * Fetches live like counts for many posts in one coordinated pass.
- * Returns a { [postId]: count } map, skipping posts whose request failed —
- * a partial refresh is better than dropping the whole cycle.
- * TODO: replace the fan-out with a batch `GET /likes?ids=` endpoint.
- */
-export async function getLikeCounts(postIds) {
-  if (LOCAL_MODE || postIds.length === 0) return {}
+/** Per-post fan-out. Only used if the batch endpoint isn't deployed yet. */
+async function getLikeCountsFanOut(postIds) {
   const counts = {}
-  // API Gateway's default burst limit for this stage is 5. Firing one request
-  // per post at once trips it the moment the feed grows past that, and the
-  // 429s are what stopped counts from ever refreshing — so go in chunks.
+  // The stage's burst limit is 5, so never put more than LIKE_FETCH_CHUNK
+  // requests in the air at once.
   for (let i = 0; i < postIds.length; i += LIKE_FETCH_CHUNK) {
     const chunk = postIds.slice(i, i + LIKE_FETCH_CHUNK)
     const results = await Promise.allSettled(chunk.map((id) => getLikeCount(id)))
@@ -91,6 +84,45 @@ export async function getLikeCounts(postIds) {
     })
   }
   return counts
+}
+
+// Set once the batch endpoint 404s, so we stop paying for a failed request on
+// every poll against a backend that predates it.
+let batchLikesUnavailable = false
+
+/**
+ * Live like counts for many posts — { [postId]: count }.
+ *
+ * ONE request for the whole feed. The old per-post fan-out issued a request
+ * per post per poll per device against a stage throttled to 10 rps / 5 burst
+ * *globally*, so once a few guests had the site open every poll was 429ing.
+ * Those failures were swallowed as "no update", which is why counts froze on
+ * each device at whatever number it had last seen.
+ */
+export async function getLikeCounts(postIds) {
+  if (LOCAL_MODE || postIds.length === 0) return {}
+
+  if (!batchLikesUnavailable) {
+    try {
+      const url = `${API_BASE_URL}/likes?ids=${encodeURIComponent(postIds.join(','))}`
+      const res = await fetch(url, { method: 'GET', cache: 'no-store' })
+      if (res.ok) {
+        const data = await res.json().catch(() => ({}))
+        const counts = {}
+        for (const [id, n] of Object.entries(data.counts || {})) {
+          if (typeof n === 'number') counts[id] = n
+        }
+        return counts
+      }
+      // 404 => stack not redeployed yet. Anything else (429/5xx) is transient,
+      // so keep using the batch route and just fall through this cycle.
+      if (res.status === 404) batchLikesUnavailable = true
+    } catch {
+      // Network error — fall back for this cycle.
+    }
+  }
+
+  return getLikeCountsFanOut(postIds)
 }
 
 // ── Comments ──────────────────────────────────────────────────────────────────

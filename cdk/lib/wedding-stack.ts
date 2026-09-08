@@ -197,6 +197,12 @@ export class WeddingStack extends cdk.Stack {
       logGroup: logGroup('GetComments'),
       environment: { TABLE_NAME: table.tableName },
     })
+    const getLikesFn = new lambda.Function(this, 'GetLikes', {
+      ...common,
+      handler: 'likes.handler',
+      logGroup: logGroup('GetLikes'),
+      environment: { TABLE_NAME: table.tableName },
+    })
     const adminFn = new lambda.Function(this, 'AdminApi', {
       ...common,
       handler: 'admin.handler',
@@ -213,7 +219,10 @@ export class WeddingStack extends cdk.Stack {
     })
 
     // ── IAM grants (least privilege) ─────────────────────────────────────────
-    table.grantWriteData(likeFn)
+    // Read AND write: the same Lambda serves GET /like/{postId}, whose GetItem
+    // call was silently 500ing under a write-only grant.
+    table.grantReadWriteData(likeFn)
+    table.grantReadData(getLikesFn)
     table.grantReadWriteData(commentFn)
     table.grantReadData(getCommentsFn)
     dataBucket.grantReadWrite(adminFn)
@@ -250,6 +259,7 @@ export class WeddingStack extends cdk.Stack {
     // Public — capture throttled routes so the stage can depend on them.
     const likeRoutes    = route('LikeInt',    '/like/{postId}',    apigwv2.HttpMethod.POST, likeFn)
     const likeGetRoute  = route('GetLikeInt', '/like/{postId}',    apigwv2.HttpMethod.GET,  likeFn)
+    const likesBatchRoute = route('GetLikesInt', '/likes', apigwv2.HttpMethod.GET, getLikesFn)
     const commentRoutes = route('CommentInt', '/comment/{postId}', apigwv2.HttpMethod.POST, commentFn)
     route('GetCommentsInt', '/comments/{postId}', apigwv2.HttpMethod.GET, getCommentsFn)
     // Admin (single Lambda dispatches on routeKey)
@@ -271,7 +281,7 @@ export class WeddingStack extends cdk.Stack {
       'POST /comment/{postId}': { ThrottlingRateLimit: 2, ThrottlingBurstLimit: 2 },
     } as unknown as apigwv2.CfnStage['routeSettings']
     // Stage must be created after the routes it references in routeSettings exist.
-    for (const r of [...likeRoutes, ...likeGetRoute, ...commentRoutes]) {
+    for (const r of [...likeRoutes, ...likeGetRoute, ...likesBatchRoute, ...commentRoutes]) {
       cfnStage.node.addDependency(r)
     }
 

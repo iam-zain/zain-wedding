@@ -12,6 +12,11 @@ import { BookmarkIcon, CommentIcon, HeartIcon, ShareIcon } from './icons'
 
 // Holding the like button this long triggers the rising-hearts shower.
 const HEART_LONG_PRESS_MS = 450
+// A tap's own animation waits this long before playing. A second tap inside
+// the window makes it a double-tap, which owns a different animation — so the
+// single-tap pop has to be cancellable rather than fire the instant it lands.
+const DOUBLE_TAP_WINDOW_MS = 250
+const BUTTON_REACT_MS = 850
 const FLOAT_HEART_COUNT = 7
 const FLOAT_HEART_LIFE_MS = 1800
 // 8 evenly-spaced directions (every 45°) for the YouTube-style radiating burst.
@@ -39,6 +44,12 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   const longPressTimerRef = useRef(null)
   const longPressFiredRef = useRef(false)
   const heartButtonRef = useRef(null)
+  const singleTapTimerRef = useRef(null)
+  const buttonReactTimerRef = useRef(null)
+  // A double-tap emits click, click AND dblclick, so like() can be re-entered
+  // two or three times before `liked` has re-rendered — each one POSTing
+  // another increment. This latches on the first call instead.
+  const likeSentRef = useRef(false)
 
   // liveCount = likes beyond likes_base, owned + polled by FeedPage. The floor
   // keeps this device's own like visible in LOCAL_MODE, where there is no
@@ -59,7 +70,8 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   }
 
   async function like() {
-    if (liked) return // like-once (backend only increments)
+    if (liked || likeSentRef.current) return // like-once (backend only increments)
+    likeSentRef.current = true
     addLike(post.id)
     const optimisticCount = shownLiveCount + 1
     setLiveCount(optimisticCount)
@@ -71,6 +83,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
         checkLikeMilestone(count)
       }
     } catch {
+      likeSentRef.current = false // let them try again
       removeLike(post.id)
       setLiveCount(Math.max(0, shownLiveCount))
       toast('Like nahi hua, dobara try karo')
@@ -87,8 +100,21 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   // button-triggered interaction, so feedback always appears where the
   // thumb actually is (rather than up on the photo, easy to miss).
   function triggerButtonReaction() {
+    clearTimeout(buttonReactTimerRef.current)
     setButtonReact(true)
-    setTimeout(() => setButtonReact(false), 850)
+    buttonReactTimerRef.current = setTimeout(() => setButtonReact(false), BUTTON_REACT_MS)
+  }
+
+  /**
+   * Drops the single-tap pop, whether it is still queued or already on screen.
+   * The richer gestures call this first so their own animation plays alone —
+   * a slow double-tap can outrun DOUBLE_TAP_WINDOW_MS, and clearing the timer
+   * alone would leave the pop mid-flight underneath the burst.
+   */
+  function cancelButtonReaction() {
+    clearTimeout(singleTapTimerRef.current)
+    clearTimeout(buttonReactTimerRef.current)
+    setButtonReact(false)
   }
 
   // YouTube-like-button style: short lines radiate outward from the heart, evenly spaced.
@@ -127,20 +153,23 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
     if (!liked) like()
   }
 
-  // Single tap on the heart button: first like also reacts; re-tapping an
-  // already-liked post reacts again instead of doing nothing (like() itself
-  // is a no-op once liked).
+  // One gesture, one animation. A tap's pop is deferred by the double-tap
+  // window so it can be withdrawn if a second tap follows; the like itself is
+  // never deferred, so the heart still fills instantly.
+  //
+  // longPressFiredRef is deliberately NOT reset here — the pointerdown that
+  // starts the next press owns that, so the trailing click AND dblclick of a
+  // press that turned into a long-press are both suppressed.
   function onLikeButtonClick() {
-    if (longPressFiredRef.current) {
-      longPressFiredRef.current = false // long-press already reacted for this press
-      return
-    }
-    triggerButtonReaction()
+    if (longPressFiredRef.current) return
+    clearTimeout(singleTapTimerRef.current)
+    singleTapTimerRef.current = setTimeout(triggerButtonReaction, DOUBLE_TAP_WINDOW_MS)
     if (!liked) like()
   }
 
   function onLikeButtonDoubleClick() {
-    triggerButtonReaction()
+    if (longPressFiredRef.current) return
+    cancelButtonReaction() // the pop is the single-tap animation; burst plays alone
     triggerRadiatingBurst()
     if (!liked) like()
   }
@@ -154,6 +183,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
     longPressTimerRef.current = setTimeout(() => {
       longPressFiredRef.current = true
       setHeartHolding(false)
+      cancelButtonReaction() // hearts shower alone, no pop underneath it
       spawnFloatingHearts()
       if (!liked) like()
     }, HEART_LONG_PRESS_MS)
@@ -164,7 +194,14 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
     setHeartHolding(false)
   }
 
-  useEffect(() => () => clearTimeout(longPressTimerRef.current), [])
+  useEffect(
+    () => () => {
+      clearTimeout(longPressTimerRef.current)
+      clearTimeout(singleTapTimerRef.current)
+      clearTimeout(buttonReactTimerRef.current)
+    },
+    [],
+  )
 
   function onPinchZoom() {
     toast('🤍 Itna zoom mat karo, sab kuch dil se dikhta hai!')
