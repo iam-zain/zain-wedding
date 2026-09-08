@@ -203,6 +203,20 @@ export class WeddingStack extends cdk.Stack {
       logGroup: logGroup('GetLikes'),
       environment: { TABLE_NAME: table.tableName },
     })
+    const rsvpFn = new lambda.Function(this, 'Rsvp', {
+      ...common,
+      handler: 'rsvp.handler',
+      logGroup: logGroup('Rsvp'),
+      environment: {
+        TABLE_NAME: table.tableName,
+        WRITE_API_KEY: writeApiKey,
+        ADMIN_API_KEY: adminApiKey,
+        RSVP_ARRIVAL_FROM: '2026-10-23',
+        RSVP_ARRIVAL_TO: '2026-10-30',
+        RSVP_DEPARTURE_FROM: '2026-10-28',
+        RSVP_DEPARTURE_TO: '2026-11-06',
+      },
+    })
     const adminFn = new lambda.Function(this, 'AdminApi', {
       ...common,
       handler: 'admin.handler',
@@ -223,6 +237,8 @@ export class WeddingStack extends cdk.Stack {
     // call was silently 500ing under a write-only grant.
     table.grantReadWriteData(likeFn)
     table.grantReadData(getLikesFn)
+    // Writes each guest's confirmation; reads them back for the admin list.
+    table.grantReadWriteData(rsvpFn)
     table.grantReadWriteData(commentFn)
     table.grantReadData(getCommentsFn)
     dataBucket.grantReadWrite(adminFn)
@@ -270,6 +286,9 @@ export class WeddingStack extends cdk.Stack {
     route('AdminCreateStoryInt', '/admin/story', apigwv2.HttpMethod.POST, adminFn)
     route('AdminDeleteStoryInt', '/admin/story/{id}', apigwv2.HttpMethod.DELETE, adminFn)
     route('AdminPresignInt', '/admin/presign', apigwv2.HttpMethod.GET, adminFn)
+    // Guest confirmations: public write (write key), admin read (admin key).
+    const rsvpRoutes = route('RsvpInt', '/rsvp', apigwv2.HttpMethod.POST, rsvpFn)
+    route('AdminRsvpsInt', '/admin/rsvps', apigwv2.HttpMethod.GET, rsvpFn)
 
     // Throttling: default 10 rps / 5 burst; tighter on write endpoints.
     const cfnStage = httpApi.defaultStage!.node.defaultChild as apigwv2.CfnStage
@@ -279,9 +298,10 @@ export class WeddingStack extends cdk.Stack {
     cfnStage.routeSettings = {
       'POST /like/{postId}': { ThrottlingRateLimit: 5, ThrottlingBurstLimit: 5 },
       'POST /comment/{postId}': { ThrottlingRateLimit: 2, ThrottlingBurstLimit: 2 },
+      'POST /rsvp': { ThrottlingRateLimit: 2, ThrottlingBurstLimit: 5 },
     } as unknown as apigwv2.CfnStage['routeSettings']
     // Stage must be created after the routes it references in routeSettings exist.
-    for (const r of [...likeRoutes, ...likeGetRoute, ...likesBatchRoute, ...commentRoutes]) {
+    for (const r of [...likeRoutes, ...likeGetRoute, ...likesBatchRoute, ...commentRoutes, ...rsvpRoutes]) {
       cfnStage.node.addDependency(r)
     }
 

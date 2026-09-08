@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   RSVP_ARRIVAL_WINDOW,
   RSVP_DEPARTURE_WINDOW,
@@ -8,10 +8,19 @@ import {
   RSVP_PHONE_DIGITS,
   isValidPhone,
 } from '../config'
+import { submitRsvp } from '../lib/api'
 import { getUserId } from '../lib/storage'
 import { useToast } from '../components/toast-context'
 
 const RSVP_KEY = 'rsvp_submission'
+
+function saveSubmission(entry) {
+  try {
+    localStorage.setItem(RSVP_KEY, JSON.stringify(entry))
+  } catch {
+    // quota / private mode — the in-memory state still confirms it for this visit
+  }
+}
 
 // ── Date helpers ─────────────────────────────────────────────────────────────
 // Everything is handled as a plain 'YYYY-MM-DD' day + 'HH:mm' time, stitched
@@ -226,6 +235,26 @@ export default function RSVPPage() {
   const filled = [name.trim(), phoneOk, arrivalPlace, arrivalDay, departurePlace, departureDay].filter(Boolean).length
   const total = 6
 
+  // The ONLY place a confirmation is sent — first submit and later retries
+  // alike. Driving it off state rather than the submit handler means a save
+  // made while offline is re-sent on the next visit, and there is no window
+  // where both paths fire for the same entry.
+  useEffect(() => {
+    if (!submitted || submitted.synced) return
+    let cancelled = false
+    submitRsvp(submitted)
+      // Resolves true once stored, or false in LOCAL_MODE where there is no
+      // backend to reach. Both mean "nothing left to send".
+      .then(() => {
+        if (cancelled) return
+        const synced = { ...submitted, synced: true }
+        saveSubmission(synced)
+        setSubmitted(synced)
+      })
+      .catch(() => {}) // still unreachable — retried on the next visit
+    return () => { cancelled = true }
+  }, [submitted])
+
   function onSubmit(e) {
     e.preventDefault()
     if (!name.trim()) return toast('Naam toh likho 🙂')
@@ -251,12 +280,11 @@ export default function RSVPPage() {
       departure,
       userId: getUserId(),
       submittedAt: new Date().toISOString(),
+      synced: false,
     }
-    try {
-      localStorage.setItem(RSVP_KEY, JSON.stringify(entry))
-    } catch {
-      // quota / private mode — the in-memory state below still confirms it for this visit
-    }
+    // Saved and confirmed locally first — the guest is done either way; the
+    // effect above takes it from here.
+    saveSubmission(entry)
     setSubmitted(entry)
     toast('🎉 Shukriya! Confirmation mil gaya.')
   }
@@ -322,7 +350,9 @@ export default function RSVPPage() {
             </button>
           </div>
           <p className="mt-3 text-center text-xs text-ig-faint">
-            Plan badal gaya? Bas Edit dabao — kabhi bhi update kar sakte ho.
+            {submitted.synced === false
+              ? 'Save ho gaya — network aate hi hum tak pahunch jayega 📶'
+              : 'Plan badal gaya? Bas Edit dabao — kabhi bhi update kar sakte ho.'}
           </p>
         </div>
       ) : (

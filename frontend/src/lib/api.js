@@ -125,6 +125,24 @@ export async function getLikeCounts(postIds) {
   return getLikeCountsFanOut(postIds)
 }
 
+// ── RSVP ──────────────────────────────────────────────────────────────────────
+/**
+ * Sends a guest confirmation. Upserted server-side on userId, so calling this
+ * again after an edit updates that guest's row rather than adding a duplicate.
+ * Resolves false in LOCAL_MODE (no backend configured) — the caller still has
+ * its localStorage copy either way.
+ */
+export async function submitRsvp(entry) {
+  if (LOCAL_MODE) return false
+  const res = await fetch(`${API_BASE_URL}/rsvp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY },
+    body: JSON.stringify(entry),
+  })
+  if (!res.ok) throw new Error(`RSVP failed: ${res.status}`)
+  return true
+}
+
 // ── Comments ──────────────────────────────────────────────────────────────────
 const localCommentsKey = (postId) => `localComments:${postId}`
 
