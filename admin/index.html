@@ -109,6 +109,7 @@
           <button id="tabAllPostsBtn" onclick="switchTab('allPosts')">All posts</button>
           <button id="tabAllStoriesBtn" onclick="switchTab('allStories')">All stories</button>
           <button id="tabShareLinksBtn" onclick="switchTab('shareLinks')">Share links</button>
+          <button id="tabRsvpsBtn" onclick="switchTab('rsvps')">Guest RSVPs</button>
         </div>
 
         <!-- CREATE POSTS TAB -->
@@ -187,6 +188,24 @@
           <div class="card">
             <strong>All Stories</strong>
             <div id="storiesList" class="spinner">—</div>
+          </div>
+        </section>
+
+        <!-- GUEST RSVPS TAB -->
+        <section id="tabRsvps" class="hidden">
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+              <strong>Guest RSVPs <span id="rsvpCount" style="color:var(--muted);font-weight:400;"></span></strong>
+              <span style="display:flex;gap:8px;">
+                <button onclick="loadRsvps()">Refresh</button>
+                <button id="rsvpCsvBtn" onclick="downloadRsvpCsv()">Download CSV</button>
+              </span>
+            </div>
+            <p style="color:var(--muted);font-size:12px;margin:8px 0 0;">
+              One row per guest, keyed on their device — editing a confirmation updates
+              their row rather than adding another. CSV opens in Excel or Google Sheets.
+            </p>
+            <div id="rsvpsList" class="spinner" style="margin-top:12px;">—</div>
           </div>
         </section>
 
@@ -289,7 +308,7 @@
         TIERS.map((t) => t.n).filter((n) => $(containerId + '_' + n)?.checked)
 
       // ── Tabs ────────────────────────────────────────────────────────────────
-      const ALL_TABS = ['createPosts', 'allPosts', 'createStories', 'allStories', 'shareLinks']
+      const ALL_TABS = ['createPosts', 'allPosts', 'createStories', 'allStories', 'shareLinks', 'rsvps']
       function switchTab(name) {
         ALL_TABS.forEach(t => {
           $('tab' + t.charAt(0).toUpperCase() + t.slice(1)).classList.toggle('hidden', t !== name)
@@ -297,6 +316,7 @@
         })
         if (name === 'allPosts') loadPosts()
         if (name === 'allStories') loadStories()
+        if (name === 'rsvps') loadRsvps()
       }
 
       // ── Connect ──────────────────────────────────────────────────────────────
@@ -455,6 +475,79 @@
           el.className = 'status err'
           el.textContent = 'Error: ' + e.message
         }
+      }
+
+      // ── Guest RSVPs ─────────────────────────────────────────────────────────
+      let RSVPS = []
+      const PLACE_LABEL = { chittaranjan: 'Chittaranjan', gaya: 'Gaya' }
+
+      function fmtStamp(v) {
+        if (!v) return '—'
+        const [d, t] = String(v).split('T')
+        if (!d) return '—'
+        const dt = new Date(d + 'T00:00:00Z')
+        if (isNaN(dt)) return v
+        const day = dt.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })
+        return t ? day + ' · ' + t : day
+      }
+
+      async function loadRsvps() {
+        const el = $('rsvpsList')
+        el.className = 'spinner'
+        el.textContent = 'Loading…'
+        try {
+          const data = await api('/admin/rsvps')
+          RSVPS = data.rsvps || []
+          $('rsvpCount').textContent = RSVPS.length ? '(' + RSVPS.length + ')' : ''
+          if (!RSVPS.length) { el.textContent = 'No confirmations yet.'; return }
+          el.className = ''
+          el.innerHTML = RSVPS.map((r) => `
+            <div class="item">
+              <div class="meta">
+                <div class="t">${escapeHtml(r.name || '—')}</div>
+                <div class="s">
+                  <a href="https://wa.me/${encodeURIComponent(String(r.dialCode || '+91').replace('+', '') + (r.phone || ''))}"
+                     target="_blank" rel="noopener noreferrer">${escapeHtml((r.dialCode || '+91') + ' ' + (r.phone || ''))}</a>
+                </div>
+                <div class="s">
+                  🛬 ${escapeHtml(PLACE_LABEL[r.arrivalPlace] || r.arrivalPlace || '—')} · ${escapeHtml(fmtStamp(r.arrival))}
+                </div>
+                <div class="s">
+                  🛫 ${escapeHtml(PLACE_LABEL[r.departurePlace] || r.departurePlace || '—')} · ${escapeHtml(fmtStamp(r.departure))}
+                </div>
+              </div>
+            </div>`).join('')
+        } catch (e) {
+          el.className = ''
+          el.textContent = 'Failed to load: ' + e.message
+        }
+      }
+
+      // Quote every field: names and places can contain commas, and a leading
+      // =/+/-/@ would otherwise be read as a formula by Excel and Sheets.
+      function csvCell(v) {
+        const s = v == null ? '' : String(v)
+        const safe = /^[=+\-@]/.test(s) ? "'" + s : s
+        return '"' + safe.replace(/"/g, '""') + '"'
+      }
+
+      function downloadRsvpCsv() {
+        if (!RSVPS.length) return alert('Nothing to export yet.')
+        const cols = ['name', 'dialCode', 'phone', 'arrivalPlace', 'arrival', 'departurePlace', 'departure', 'createdAt', 'updatedAt', 'userId']
+        const head = ['Name', 'Code', 'Phone', 'Arrival place', 'Arrival', 'Departure place', 'Departure', 'First submitted', 'Last updated', 'Device id']
+        const rows = RSVPS.map((r) => cols.map((c) => csvCell(r[c])).join(','))
+        // BOM so Excel opens the file as UTF-8 rather than mangling names.
+        const BOM = String.fromCharCode(0xFEFF) // Excel needs it to read the file as UTF-8
+        const CRLF = String.fromCharCode(13, 10) // CSV line ending Excel is happiest with
+        const csv = BOM + [head.map(csvCell).join(','), ...rows].join(CRLF)
+        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }))
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'zain-wedding-rsvps-' + new Date().toISOString().slice(0, 10) + '.csv'
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        URL.revokeObjectURL(url)
       }
 
       async function loadStories() {

@@ -1,19 +1,23 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { stepTo } from './tabs'
 
-// ── Touch/mouse drag ─────────────────────────────────────────────────────────
-const MIN_DISTANCE_PX = 90
-const MAX_DURATION_MS = 1200
-const INTENT_PX = 8 // first movement past this decides horizontal-vs-vertical, once, per gesture
-const HORIZONTAL_DOMINANCE = 2 // |dx| must exceed |dy| times this to count as horizontal
+// ── Gesture thresholds ───────────────────────────────────────────────────────
+const MIN_DISTANCE_PX = 60 // a deliberate drag
+const FLICK_DISTANCE_PX = 32 // a quick flick counts at a shorter distance…
+const FLICK_MAX_MS = 300 // …if it finishes this fast
+const MAX_DURATION_MS = 1500
+const INTENT_PX = 12 // travel before we decide horizontal-vs-vertical, once, per gesture
+const HORIZONTAL_DOMINANCE = 1.15 // |dx| must beat |dy| by this much to count as horizontal
 
 // ── Trackpad / mouse-wheel swipe ─────────────────────────────────────────────
 const WHEEL_TRIGGER_PX = 120
 const WHEEL_IDLE_RESET_MS = 200
 const WHEEL_LOCK_MS = 600 // cooldown after a nav-triggering swipe so one long fling can't fire twice
 
-// Elements that own their own horizontal gesture (the photo carousel) opt
-// out via this attribute, so this never steals a swipe mid-photo-browse.
+// Elements that own their own horizontal gesture (the photo carousel, the
+// RSVP day strip) opt out via this attribute, so this never steals a swipe
+// mid-photo-browse.
 const EXEMPT_SELECTOR = '[data-swipe-exempt]'
 
 function isBlocked(target) {
@@ -24,10 +28,19 @@ function isBlocked(target) {
 }
 
 /**
- * Global — mount once in Layout. Right-swipe/right-trackpad-swipe on the
- * Feed tab opens Events; left on Events returns to the Feed. Vertical
- * intent is locked in (and the gesture abandoned) within the first ~8px of
- * movement, so a normal scroll can never later resolve into a tab switch.
+ * Global — mount once in Layout. A horizontal swipe moves one step along the
+ * bottom-nav tab order (see lib/tabs.js): swipe right to go forward, left to
+ * go back.
+ *
+ * Touch is handled with native Touch Events rather than Pointer Events. The
+ * pointer-based version kept dying on real phones: the browser hands a touch
+ * off to its own scroll/back-navigation gesture partway through and fires
+ * `pointercancel`, and `setPointerCapture` — the workaround for that — fails
+ * silently whenever the captured node re-renders out from under it, which the
+ * feed does constantly. Touch Events don't get retargeted, `touchend` always
+ * carries the final coordinates in `changedTouches`, and a non-passive
+ * `touchmove` + `touch-action: pan-y` is the combination browsers actually
+ * respect for "this axis is mine".
  */
 export function useSwipeTabNav() {
   const { pathname } = useLocation()
@@ -35,73 +48,106 @@ export function useSwipeTabNav() {
 
   useEffect(() => {
     function go(dir) {
-      if (pathname === '/' && dir === 'right') navigate('/events', { state: { swipeDir: 'right' } })
-      else if (pathname === '/events' && dir === 'left') navigate('/', { state: { swipeDir: 'left' } })
+      const to = stepTo(pathname, dir)
+      if (to) navigate(to, { state: { swipeDir: dir } })
     }
 
-    // ── Touch / mouse drag ────────────────────────────────────────────────
-    let start = null // { x, y, t, pointerId, horizontal: null|boolean, captureEl } | null
+    // Shared decision logic for touch and mouse drags.
+    // state: { x, y, t, horizontal: null | boolean }
+    let g = null
 
-    function releaseCapture() {
-      if (!start?.captureEl) return
-      try {
-        start.captureEl.releasePointerCapture(start.pointerId)
-      } catch {
-        // already released/not captured — fine
-      }
+    function begin(x, y, target) {
+      g = isBlocked(target) ? null : { x, y, t: Date.now(), horizontal: null }
     }
 
-    function onDown(e) {
-      start = isBlocked(e.target)
-        ? null
-        : { x: e.clientX, y: e.clientY, t: Date.now(), pointerId: e.pointerId, horizontal: null, captureEl: null }
-    }
-
-    function onMove(e) {
-      if (!start || start.pointerId !== e.pointerId || start.horizontal === false) return
-      const dx = e.clientX - start.x
-      const dy = e.clientY - start.y
-      if (start.horizontal === null) {
-        if (Math.abs(dx) < INTENT_PX && Math.abs(dy) < INTENT_PX) return
-        start.horizontal = Math.abs(dx) > Math.abs(dy) * HORIZONTAL_DOMINANCE
-        if (!start.horizontal) {
-          start = null // vertical intent — abandon for good, this is a scroll
-          return
-        }
-        // Confirmed horizontal — grab the pointer so the browser can't hand
-        // this touch off to its own scroll/back-navigation gesture partway
-        // through (which fires pointercancel and silently kills the swipe
-        // before it reaches MIN_DISTANCE_PX). Carousel's own drag does the same.
-        try {
-          e.target.setPointerCapture(e.pointerId)
-          start.captureEl = e.target
-        } catch {
-          // unsupported on this target — preventDefault below still helps
+    /** Returns true once the gesture is confirmed horizontal (caller may preventDefault). */
+    function update(x, y) {
+      if (!g) return false
+      const dx = x - g.x
+      const dy = y - g.y
+      if (g.horizontal === null) {
+        if (Math.hypot(dx, dy) < INTENT_PX) return false
+        g.horizontal = Math.abs(dx) > Math.abs(dy) * HORIZONTAL_DOMINANCE
+        if (!g.horizontal) {
+          g = null // vertical intent — this is a scroll, abandon for good
+          return false
         }
       }
-      e.preventDefault()
+      return g.horizontal
     }
 
-    function onUp(e) {
-      if (!start || start.pointerId !== e.pointerId) return
-      if (!start.horizontal) {
-        start = null
-        return
-      }
-      const dx = e.clientX - start.x
-      const duration = Date.now() - start.t
-      releaseCapture()
-      start = null
-      if (isBlocked(e.target)) return
+    function finish(x, target) {
+      const gesture = g
+      g = null
+      if (!gesture?.horizontal) return
+      if (isBlocked(target)) return
+      const dx = x - gesture.x
+      const duration = Date.now() - gesture.t
       if (duration > MAX_DURATION_MS) return
-      if (Math.abs(dx) < MIN_DISTANCE_PX) return
+      const far = Math.abs(dx) >= MIN_DISTANCE_PX
+      const flick = Math.abs(dx) >= FLICK_DISTANCE_PX && duration <= FLICK_MAX_MS
+      if (!far && !flick) return
       go(dx > 0 ? 'right' : 'left')
     }
 
-    function onCancel(e) {
-      if (!start || start.pointerId !== e.pointerId) return
-      releaseCapture()
-      start = null
+    // ── Touch ─────────────────────────────────────────────────────────────
+    function onTouchStart(e) {
+      if (e.touches.length !== 1) {
+        g = null // pinch / multi-finger — never a tab swipe
+        return
+      }
+      const t = e.touches[0]
+      begin(t.clientX, t.clientY, e.target)
+    }
+
+    function onTouchMove(e) {
+      if (!g) return
+      if (e.touches.length !== 1) {
+        g = null
+        return
+      }
+      const t = e.touches[0]
+      // Claim the gesture so the browser can't turn it into a horizontal
+      // overscroll / back-navigation halfway through.
+      if (update(t.clientX, t.clientY) && e.cancelable) e.preventDefault()
+    }
+
+    function onTouchEnd(e) {
+      const t = e.changedTouches[0]
+      if (!t) {
+        g = null
+        return
+      }
+      finish(t.clientX, e.target)
+    }
+
+    function onTouchCancel() {
+      g = null
+    }
+
+    // Touch pointers fire `pointercancel` the moment the browser takes an
+    // interest in the gesture — the very failure mode this rewrite exists to
+    // dodge. Only a cancelled *mouse* drag should abandon the gesture; a
+    // cancelled touch pointer is ignored, because the Touch Events above are
+    // still delivering it.
+    function onPointerCancel(e) {
+      if (e.pointerType === 'mouse') g = null
+    }
+
+    // ── Mouse drag (desktop only — touch is handled above) ────────────────
+    function onPointerDown(e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return
+      begin(e.clientX, e.clientY, e.target)
+    }
+
+    function onPointerMove(e) {
+      if (e.pointerType !== 'mouse' || !g) return
+      if (update(e.clientX, e.clientY)) e.preventDefault()
+    }
+
+    function onPointerUp(e) {
+      if (e.pointerType !== 'mouse') return
+      finish(e.clientX, e.target)
     }
 
     // ── Trackpad two-finger horizontal swipe ─────────────────────────────
@@ -119,7 +165,7 @@ export function useSwipeTabNav() {
       }
       // A horizontal-dominant two-finger gesture — stop the browser's own
       // back/forward-navigation swipe from firing underneath ours.
-      e.preventDefault()
+      if (e.cancelable) e.preventDefault()
 
       clearTimeout(wheelResetTimer)
       wheelResetTimer = setTimeout(() => {
@@ -141,16 +187,24 @@ export function useSwipeTabNav() {
       go(dir)
     }
 
-    window.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointermove', onMove, { passive: false })
-    window.addEventListener('pointerup', onUp)
-    window.addEventListener('pointercancel', onCancel)
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    window.addEventListener('touchend', onTouchEnd)
+    window.addEventListener('touchcancel', onTouchCancel)
+    window.addEventListener('pointerdown', onPointerDown)
+    window.addEventListener('pointermove', onPointerMove, { passive: false })
+    window.addEventListener('pointerup', onPointerUp)
+    window.addEventListener('pointercancel', onPointerCancel)
     window.addEventListener('wheel', onWheel, { passive: false })
     return () => {
-      window.removeEventListener('pointerdown', onDown)
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerup', onUp)
-      window.removeEventListener('pointercancel', onCancel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
+      window.removeEventListener('touchcancel', onTouchCancel)
+      window.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+      window.removeEventListener('pointercancel', onPointerCancel)
       window.removeEventListener('wheel', onWheel)
       clearTimeout(wheelResetTimer)
       clearTimeout(wheelLockTimer)

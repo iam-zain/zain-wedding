@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { STORY_LONGPRESS_MESSAGES } from '../config'
+import { startStoryMusic, stopStoryMusic } from '../lib/musicPlayer'
 import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
 import { CloseIcon } from './icons'
@@ -21,6 +22,14 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
 
   const next = () => setIndex((i) => (i + 1 < stories.length ? i + 1 : (onClose(), i)))
   const prev = () => setIndex((i) => (i > 0 ? i - 1 : i))
+
+  // One random track for the whole viewing — deliberately not keyed on
+  // `index`, so moving between stories doesn't restart or swap the music.
+  // Stops with the viewer; the avatar's own track is stopped on the way in.
+  useEffect(() => {
+    startStoryMusic()
+    return () => stopStoryMusic()
+  }, [])
 
   // Keyboard + scroll lock
   useEffect(() => {

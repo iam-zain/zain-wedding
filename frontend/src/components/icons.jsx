@@ -127,11 +127,21 @@ export const HangerIcon = (p) => (
   </Svg>
 )
 
-export const RsvpIcon = (p) => (
+export const RsvpIcon = ({ active = false, ...p }) => (
   <Svg {...p}>
-    <rect x="5" y="4" width="14" height="17" rx="2" />
-    <path d="M9 3.2h6a1 1 0 0 1 1 1V6H8V4.2a1 1 0 0 1 1-1z" />
-    <path d="M8.5 13l2 2 4.5-4.5" />
+    {active ? (
+      <>
+        <rect x="5" y="4" width="14" height="17" rx="2" fill="currentColor" stroke="none" />
+        <path d="M9 3.2h6a1 1 0 0 1 1 1V6H8V4.2a1 1 0 0 1 1-1z" fill="currentColor" stroke="none" />
+        <path d="M8.5 13l2 2 4.5-4.5" stroke="#000" strokeWidth="2.2" />
+      </>
+    ) : (
+      <>
+        <rect x="5" y="4" width="14" height="17" rx="2" />
+        <path d="M9 3.2h6a1 1 0 0 1 1 1V6H8V4.2a1 1 0 0 1 1-1z" />
+        <path d="M8.5 13l2 2 4.5-4.5" />
+      </>
+    )}
   </Svg>
 )
 

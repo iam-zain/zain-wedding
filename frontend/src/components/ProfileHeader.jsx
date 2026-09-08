@@ -38,6 +38,9 @@ export default function ProfileHeader() {
   const [egg, setEgg] = useState(null)
   const statTapTimesRef = useRef({})
   const avatarPressTimerRef = useRef(null)
+  // A long-press that fires the egg still emits a click on release — without
+  // this, the same gesture would toggle the music as a side effect.
+  const avatarLongPressFiredRef = useRef(false)
   const unlockedTiers = useUnlockedTiers()
   const tierLetters = 'ABCDE'
   const versionStr = unlockedTiers
@@ -82,7 +85,9 @@ export default function ProfileHeader() {
 
   function handleAvatarPressStart() {
     clearTimeout(avatarPressTimerRef.current)
+    avatarLongPressFiredRef.current = false
     avatarPressTimerRef.current = setTimeout(() => {
+      avatarLongPressFiredRef.current = true
       const msg = AVATAR_LONGPRESS_MESSAGES[Math.floor(Math.random() * AVATAR_LONGPRESS_MESSAGES.length)]
       setEgg({ message: msg, icon: '🤍' })
       playChime()
@@ -91,6 +96,14 @@ export default function ProfileHeader() {
 
   function handleAvatarPressEnd() {
     clearTimeout(avatarPressTimerRef.current)
+  }
+
+  function handleAvatarClick() {
+    if (avatarLongPressFiredRef.current) {
+      avatarLongPressFiredRef.current = false
+      return
+    }
+    toggleMusic()
   }
 
   async function onShareProfile() {
@@ -228,7 +241,7 @@ export default function ProfileHeader() {
           type="button"
           aria-label={isPlaying ? 'Pause music' : 'Play music'}
           data-testid="profile-avatar-button"
-          onClick={toggleMusic}
+          onClick={handleAvatarClick}
           onPointerDown={handleAvatarPressStart}
           onPointerUp={handleAvatarPressEnd}
           onPointerLeave={handleAvatarPressEnd}

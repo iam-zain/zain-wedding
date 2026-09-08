@@ -31,7 +31,7 @@ Two secrets are required at deploy time:
 
 | Key | Purpose |
 |---|---|
-| `writeApiKey` | Shared secret sent by the **frontend** as `x-api-key` header on every like/comment POST. Prevents anonymous spam from curl/bots. |
+| `writeApiKey` | Shared secret sent by the **frontend** as `x-api-key` header on every like/comment/RSVP POST. Prevents anonymous spam from curl/bots. |
 | `adminApiKey` | Password for the **admin portal**. Sent as `x-admin-key`. Guards content management routes. |
 
 These are not stored in AWS — they are baked into Lambda environment variables at deploy time. You need to keep them somewhere so you can re-run `cdk deploy` in future without changing them (changing them = all clients stop working until you redeploy the frontend too).
@@ -214,4 +214,4 @@ Re-run Step 1 (backend `npm install`) any time Lambda code or its deps change, t
 | `CdnBaseUrl` | frontend `VITE_DATA_BASE_URL` |
 | `DataBucketName` | where `posts.json` / `stories.json` live |
 | `MediaBucketName` | image uploads (via admin presign) |
-| `DynamoTableName` | likes/comments table |
+| `DynamoTableName` | likes, comments & guest RSVP table |

@@ -37,7 +37,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overscroll-behavior-y: none;
+    /* Both axes: -y stops pull-to-refresh fighting ours, -x stops the
+       browser's horizontal back/forward overscroll from eating a tab swipe. */
+    overscroll-behavior: none;
     -webkit-tap-highlight-color: transparent;
   }
 
