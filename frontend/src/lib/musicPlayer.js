@@ -16,6 +16,12 @@ const VOLUME = 0.85
 
 let audio = null
 let pausedByTabSwitch = false
+// Story playback is a SEPARATE element, not a reuse of the one above. Sharing
+// it would leave the avatar reporting itself as playing (isPlaying is derived
+// from that element) and spinning while a story's track was the thing making
+// the sound.
+let storyAudio = null
+let storyPausedByTabSwitch = false
 const listeners = new Set()
 
 const emit = () => listeners.forEach((l) => l())
@@ -58,17 +64,55 @@ export function stopMusic() {
   audio.pause()
 }
 
-// Tab switch / app background: pause, and resume only if *we* paused it.
+/**
+ * One random track for a story viewing. Plays ONCE — not looped — and any
+ * avatar track is stopped first so the two can never overlap.
+ *
+ * Reuses a single element across viewings rather than making a new Audio each
+ * time, so iOS's per-element autoplay unlock survives from the first story
+ * onward. Must be called from (or just after) a user gesture.
+ */
+export function startStoryMusic() {
+  stopMusic()
+  if (!storyAudio) {
+    storyAudio = new Audio()
+    storyAudio.loop = false
+  }
+  storyAudio.src = pickRandom(MUSIC_TRACKS)
+  storyAudio.volume = VOLUME
+  storyPausedByTabSwitch = false
+  storyAudio.play().catch(() => {}) // autoplay blocked — silence, not an error
+}
+
+/** Stops the story track and rewinds it. No-op when nothing is playing. */
+export function stopStoryMusic() {
+  if (!storyAudio) return
+  storyPausedByTabSwitch = false
+  storyAudio.pause()
+  storyAudio.currentTime = 0
+}
+
+// Tab switch / app background: pause, and resume only what *we* paused.
 if (typeof document !== 'undefined') {
   document.addEventListener('visibilitychange', () => {
-    if (!audio) return
     if (document.hidden) {
-      if (audio.paused) return
-      pausedByTabSwitch = true
-      audio.pause()
-    } else if (pausedByTabSwitch) {
+      if (audio && !audio.paused) {
+        pausedByTabSwitch = true
+        audio.pause()
+      }
+      if (storyAudio && !storyAudio.paused) {
+        storyPausedByTabSwitch = true
+        storyAudio.pause()
+      }
+      return
+    }
+    if (pausedByTabSwitch) {
       pausedByTabSwitch = false
-      audio.play().catch(() => emit())
+      audio?.play().catch(() => emit())
+    }
+    if (storyPausedByTabSwitch) {
+      storyPausedByTabSwitch = false
+      storyAudio?.play().catch(() => {})
     }
   })
 }
