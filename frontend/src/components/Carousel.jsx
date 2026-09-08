@@ -166,11 +166,19 @@ export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carou
 
   const dragPercent = dragRef.current?.width ? (dragX / dragRef.current.width) * 100 : 0
 
+  // Claim only the directions this carousel can still page in, so a swipe at
+  // the first or last photo falls through to tab navigation instead of dying
+  // here. Finger-right goes to the previous image, finger-left to the next
+  // (see onPointerUp), hence the mapping below.
+  const swipeClaims = [index > 0 ? 'right' : null, index < list.length - 1 ? 'left' : null]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <div
       ref={containerRef}
       data-testid={testId}
-      data-swipe-exempt={multiple ? 'true' : undefined}
+      data-swipe-exempt={swipeClaims || undefined}
       className="group relative select-none overflow-hidden bg-ig-black"
       style={{ touchAction: 'pan-y' }}
       onDoubleClick={onDoubleTap}

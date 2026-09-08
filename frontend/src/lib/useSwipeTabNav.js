@@ -15,16 +15,37 @@ const WHEEL_TRIGGER_PX = 120
 const WHEEL_IDLE_RESET_MS = 200
 const WHEEL_LOCK_MS = 600 // cooldown after a nav-triggering swipe so one long fling can't fire twice
 
-// Elements that own their own horizontal gesture (the photo carousel, the
-// RSVP day strip) opt out via this attribute, so this never steals a swipe
-// mid-photo-browse.
+// Elements that own their own horizontal gesture opt out via this attribute.
+//
+// The value names WHICH directions they claim, because a blanket opt-out made
+// tab-swiping impossible in practice: nearly every post is a multi-image
+// carousel and its photos fill the screen, so a finger almost always landed on
+// an exempt element and the gesture died there. A carousel now claims only the
+// direction it can still page in, so a swipe at either end falls through to us
+// — the usual nested-gesture behaviour.
+//
+//   data-swipe-exempt="left"        claims finger-left only
+//   data-swipe-exempt="left right"  claims both
+//   data-swipe-exempt="true"        claims everything (the RSVP day strip)
 const EXEMPT_SELECTOR = '[data-swipe-exempt]'
+const BOTH = new Set(['left', 'right'])
 
-function isBlocked(target) {
-  // A modal/overlay (EasterEggModal, StoryViewer) is open — they all set
-  // this while visible, so don't navigate out from under one.
-  if (document.body.style.overflow === 'hidden') return true
-  return !!target?.closest?.(EXEMPT_SELECTOR)
+/** Directions already claimed by whatever sits under the finger, or null. */
+function claimedDirections(target) {
+  const el = target?.closest?.(EXEMPT_SELECTOR)
+  if (!el) return null
+  const raw = (el.getAttribute('data-swipe-exempt') || '').trim()
+  if (raw === '' || raw === 'true') return BOTH
+  return new Set(raw.split(/\s+/))
+}
+
+/**
+ * A modal/overlay (EasterEggModal, StoryViewer) is open — they all set this
+ * while visible, so don't navigate out from under one. Re-checked at the end
+ * of a gesture as well, since one can open mid-swipe.
+ */
+function isBlocked() {
+  return document.body.style.overflow === 'hidden'
 }
 
 /**
@@ -57,7 +78,7 @@ export function useSwipeTabNav() {
     let g = null
 
     function begin(x, y, target) {
-      g = isBlocked(target) ? null : { x, y, t: Date.now(), horizontal: null }
+      g = isBlocked() ? null : { x, y, t: Date.now(), horizontal: null, claims: claimedDirections(target) }
     }
 
     /** Returns true once the gesture is confirmed horizontal (caller may preventDefault). */
@@ -72,15 +93,21 @@ export function useSwipeTabNav() {
           g = null // vertical intent — this is a scroll, abandon for good
           return false
         }
+        // Whatever is under the finger can still move this way itself (a
+        // carousel that has another photo in that direction) — let it.
+        if (g.claims?.has(dx > 0 ? 'right' : 'left')) {
+          g = null
+          return false
+        }
       }
       return g.horizontal
     }
 
-    function finish(x, target) {
+    function finish(x) {
       const gesture = g
       g = null
       if (!gesture?.horizontal) return
-      if (isBlocked(target)) return
+      if (isBlocked()) return
       const dx = x - gesture.x
       const duration = Date.now() - gesture.t
       if (duration > MAX_DURATION_MS) return
@@ -118,7 +145,7 @@ export function useSwipeTabNav() {
         g = null
         return
       }
-      finish(t.clientX, e.target)
+      finish(t.clientX)
     }
 
     function onTouchCancel() {
@@ -147,7 +174,7 @@ export function useSwipeTabNav() {
 
     function onPointerUp(e) {
       if (e.pointerType !== 'mouse') return
-      finish(e.clientX, e.target)
+      finish(e.clientX)
     }
 
     // ── Trackpad two-finger horizontal swipe ─────────────────────────────
@@ -157,7 +184,8 @@ export function useSwipeTabNav() {
     let wheelLockTimer = null
 
     function onWheel(e) {
-      if (isBlocked(e.target)) return
+      if (isBlocked()) return
+      const claims = claimedDirections(e.target)
       // Vertical scroll clearly dominates — not a swipe attempt at all, ignore entirely.
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) {
         wheelAccum = 0
@@ -178,6 +206,7 @@ export function useSwipeTabNav() {
 
       const dir = wheelAccum > 0 ? 'right' : 'left'
       wheelAccum = 0
+      if (claims?.has(dir)) return // the carousel under the cursor pages this way itself
       wheelLocked = true
       clearTimeout(wheelLockTimer)
       wheelLockTimer = setTimeout(() => {
