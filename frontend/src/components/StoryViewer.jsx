@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { STORY_LONGPRESS_MESSAGES } from '../config'
-import { startStoryMusic, stopStoryMusic } from '../lib/musicPlayer'
+import { stopStoryMusic } from '../lib/musicPlayer'
 import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
 import { CloseIcon } from './icons'
@@ -23,13 +24,11 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
   const next = () => setIndex((i) => (i + 1 < stories.length ? i + 1 : (onClose(), i)))
   const prev = () => setIndex((i) => (i > 0 ? i - 1 : i))
 
-  // One random track for the whole viewing — deliberately not keyed on
-  // `index`, so moving between stories doesn't restart or swap the music.
-  // Stops with the viewer; the avatar's own track is stopped on the way in.
-  useEffect(() => {
-    startStoryMusic()
-    return () => stopStoryMusic()
-  }, [])
+  // The track is started by the story circle's tap handler (see StoriesRow —
+  // it has to happen inside the gesture for mobile autoplay), so this owns
+  // only the other half: stop it when the viewer closes. Not keyed on `index`,
+  // so moving between stories neither restarts nor swaps the music.
+  useEffect(() => stopStoryMusic, [])
 
   // Keyboard + scroll lock
   useEffect(() => {
@@ -75,7 +74,13 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
     touchStart.current = null
   }
 
-  return (
+  // Rendered into <body> rather than in place. A full-screen overlay must not
+  // depend on its ancestors staying transform-free: any transformed ancestor
+  // becomes the containing block for position: fixed and the overlay silently
+  // anchors to that box instead of the viewport. The page-slide animation used
+  // to do exactly that, which left this viewer centred somewhere down the
+  // document with only its music audible.
+  return createPortal(
     /* Backdrop — full screen, dims on desktop */
     <div
       data-testid="story-viewer"
@@ -134,6 +139,7 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
       {egg && (
         <EasterEggModal message={egg} icon="🤍" onClose={() => setEgg(null)} testId="story-egg" />
       )}
-    </div>
+    </div>,
+    document.body,
   )
 }

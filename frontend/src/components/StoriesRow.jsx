@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { startStoryMusic } from '../lib/musicPlayer'
 import { useViewedStories } from '../lib/storage'
 import StoryViewer from './StoryViewer'
 
@@ -18,7 +19,14 @@ export default function StoriesRow({ stories }) {
               key={story.id}
               type="button"
               data-testid={`story-item-${story.id}`}
-              onClick={() => setOpenAt(i)}
+              onClick={() => {
+                // Started HERE, in the tap itself, rather than in the viewer's
+                // mount effect: mobile browsers only allow play() while a user
+                // gesture is still active, and a passive effect runs after
+                // paint — often too late, so the story opened silently.
+                startStoryMusic()
+                setOpenAt(i)
+              }}
               className="flex w-16 shrink-0 flex-col items-center gap-1"
             >
               <span

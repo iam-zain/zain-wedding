@@ -104,11 +104,21 @@
   from { transform: translateX(-28px); opacity: 0; }
   to   { transform: translateX(0); opacity: 1; }
 }
+/* `backwards`, NOT `both`. `both` includes `forwards`, which retains the final
+   keyframe — leaving transform: translateX(0) on the wrapper permanently. A
+   transform other than `none` makes an element the containing block for its
+   position: fixed descendants, so after one tab change every full-screen
+   overlay inside the page (story viewer, easter-egg modals, toasts, the access
+   sheet) stopped being viewport-relative and anchored to the full-height page
+   wrapper instead — the story viewer centred itself at the middle of the whole
+   document, off screen, while its music played on.
+   The end keyframe is identical to the element's resting style, so dropping
+   `forwards` changes nothing visually. */
 .page-slide-from-right {
-  animation: page-slide-from-right 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-slide-from-right 0.28s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 .page-slide-from-left {
-  animation: page-slide-from-left 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: page-slide-from-left 0.28s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 /* Hourglass replacement — the arc itself is computed frame-by-frame in JS
