@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
 import { MORE_LINKS } from '../lib/tabs'
+import { titleFor } from '../lib/quiz'
 import { achievementList } from '../lib/achievements'
 import { useAchievementCounts } from '../lib/useAchievementCounts'
-import { useAchievements } from '../lib/storage'
+import { useAchievements, useLocalStorage } from '../lib/storage'
 import { haptic } from '../lib/haptics'
 import { ChevronRightIcon, QuizIcon, RsvpIcon, TrophyIcon, WishesIcon } from '../components/icons'
 
@@ -146,6 +148,8 @@ export default function MorePage() {
   const badges = achievementList(counts, unlockedIds)
   const earned = badges.filter((b) => b.unlocked).length
   const [openBadge, setOpenBadge] = useState(null)
+  const [quizBest] = useLocalStorage(QUIZ_BEST_KEY, null)
+  const rank = titleFor(typeof quizBest === 'number' ? quizBest : 0)
 
   return (
     <div data-testid="more-page">
@@ -192,6 +196,41 @@ export default function MorePage() {
       </nav>
 
       <section data-testid="achievements-shelf" className="px-4 pb-8 pt-7">
+        {/* The quiz rank sits above the badge grid rather than inside it: it's
+            a title you hold, not a one-off unlock, and it can change. */}
+        {quizBest !== null && (
+          <div
+            data-testid="quiz-title-card"
+            className="mb-5 flex items-center gap-3 rounded-2xl border p-4"
+            style={{
+              borderColor: rank.color,
+              background: `linear-gradient(135deg, ${rank.color}2e, ${rank.color}0d)`,
+            }}
+          >
+            <span aria-hidden="true" className="text-3xl leading-none">{rank.emoji}</span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[10px] uppercase tracking-widest text-ig-muted">
+                Quiz ka title
+              </span>
+              <span className="block text-base font-semibold" style={{ color: rank.color }}>
+                {rank.title}
+              </span>
+              <span className="mt-0.5 block text-[11px] text-ig-faint">
+                Best {quizBest}/{QUIZ_PER_ROUND} · dobara khel ke badlo
+              </span>
+            </span>
+            <Link
+              to="/quiz"
+              onClick={() => haptic('tap')}
+              data-testid="quiz-title-play"
+              className="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold text-white active:opacity-80"
+              style={{ backgroundColor: rank.color }}
+            >
+              Khelo
+            </Link>
+          </div>
+        )}
+
         <div className="flex items-center gap-2">
           <TrophyIcon size={18} style={{ color: '#f7971e' }} />
           <h3 className="text-sm font-semibold">Achievements</h3>

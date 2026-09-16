@@ -217,6 +217,7 @@ export const STORY_REPLY_THANKS = '💬 Reply mil gaya — shukriya!'
  * `answer` is an index into `options`.
  */
 export const QUIZ_QUESTIONS = [
+  // ── Dates & days ───────────────────────────────────────────────────────────
   {
     id: 'nikah-date',
     question: 'Nikah kis din hai?',
@@ -224,15 +225,111 @@ export const QUIZ_QUESTIONS = [
     answer: 2,
   },
   {
-    id: 'haldi-dress',
-    question: 'Haldi ka dress code kya hai?',
-    options: ['Pista Green', 'Yellow, Mustard', 'Rose Gold', 'Plum, Deep Teal'],
+    id: 'nikah-weekday',
+    question: 'Nikah hafte ke kis din padta hai?',
+    options: ['Monday', 'Wednesday', 'Friday', 'Sunday'],
     answer: 1,
   },
+  {
+    id: 'haldi-date',
+    question: 'Haldi kis taareekh ko hai?',
+    options: ['24 October', '26 October', '28 October', '30 October'],
+    answer: 1,
+  },
+  {
+    id: 'walima-date',
+    question: 'Walima kis taareekh ko hai?',
+    options: ['27 October', '28 October', '29 October', '30 October'],
+    answer: 3,
+  },
+  {
+    id: 'mehendi-weekday',
+    question: 'Mehendi kis din hai?',
+    options: ['Monday', 'Tuesday', 'Thursday', 'Saturday'],
+    answer: 1,
+  },
+  {
+    id: 'event-time',
+    question: 'Saare functions kitne baje shuru hote hain?',
+    options: ['5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM'],
+    answer: 2,
+  },
+  {
+    id: 'rest-day',
+    question: '29 October ko kaunsa function hai?',
+    options: ['Walima', 'Mehendi', 'Koi nahi — aaram ka din', 'Haldi'],
+    answer: 2,
+  },
+  {
+    id: 'nikah-walima-gap',
+    question: 'Nikah aur Walima ke beech kitne din ka gap hai?',
+    options: ['1 din', '2 din', '3 din', 'Usi din'],
+    answer: 1,
+  },
+  {
+    id: 'wedding-month',
+    question: 'Shaadi kis mahine mein hai?',
+    options: ['September 2026', 'October 2026', 'November 2026', 'December 2026'],
+    answer: 1,
+  },
+
+  // ── Order ──────────────────────────────────────────────────────────────────
+  {
+    id: 'first-event',
+    question: 'Sabse pehla function kaunsa hai?',
+    options: ['Haldi', 'Mehendi', 'Nikah', 'Walima'],
+    answer: 0,
+  },
+  {
+    id: 'last-event',
+    question: 'Sabse aakhri function kaunsa hai?',
+    options: ['Haldi', 'Mehendi', 'Nikah', 'Walima'],
+    answer: 3,
+  },
+  {
+    id: 'event-count',
+    question: 'Kitne events hain is shaadi mein?',
+    options: ['2', '3', '4', '5'],
+    answer: 2,
+  },
+
+  // ── Places ─────────────────────────────────────────────────────────────────
   {
     id: 'nikah-place',
     question: 'Nikah kahan ho raha hai?',
     options: ['Chittaranjan', 'Gaya, Bihar', 'Lucknow', 'Patna'],
+    answer: 1,
+  },
+  {
+    id: 'walima-place',
+    question: 'Walima kahan hoga?',
+    options: ['Gaya, Bihar', 'Area-8, Chittaranjan', 'Dhanbad', 'Asansol'],
+    answer: 1,
+  },
+  {
+    id: 'mehendi-place',
+    question: 'Mehendi kahan hai?',
+    options: ['Gaya, Bihar', 'Chittaranjan', 'Kolkata', 'Ranchi'],
+    answer: 1,
+  },
+  {
+    id: 'gaya-event',
+    question: 'Gaya mein kaunsa function hai?',
+    options: ['Haldi', 'Mehendi', 'Nikah', 'Walima'],
+    answer: 2,
+  },
+  {
+    id: 'chittaranjan-count',
+    question: 'Chittaranjan mein kitne functions hain?',
+    options: ['1', '2', '3', '4'],
+    answer: 2,
+  },
+
+  // ── Dress codes ────────────────────────────────────────────────────────────
+  {
+    id: 'haldi-dress',
+    question: 'Haldi ka dress code kya hai?',
+    options: ['Pista Green', 'Yellow, Mustard', 'Rose Gold', 'Plum, Deep Teal'],
     answer: 1,
   },
   {
@@ -242,17 +339,31 @@ export const QUIZ_QUESTIONS = [
     answer: 0,
   },
   {
-    id: 'walima-place',
-    question: 'Walima kahan hoga?',
-    options: ['Gaya, Bihar', 'Area-8, Chittaranjan', 'Dhanbad', 'Asansol'],
+    id: 'nikah-dress-men',
+    question: 'Nikah mein men ka dress code?',
+    options: ['Grey, Black', 'Beige Cream', 'Pista Green', 'Rose Gold'],
     answer: 1,
   },
   {
-    id: 'event-count',
-    question: 'Kitne events hain is shaadi mein?',
-    options: ['2', '3', '4', '5'],
+    id: 'nikah-dress-women',
+    question: 'Nikah mein women ka dress code?',
+    options: ['Rose Gold', 'Plum, Deep Teal', 'Yellow, Mustard', 'Pista Green'],
+    answer: 0,
+  },
+  {
+    id: 'walima-dress',
+    question: 'Walima mein women ka dress code?',
+    options: ['Rose Gold', 'Yellow, Mustard', 'Plum, Deep Teal', 'Pista Green'],
     answer: 2,
   },
+  {
+    id: 'walima-dress-men',
+    question: 'Walima mein men ka dress code?',
+    options: ['Beige Cream', 'Grey, Black', 'Yellow, Mustard', 'Rose Gold'],
+    answer: 1,
+  },
+
+  // ── This site ──────────────────────────────────────────────────────────────
   {
     id: 'hashtag',
     question: 'Shaadi ka hashtag kya hai?',
@@ -265,19 +376,59 @@ export const QUIZ_QUESTIONS = [
     answer: 0,
   },
   {
-    id: 'walima-dress',
-    question: 'Walima mein women ka dress code?',
-    options: ['Rose Gold', 'Yellow, Mustard', 'Plum, Deep Teal', 'Pista Green'],
-    answer: 2,
+    id: 'handle',
+    question: 'Is page ka username kya hai?',
+    options: ['@zain.weds.uzma', '@uzma.weds.zain', '@zainuzma2026', '@zain.uzma.shaadi'],
+    answer: 0,
   },
 ]
 
-/** Result copy by score band — `min` is the lowest score that earns it. */
-export const QUIZ_RESULTS = [
-  { min: 8, emoji: '🏆', title: 'Perfect!', message: 'Sab sahi! Aap toh ghar ke hi aadmi nikle 🤍' },
-  { min: 6, emoji: '🎉', title: 'Kamaal!', message: 'Zyaada tar sahi — aap dhyan se sab padhte ho!' },
-  { min: 4, emoji: '🙂', title: 'Theek-thaak', message: 'Aadha sahi. Events page ek baar aur dekh lo!' },
-  { min: 0, emoji: '😅', title: 'Arre!', message: 'Koi baat nahi — Events page pe sab likha hai, dobara try karo!' },
+/** How many questions one round pulls from the pool above. */
+export const QUIZ_PER_ROUND = 5
+
+/**
+ * Rank earned by a round's score. `min` is the lowest score that earns it, and
+ * the list runs high -> low so the first match wins.
+ *
+ * The title is kept alongside the badges on the More page, so it reads as
+ * something you hold rather than something you saw once on a results screen.
+ */
+export const QUIZ_TITLES = [
+  {
+    min: 5,
+    emoji: '🏆',
+    title: 'Ghar ka aadmi',
+    color: '#f7971e',
+    message: 'Paanch ke paanch sahi! Aap toh ghar ke hi nikle 🤍',
+  },
+  {
+    min: 4,
+    emoji: '🎉',
+    title: 'Pakka wala dost',
+    color: '#a855f7',
+    message: 'Chaar sahi — aap dhyan se sab padhte ho!',
+  },
+  {
+    min: 3,
+    emoji: '🙂',
+    title: 'Acche padosi',
+    color: '#0095f6',
+    message: 'Teen sahi. Thoda aur Events page dekh lo!',
+  },
+  {
+    min: 2,
+    emoji: '😅',
+    title: 'Door ke rishtedaar',
+    color: '#25d366',
+    message: 'Do sahi — shaadi mein milke sab seekh lenge!',
+  },
+  {
+    min: 0,
+    emoji: '🫣',
+    title: 'Shaadi mein naye ho?',
+    color: '#ed4956',
+    message: 'Koi baat nahi — Events page pe sab likha hai, dobara try karo!',
+  },
 ]
 
 export const QUIZ_BEST_KEY = 'quizBest'
@@ -383,6 +534,18 @@ export const ACHIEVEMENTS = [
     title: 'Poora DJ',
     how: 'Profile photo tap karke saare gaane suno',
     message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
+  },
+  {
+    // Rides the same count/total engine: `count` is the best round score and
+    // `total` is QUIZ_PER_ROUND, so a perfect round satisfies an 'all' goal.
+    id: 'quiz-perfect',
+    metric: 'quiz',
+    goal: 'all',
+    emoji: '🧠',
+    color: '#f7971e',
+    title: 'Quiz champion',
+    how: 'Quiz mein paanch ke paanch sahi karo',
+    message: 'Poora quiz sahi! Humse zyada toh aap jaante ho 🤍',
   },
 ]
 
