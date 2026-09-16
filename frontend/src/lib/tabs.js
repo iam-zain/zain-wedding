@@ -23,6 +23,10 @@ export const MORE_LINKS = [
     icon: 'rsvp',
     label: 'Confirmation',
     hint: 'Aana confirm karo — kab aur kahan',
+    // `from`/`to` drive the tile's gradient. Kept here with the entry so a new
+    // destination arrives with its own colour rather than inheriting a default.
+    from: '#25d366',
+    via: '#0aa7a0',
   },
   {
     id: 'quiz',
@@ -30,6 +34,8 @@ export const MORE_LINKS = [
     icon: 'quiz',
     label: 'Quiz',
     hint: 'Humein kitna jaante ho? Test karo',
+    from: '#f7971e',
+    via: '#ed4956',
   },
   {
     id: 'wishes',
@@ -37,6 +43,8 @@ export const MORE_LINKS = [
     icon: 'wishes',
     label: 'Wishes',
     hint: 'Dua ya paigham chhod jao 🤍',
+    from: '#a855f7',
+    via: '#0095f6',
   },
 ]
 

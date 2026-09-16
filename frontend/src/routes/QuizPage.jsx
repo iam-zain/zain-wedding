@@ -9,6 +9,10 @@ import Confetti from '../components/Confetti'
 // How long the right/wrong colours stay up before the next question slides in.
 const REVEAL_MS = 900
 
+// Indexed by option position. Long enough for any question config: falls back
+// to the number if a question ever carries more options than letters.
+const OPTION_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F']
+
 function resultFor(score) {
   // QUIZ_RESULTS is ordered high -> low, so the first match is the best band
   // this score qualifies for.
@@ -108,6 +112,17 @@ export default function QuizPage() {
                         ? 'border-ig-red bg-ig-red/15 text-ig-text'
                         : 'border-ig-border bg-ig-card text-ig-muted opacity-60'
 
+                // Letter chip matches the answer's own state, so a revealed
+                // question reads as "C was right" rather than just a colour.
+                const chip =
+                  picked === null
+                    ? 'border-ig-border text-ig-muted'
+                    : isAnswer
+                      ? 'border-wa bg-wa text-black'
+                      : isPicked
+                        ? 'border-ig-red bg-ig-red text-white'
+                        : 'border-ig-border text-ig-faint'
+
                 return (
                   <li key={option}>
                     <button
@@ -115,9 +130,15 @@ export default function QuizPage() {
                       disabled={picked !== null}
                       onClick={() => choose(i)}
                       data-testid={`quiz-option-${i}`}
-                      className={`flex w-full items-center justify-between gap-2 rounded-xl border px-4 py-3 text-left text-sm transition-colors ${state}`}
+                      className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left text-sm transition-colors ${state}`}
                     >
-                      <span className="min-w-0 break-words">{option}</span>
+                      <span
+                        aria-hidden="true"
+                        className={`flex size-6 shrink-0 items-center justify-center rounded-full border text-[11px] font-bold uppercase ${chip}`}
+                      >
+                        {OPTION_LETTERS[i] ?? i + 1}
+                      </span>
+                      <span className="min-w-0 flex-1 break-words">{option}</span>
                       {picked !== null && isAnswer && <span aria-hidden="true">✓</span>}
                       {picked !== null && isPicked && !isAnswer && <span aria-hidden="true">✕</span>}
                     </button>

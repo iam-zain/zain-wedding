@@ -315,11 +315,23 @@ export const WISHES_THANKS_MESSAGE = '🤍 Shukriya! Aapka paigham humesha yaad 
  */
 export const ACHIEVEMENTS = [
   {
+    id: 'like-1',
+    metric: 'likes',
+    goal: 1,
+    emoji: '💗',
+    color: '#ff6b81',
+    title: 'Pehla dil',
+    how: 'Kisi ek post pe dil dabao',
+    message: 'Pehla dil aapka! Bas yahin se sab shuru hota hai 🤍',
+  },
+  {
     id: 'like-3',
     metric: 'likes',
     goal: 3,
     emoji: '❤️',
+    color: '#ed4956',
     title: 'Teen dil',
+    how: 'Teen alag posts ko like karo',
     message: 'Teen posts ko dil de diya — shuruaat acchi hai!',
   },
   {
@@ -327,7 +339,9 @@ export const ACHIEVEMENTS = [
     metric: 'likes',
     goal: 'all',
     emoji: '💘',
+    color: '#f0568c',
     title: 'Dil hi dil mein',
+    how: 'Feed ki har post ko like karo',
     message: 'Har ek post ko dil diya! Aap toh sachche fan nikle 🤍',
   },
   {
@@ -335,7 +349,9 @@ export const ACHIEVEMENTS = [
     metric: 'comments',
     goal: 5,
     emoji: '💬',
+    color: '#0095f6',
     title: 'Baatuni',
+    how: 'Paanch alag posts pe comment karo',
     message: 'Paanch posts pe comment! Aapse baat karke accha laga.',
   },
   {
@@ -343,7 +359,9 @@ export const ACHIEVEMENTS = [
     metric: 'comments',
     goal: 'all',
     emoji: '🗣️',
+    color: '#00b8d4',
     title: 'Har baat pe haazir',
+    how: 'Har post pe ek comment chhod jao',
     message: 'Har post pe kuch na kuch kaha — kamaal ho aap!',
   },
   {
@@ -351,7 +369,9 @@ export const ACHIEVEMENTS = [
     metric: 'stories',
     goal: 'all',
     emoji: '👀',
+    color: '#a855f7',
     title: 'Sab dekh liya',
+    how: 'Upar ki saari stories khol ke dekho',
     message: 'Saari stories dekh daali — ek bhi nahi chhodi!',
   },
   {
@@ -359,7 +379,9 @@ export const ACHIEVEMENTS = [
     metric: 'tracks',
     goal: 'all',
     emoji: '🎧',
+    color: '#25d366',
     title: 'Poora DJ',
+    how: 'Profile photo tap karke saare gaane suno',
     message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
   },
 ]

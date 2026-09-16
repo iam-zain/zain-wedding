@@ -4,16 +4,11 @@ import { achievementById, earnedIds } from '../lib/achievements'
 import { useAchievementCounts } from '../lib/useAchievementCounts'
 import { haptic } from '../lib/haptics'
 import { useAchievements } from '../lib/storage'
-import { useToast } from './toast-context'
-
-// Gap between two badges unlocking at once, so a returning guest who already
-// qualifies for several gets them one at a time instead of a stack of toasts.
-const QUEUE_GAP_MS = 3200
-const TOAST_MS = 4500
+import { playChime } from '../lib/sound'
+import EasterEggModal from './EasterEggModal'
 
 /** Global — mount once inside Layout (needs FeedDataProvider above it). */
 export default function AchievementWatcher() {
-  const toast = useToast()
   const counts = useAchievementCounts()
   const { list: unlocked, add: unlock } = useAchievements()
 
@@ -35,19 +30,35 @@ export default function AchievementWatcher() {
     setQueue((q) => [...q, ...fresh])
   }, [counts, unlocked, unlock])
 
-  // Drain one badge at a time.
-  useEffect(() => {
-    if (queue.length === 0) return
-    const def = achievementById(queue[0])
-    if (def) {
-      haptic('achievement')
-      toast(`${ACHIEVEMENT_UNLOCK_PREFIX} ${def.emoji} ${def.title} — ${def.message}`, {
-        duration: TOAST_MS,
-      })
-    }
-    const timer = setTimeout(() => setQueue((q) => q.slice(1)), QUEUE_GAP_MS)
-    return () => clearTimeout(timer)
-  }, [queue, toast])
+  const current = queue.length > 0 ? achievementById(queue[0]) : null
 
-  return null
+  // Celebrate as the modal appears rather than on a timer, so the buzz and the
+  // chime land with the reveal.
+  useEffect(() => {
+    if (!current) return
+    haptic('achievement')
+    playChime()
+  }, [current])
+
+  // An id no longer in config (renamed or removed) would otherwise wedge the
+  // queue, since there'd be nothing to render and nothing to close.
+  useEffect(() => {
+    if (queue.length > 0 && !achievementById(queue[0])) setQueue((q) => q.slice(1))
+  }, [queue])
+
+  if (!current) return null
+
+  // Shown one at a time: the next badge only appears once this one is
+  // dismissed, so a guest who earns several at once gets them in sequence
+  // rather than stacked on top of each other.
+  return (
+    <EasterEggModal
+      key={current.id}
+      icon={current.emoji}
+      message={current.message}
+      caption={`${ACHIEVEMENT_UNLOCK_PREFIX} · ${current.title}`}
+      testId={`achievement-unlock-${current.id}`}
+      onClose={() => setQueue((q) => q.slice(1))}
+    />
+  )
 }
