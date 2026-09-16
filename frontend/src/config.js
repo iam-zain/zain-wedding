@@ -560,33 +560,50 @@ export const QUIZ_QUESTIONS = [
     answer: 2,
   },
   {
-    id: 'who-cries',
-    question: 'Shaadi mein sabse zyada kaun royega?',
-    options: ['Dulhan ki ammi', 'Dulhe ke dost', 'Videographer', 'Sab milke 🥹'],
-    answer: 3,
+    // Asks WHEN, not who: "sabse zyada kaun royega" can only be answered by
+    // pointing at somebody's relative, and this page is read by all of them.
+    id: 'when-cry',
+    question: 'Shaadi mein rulai sabse zyada kab aayegi?',
+    options: [
+      'Photo session ke beech',
+      'Khaana khatam ho jane pe',
+      'Vidai ke waqt 🥹',
+      'DJ band hone pe',
+    ],
+    answer: 2,
   },
   {
     id: 'who-late',
     question: 'Sabse late kaun pahunchega?',
-    options: ['Jo sabse door rehta hai', 'Jo sabse paas rehta hai 😄', 'Baraati', 'Photographer'],
+    options: [
+      'Jo sabse door rehta hai',
+      'Jo sabse paas rehta hai 😄',
+      'Jo raat bhar jaaga ho',
+      'Jo do alarm laga ke soya ho',
+    ],
     answer: 1,
   },
   {
     id: 'most-photos',
-    question: 'Sabse zyada photos kaun khinchwayega?',
+    question: 'Sabse zyada photos kiske honge?',
     options: [
       'Jo keh raha tha "mujhe photo pasand nahi" 📸',
-      'Dulha',
-      'Dulhan',
-      'Bachche',
+      'Jo camera dekhte hi bhaag jaye',
+      'Jo sirf ek photo maange',
+      'Jo har photo mein aankh band kar le',
     ],
     answer: 0,
   },
   {
     id: 'dance-floor',
     question: 'Dance floor pe sabse pehle kaun aayega?',
-    options: ['Dulhe ke dost', 'Chhote bachche 💃', 'Mamu', 'Koi nahi, sab sharma rahe honge'],
-    answer: 1,
+    options: [
+      'Jo keh raha tha "main toh bilkul nahi nachunga" 💃',
+      'Jo sach mein dance jaanta hai',
+      'Jo DJ ke paas khada hai',
+      'Koi nahi — sab sharma rahe honge',
+    ],
+    answer: 0,
   },
   {
     id: 'sherwani-fix',
@@ -597,8 +614,13 @@ export const QUIZ_QUESTIONS = [
   {
     id: 'food-first',
     question: 'Khaane pe sabse pehle kaun toot padega?',
-    options: ['Baraati', 'Ghar wale', 'Bachche', 'Jo subah se bhooka baitha hai 🍽️'],
-    answer: 3,
+    options: [
+      'Jo diet pe hai',
+      'Jo abhi-abhi khaake aaya hai',
+      'Jo subah se bhooka baitha hai 🍽️',
+      'Jo keh raha tha "mujhe bhookh nahi"',
+    ],
+    answer: 2,
   },
   {
     id: 'groom-fear',
@@ -612,10 +634,17 @@ export const QUIZ_QUESTIONS = [
     answer: 1,
   },
   {
+    // Asks about the outcome rather than the winner — naming the winner means
+    // naming a side of the family.
     id: 'joota-chhupai',
-    question: 'Joota chhupai mein jeetta kaun hai?',
-    options: ['Dulha', 'Dulhe ke dost', 'Saaliyan — hamesha 👠', 'Koi nahi, settlement ho jata hai'],
-    answer: 2,
+    question: 'Joota chhupai ka asli natija kya hota hai?',
+    options: [
+      'Joota mil jata hai, muft mein',
+      'Settlement ho hi jata hai 💰',
+      'Joota kabhi milta hi nahi',
+      'Koi khelta hi nahi',
+    ],
+    answer: 1,
   },
 ]
 
