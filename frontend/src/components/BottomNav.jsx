@@ -19,7 +19,7 @@ export default function BottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="content-col flex h-12 items-stretch">
-        {TABS.map(({ id, to, label, end }, i) => {
+        {TABS.map(({ id, to, label, end, color }, i) => {
           const Icon = ICONS[id]
           // Animate a tap the same way a swipe to that tab would: forward in
           // the tab order slides in from the right, backward from the left.
@@ -38,7 +38,17 @@ export default function BottomNav() {
                 // A hub page (/rsvp, /quiz, /wishes) isn't its own tab, so keep
                 // More lit rather than leaving the whole bar looking inactive.
                 const lit = isActive || (id === 'more' && isUnderMore(pathname))
-                return <Icon active={lit} size={26} className={lit ? '' : 'text-ig-text'} />
+                return (
+                  <Icon
+                    active={lit}
+                    size={26}
+                    className={lit ? '' : 'text-ig-text'}
+                    // The icons paint themselves from currentColor, so setting
+                    // the colour here tints the whole glyph. Inactive tabs get
+                    // no inline colour and fall back to the white class above.
+                    style={lit ? { color } : undefined}
+                  />
+                )
               }}
             </NavLink>
           )

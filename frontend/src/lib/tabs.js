@@ -3,10 +3,13 @@
 //
 // Order matters: 'right' means "one tab further along this list" (and plays
 // the slide-from-right animation), 'left' means one tab back.
+// `color` is worn by the icon ONLY while its tab is active; the other two stay
+// plain white, so the bar reads as "you are here" at a glance rather than as a
+// row of competing colours.
 export const TABS = [
-  { id: 'feed', to: '/', label: 'Feed', end: true },
-  { id: 'events', to: '/events', label: 'Events', end: false },
-  { id: 'more', to: '/more', label: 'More', end: false },
+  { id: 'feed', to: '/', label: 'Feed', end: true, color: '#ed4956' },
+  { id: 'events', to: '/events', label: 'Events', end: false, color: '#f7971e' },
+  { id: 'more', to: '/more', label: 'More', end: false, color: '#a855f7' },
 ]
 
 /**
