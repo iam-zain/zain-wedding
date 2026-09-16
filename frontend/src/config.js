@@ -381,6 +381,78 @@ export const QUIZ_QUESTIONS = [
     options: ['@zain.weds.uzma', '@uzma.weds.zain', '@zainuzma2026', '@zain.uzma.shaadi'],
     answer: 0,
   },
+
+  // ── About the couple ───────────────────────────────────────────────────────
+  // UNLIKE everything above, these answers come from Zain & Uzma directly and
+  // are NOT derivable from site.json — the verification script that checks the
+  // rest cannot check these. If a detail here changes, it has to be corrected
+  // by hand; nothing else in the codebase knows it.
+  {
+    id: 'met-year',
+    question: 'Zain aur Uzma kis saal mile?',
+    options: ['2023', '2024', '2025', '2026'],
+    answer: 3,
+  },
+  {
+    id: 'how-met',
+    question: 'Rishta kaise aaya?',
+    options: ['Family ke through', 'College mein', 'Kaam ki jagah pe', 'Doston ke through'],
+    answer: 0,
+  },
+  {
+    id: 'baat-pakki',
+    question: 'Baat pakki kis din hui thi?',
+    options: ['31 March 2026', '1 May 2026', '31 May 2026', '15 June 2026'],
+    answer: 2,
+  },
+  {
+    id: 'zain-city',
+    question: 'Zain abhi kahan rehta hai?',
+    options: ['Hyderabad', 'Chittaranjan', 'Gaya', 'Delhi'],
+    answer: 0,
+  },
+  {
+    id: 'home-distance',
+    question: 'Dono ke gharon ke beech kitni doori hai?',
+    options: ['~100 km', '~300 km', '~600 km', '~1000 km'],
+    answer: 1,
+  },
+  {
+    id: 'zain-food',
+    question: 'Zain ka favourite khana?',
+    options: ['Non-veg — kuch bhi chalega', 'Pure veg thali', 'Sirf mithai', 'Chinese'],
+    answer: 0,
+  },
+  {
+    id: 'uzma-food',
+    question: 'Uzma ka favourite khana?',
+    options: ['Biryani', 'Pizza', 'Dosa', 'Chowmein'],
+    answer: 0,
+  },
+  {
+    id: 'talks-more',
+    question: 'Dono mein zyada baatein kaun karta hai?',
+    options: ['Zain', 'Uzma', 'Dono barabar', 'Dono chup rehte hain'],
+    answer: 2,
+  },
+  {
+    id: 'cooking',
+    question: 'Cooking kisko aati hai?',
+    options: ['Sirf Zain ko', 'Sirf Uzma ko', 'Dono ko', 'Kisi ko nahi'],
+    answer: 2,
+  },
+  {
+    id: 'zain-siblings',
+    question: 'Zain ke ghar mein total kitne bhai-behen hain?',
+    options: ['2', '3', '4', '5'],
+    answer: 1,
+  },
+  {
+    id: 'uzma-order',
+    question: 'Uzma behno mein kaunse number pe hai?',
+    options: ['Pehli', 'Doosri', 'Teesri', 'Chauthi'],
+    answer: 1,
+  },
 ]
 
 /** How many questions one round pulls from the pool above. */
