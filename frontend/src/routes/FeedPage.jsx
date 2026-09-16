@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { siteConfig, LOGO_TAP_MESSAGE, PULL_REFRESH_EGG_MESSAGE, FEED_END_MESSAGE } from '../config'
-import { hasAccess, isActiveNow, isExpired, useUnlockedTiers } from '../lib/access'
 import { useFeedData } from '../lib/feedData'
+import { useVisibleFeed } from '../lib/useVisibleFeed'
 import { playChime } from '../lib/sound'
 import Countdown from '../components/Countdown'
 import ProfileHeader from '../components/ProfileHeader'
@@ -14,15 +14,13 @@ import PullToRefresh from '../components/PullToRefresh'
 import HeroGlow from '../components/HeroGlow'
 import LiveViewers from '../components/LiveViewers'
 
-const byCreatedDesc = (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
-
 // Brand-logo tap easter egg.
 const LOGO_TAP_WINDOW_MS = 3000
 const LOGO_TAPS_REQUIRED = 7
 
 export default function FeedPage() {
-  const { posts, stories, likeCounts, error, offline, refresh, setLikeCount } = useFeedData()
-  const unlocked = useUnlockedTiers()
+  const { likeCounts, error, offline, refresh, setLikeCount } = useFeedData()
+  const { visiblePosts, visibleStories } = useVisibleFeed()
   const logoTapTimesRef = useRef([])
   const [logoEgg, setLogoEgg] = useState(false)
   const [pullEgg, setPullEgg] = useState(false)
@@ -40,14 +38,6 @@ export default function FeedPage() {
     playChime()
   }
 
-  const visiblePosts = useMemo(() => {
-    if (!posts) return []
-    const now = Date.now()
-    return posts
-      .filter((p) => !p.hidden && hasAccess(p.access, unlocked) && isActiveNow(p, now))
-      .sort(byCreatedDesc)
-  }, [posts, unlocked])
-
   // "Fan favorite" badge — ranked by likes_base (synchronous, admin-seeded)
   // rather than each PostCard's own live-polled count, so it doesn't need
   // to wait on N separate network calls to settle.
@@ -59,14 +49,6 @@ export default function FeedPage() {
     )
     return (top.likes_base || 0) > 0 ? top.id : null
   }, [visiblePosts])
-
-  const visibleStories = useMemo(() => {
-    if (!stories) return []
-    const now = Date.now()
-    return stories
-      .filter((s) => !s.hidden && hasAccess(s.access, unlocked) && !isExpired(s, now))
-      .sort(byCreatedDesc)
-  }, [stories, unlocked])
 
   const hasEndCard = !error && visiblePosts.length > 0
 
