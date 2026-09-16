@@ -261,9 +261,12 @@ export const QUIZ_QUESTIONS = [
     answer: 2,
   },
   {
+    // The gap is the days BETWEEN the two — 29 October alone, so one day.
+    // This once answered "2 din", which is the difference between the dates,
+    // not the gap. Options now name the free day so it can't be read twice.
     id: 'nikah-walima-gap',
     question: 'Nikah aur Walima ke beech kitne din ka gap hai?',
-    options: ['1 din', '2 din', '3 din', 'Usi din'],
+    options: ['Koi gap nahi — usi din', 'Ek din (29 October free)', 'Do din', 'Teen din'],
     answer: 1,
   },
   {
@@ -388,6 +391,20 @@ export const QUIZ_QUESTIONS = [
     answer: 1,
   },
   {
+    id: 'chittaranjan-district',
+    question: 'Chittaranjan kis zile mein hai?',
+    options: ['Purba Bardhaman', 'Paschim Bardhaman', 'Birbhum', 'Bankura'],
+    answer: 1,
+  },
+  {
+    // Gaya is its own district as well as a city — which is exactly why it
+    // makes a decent question.
+    id: 'gaya-district',
+    question: 'Gaya kis zile mein hai?',
+    options: ['Patna', 'Nalanda', 'Gaya', 'Aurangabad'],
+    answer: 2,
+  },
+  {
     // Pays off SECRET_MESSAGES, which tells whoever finds it the station code
     // "ab quiz mein aa sakta hai". Now it does.
     id: 'crj-code',
@@ -500,9 +517,24 @@ export const QUIZ_QUESTIONS = [
     answer: 3,
   },
 
+  {
+    id: 'par-nani',
+    question: 'Kiski par-nani abhi hayat se hain?',
+    options: ['Zain ki', 'Uzma ki', 'Dono ki', 'Kisi ki nahi'],
+    answer: 1,
+  },
+  {
+    id: 'rishta-first-visit',
+    question: 'Rishte ke liye pehle kiske ghar gaye the?',
+    options: ['Uzma ke ghar', 'Zain ke ghar', 'Dono ek saath mile', 'Kisi teesri jagah'],
+    answer: 0,
+  },
+
   // ── Just for fun ───────────────────────────────────────────────────────────
-  // No right answer in any factual sense — the joke is the answer. These make
-  // no claim about Zain or Uzma, so they need no fact-checking.
+  // No right answer in any factual sense — the joke is the answer. Written so
+  // the punchline never pins anything on a named, real person: "sab milke" and
+  // "jo sabse paas rehta hai" are jokes about weddings, not about anyone's
+  // family. Keep any future additions to that rule.
   {
     id: 'baraat-time',
     question: 'Baraat time pe pahunchegi?',
@@ -525,6 +557,64 @@ export const QUIZ_QUESTIONS = [
     id: 'mehendi-dry',
     question: 'Mehendi sukhne mein kitna time lagta hai?',
     options: ['5 minute', 'Ek ghanta', 'Poori raat 🌙', 'Sukhti hi nahi'],
+    answer: 2,
+  },
+  {
+    id: 'who-cries',
+    question: 'Shaadi mein sabse zyada kaun royega?',
+    options: ['Dulhan ki ammi', 'Dulhe ke dost', 'Videographer', 'Sab milke 🥹'],
+    answer: 3,
+  },
+  {
+    id: 'who-late',
+    question: 'Sabse late kaun pahunchega?',
+    options: ['Jo sabse door rehta hai', 'Jo sabse paas rehta hai 😄', 'Baraati', 'Photographer'],
+    answer: 1,
+  },
+  {
+    id: 'most-photos',
+    question: 'Sabse zyada photos kaun khinchwayega?',
+    options: [
+      'Jo keh raha tha "mujhe photo pasand nahi" 📸',
+      'Dulha',
+      'Dulhan',
+      'Bachche',
+    ],
+    answer: 0,
+  },
+  {
+    id: 'dance-floor',
+    question: 'Dance floor pe sabse pehle kaun aayega?',
+    options: ['Dulhe ke dost', 'Chhote bachche 💃', 'Mamu', 'Koi nahi, sab sharma rahe honge'],
+    answer: 1,
+  },
+  {
+    id: 'sherwani-fix',
+    question: 'Dulhe ki sherwani kitni baar theek ki jayegi?',
+    options: ['Ek baar', 'Do-teen baar', 'Har photo se pehle', 'Zaroorat hi nahi padegi'],
+    answer: 2,
+  },
+  {
+    id: 'food-first',
+    question: 'Khaane pe sabse pehle kaun toot padega?',
+    options: ['Baraati', 'Ghar wale', 'Bachche', 'Jo subah se bhooka baitha hai 🍽️'],
+    answer: 3,
+  },
+  {
+    id: 'groom-fear',
+    question: 'Har dulhe ka sabse bada darr kya hota hai?',
+    options: [
+      'Stage pe akele baithna',
+      'Achanak speech dene ko keh dena 😬',
+      'Sherwani ka button',
+      'Joota chhupai',
+    ],
+    answer: 1,
+  },
+  {
+    id: 'joota-chhupai',
+    question: 'Joota chhupai mein jeetta kaun hai?',
+    options: ['Dulha', 'Dulhe ke dost', 'Saaliyan — hamesha 👠', 'Koi nahi, settlement ho jata hai'],
     answer: 2,
   },
 ]
