@@ -11,6 +11,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { useSyncExternalStore } from 'react'
 import { MUSIC_TRACKS } from './musicConfig'
+import { addToSet, KEYS } from './storage'
 
 const VOLUME = 0.85
 
@@ -47,9 +48,14 @@ export function toggleMusic() {
     el.pause()
     return
   }
-  el.src = pickRandom(MUSIC_TRACKS)
+  const track = pickRandom(MUSIC_TRACKS)
+  el.src = track
   el.volume = VOLUME
-  el.play().catch(() => emit()) // autoplay blocked — element stays paused
+  el.play()
+    // Recorded only once playback actually starts, so a track blocked by
+    // autoplay policy never counts toward the "heard them all" badge.
+    .then(() => addToSet(KEYS.playedTracks, track))
+    .catch(() => emit()) // autoplay blocked — element stays paused
 }
 
 /**

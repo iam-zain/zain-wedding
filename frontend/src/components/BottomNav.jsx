@@ -1,11 +1,11 @@
 import { NavLink, useLocation } from 'react-router-dom'
-import { CalendarIcon, HomeIcon, RsvpIcon } from './icons'
-import { TABS, tabIndexFor } from '../lib/tabs'
+import { CalendarIcon, GridIcon, HomeIcon } from './icons'
+import { TABS, isUnderMore, tabIndexFor } from '../lib/tabs'
 
 const ICONS = {
   feed: HomeIcon,
   events: CalendarIcon,
-  rsvp: RsvpIcon,
+  more: GridIcon,
 }
 
 export default function BottomNav() {
@@ -34,7 +34,12 @@ export default function BottomNav() {
               data-testid={`bottom-nav-tab-${label.toLowerCase()}`}
               className="flex flex-1 items-center justify-center text-ig-text"
             >
-              {({ isActive }) => <Icon active={isActive} size={26} className={isActive ? '' : 'text-ig-text'} />}
+              {({ isActive }) => {
+                // A hub page (/rsvp, /quiz, /wishes) isn't its own tab, so keep
+                // More lit rather than leaving the whole bar looking inactive.
+                const lit = isActive || (id === 'more' && isUnderMore(pathname))
+                return <Icon active={lit} size={26} className={lit ? '' : 'text-ig-text'} />
+              }}
             </NavLink>
           )
         })}

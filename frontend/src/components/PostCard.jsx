@@ -1,7 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
-import { siteConfig, SITE_URL, isLikeMilestone, likeMilestoneMessage, MOST_LOVED_LABEL } from '../config'
+import {
+  siteConfig,
+  SITE_URL,
+  isLikeMilestone,
+  likeMilestoneMessage,
+  MOST_LOVED_LABEL,
+  PINCH_ZOOM_MESSAGES,
+} from '../config'
 import { likePost } from '../lib/api'
 import { shareUrl } from '../lib/share'
+import { haptic } from '../lib/haptics'
 import { relativeTime } from '../lib/time'
 import { getUserId, useBookmarkedPosts, useLikedPosts } from '../lib/storage'
 import Carousel from './Carousel'
@@ -72,6 +80,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   async function like() {
     if (liked || likeSentRef.current) return // like-once (backend only increments)
     likeSentRef.current = true
+    haptic('like')
     addLike(post.id)
     const optimisticCount = shownLiveCount + 1
     setLiveCount(optimisticCount)
@@ -204,7 +213,8 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   )
 
   function onPinchZoom() {
-    toast('🤍 Itna zoom mat karo, sab kuch dil se dikhta hai!')
+    haptic('tap')
+    toast(PINCH_ZOOM_MESSAGES[Math.floor(Math.random() * PINCH_ZOOM_MESSAGES.length)])
   }
 
   async function share() {

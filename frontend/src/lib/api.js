@@ -3,7 +3,14 @@
 // fall back to localStorage so the app is fully demoable without a backend.
 // Content (posts/stories) is always fetched from the data URL.
 // ─────────────────────────────────────────────────────────────────────────────
-import { API_BASE_URL, API_KEY, DATA_BASE_URL, LOCAL_MODE } from '../config'
+import {
+  API_BASE_URL,
+  API_KEY,
+  DATA_BASE_URL,
+  LOCAL_MODE,
+  MAX_COMMENTS_PER_POST,
+  WISHES_SHARDS,
+} from '../config'
 import { readJSON, writeJSON } from './storage'
 
 // ── Content (posts.json / stories.json) ──────────────────────────────────────
@@ -141,6 +148,68 @@ export async function submitRsvp(entry) {
   })
   if (!res.ok) throw new Error(`RSVP failed: ${res.status}`)
   return true
+}
+
+// ── Wishes wall ───────────────────────────────────────────────────────────────
+// Stored as comments on synthetic post ids (see WISHES_SHARDS). This reuses the
+// comment endpoints that are ALREADY deployed, so the wall works without any
+// backend change — at the cost of the same 25-per-post cap, which the shards
+// work around.
+
+/**
+ * Reads every wish, newest first.
+ *
+ * Walks shards in order and stops at the first one that isn't full. Because
+ * writes always target the lowest non-full shard, a non-full shard means every
+ * later shard is still empty — so the common case costs exactly one request
+ * rather than one per shard, which matters against a stage throttled to
+ * 10 rps / 5 burst globally.
+ *
+ * Returns `{ wishes, nextShard, full }` — `nextShard` is where a new wish
+ * should go, or null when every shard is full.
+ */
+export async function getWishes() {
+  const wishes = []
+  let nextShard = null
+
+  for (const shard of WISHES_SHARDS) {
+    let batch = []
+    try {
+      batch = await getComments(shard)
+    } catch {
+      // A shard that fails to load shouldn't blank the whole wall — show what
+      // we have and let the caller retry.
+      break
+    }
+    wishes.push(...batch)
+    if (batch.length < MAX_COMMENTS_PER_POST) {
+      nextShard = shard
+      break
+    }
+  }
+
+  wishes.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+  return { wishes, nextShard, full: nextShard === null }
+}
+
+/**
+ * Adds a wish, starting at `preferredShard` and moving on if it's full.
+ *
+ * The retry matters: two guests can read the same shard as having room and
+ * race for its last slot. The loser gets a 409 and silently lands in the next
+ * shard instead of seeing an error for something they did nothing wrong in.
+ */
+export async function postWish({ text, userName, userId }, preferredShard) {
+  const start = Math.max(0, WISHES_SHARDS.indexOf(preferredShard))
+  for (let i = start; i < WISHES_SHARDS.length; i++) {
+    try {
+      return await postComment(WISHES_SHARDS[i], { text, userName, userId })
+    } catch (err) {
+      if (err?.message !== 'COMMENT_LIMIT') throw err
+      // This shard filled up between the read and the write — try the next.
+    }
+  }
+  throw new Error('WISHES_FULL')
 }
 
 // ── Comments ──────────────────────────────────────────────────────────────────

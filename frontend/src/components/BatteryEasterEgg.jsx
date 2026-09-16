@@ -1,13 +1,17 @@
 import { useEffect, useRef } from 'react'
-import { BATTERY_LOW_MESSAGE } from '../config'
+import { BATTERY_CHARGING_MESSAGE, BATTERY_LOW_MESSAGE } from '../config'
 import { useToast } from './toast-context'
 
 const LOW_LEVEL = 0.15
 
-/** Global — mount once in Layout. Fires once per session if the Battery API reports a low, non-charging device. No-ops where unsupported (most browsers). */
+/** Global — mount once in Layout. Fires once per session if the Battery API reports a low, non-charging device — or, separately, once when the device is plugged in. No-ops where unsupported (most browsers). */
 export default function BatteryEasterEgg() {
   const toast = useToast()
   const firedRef = useRef(false)
+  const chargeFiredRef = useRef(false)
+  // Whether we've seen this device unplugged. A guest who opens the app while
+  // already charging shouldn't be told it "started" charging.
+  const sawUnpluggedRef = useRef(false)
 
   useEffect(() => {
     if (typeof navigator === 'undefined' || typeof navigator.getBattery !== 'function') return
@@ -16,7 +20,21 @@ export default function BatteryEasterEgg() {
     let cancelled = false
 
     const check = () => {
-      if (firedRef.current || !battery) return
+      if (!battery) return
+
+      if (!battery.charging) sawUnpluggedRef.current = true
+
+      // Plugged in after we'd seen it running on battery.
+      if (
+        battery.charging &&
+        sawUnpluggedRef.current &&
+        !chargeFiredRef.current
+      ) {
+        chargeFiredRef.current = true
+        toast(BATTERY_CHARGING_MESSAGE, { duration: 4500 })
+      }
+
+      if (firedRef.current) return
       if (battery.level <= LOW_LEVEL && !battery.charging) {
         firedRef.current = true
         toast(BATTERY_LOW_MESSAGE, { duration: 5000 })

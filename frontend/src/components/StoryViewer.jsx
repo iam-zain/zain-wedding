@@ -4,6 +4,7 @@ import { STORY_LONGPRESS_MESSAGES } from '../config'
 import { stopStoryMusic } from '../lib/musicPlayer'
 import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
+import StoryReplyBar from './StoryReplyBar'
 import { CloseIcon } from './icons'
 
 const LONG_PRESS_MS = 600
@@ -33,6 +34,17 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
   // Keyboard + scroll lock
   useEffect(() => {
     const onKey = (e) => {
+      // Typing a reply must not drive the story. Arrow keys move the caret
+      // inside the input, and Escape gives the guest a way to bail out of the
+      // field without also closing the whole viewer.
+      const el = e.target
+      const typing =
+        el instanceof HTMLElement &&
+        (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)
+      if (typing) {
+        if (e.key === 'Escape') el.blur()
+        return
+      }
       if (e.key === 'Escape') onClose()
       else if (e.key === 'ArrowRight') next()
       else if (e.key === 'ArrowLeft') prev()
@@ -134,6 +146,9 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
         {/* Tap zones */}
         <button type="button" aria-label="Previous" data-testid="story-viewer-prev" onClick={prev} className="egg-tap absolute inset-y-0 left-0 z-10 w-1/3" />
         <button type="button" aria-label="Next" data-testid="story-viewer-next" onClick={next} className="egg-tap absolute inset-y-0 right-0 z-10 w-2/3" />
+
+        {/* Reply bar sits above the tap zones so it can be used at all. */}
+        <StoryReplyBar storyId={current.id} onActivity={handleLongPressEnd} />
       </div>
 
       {egg && (

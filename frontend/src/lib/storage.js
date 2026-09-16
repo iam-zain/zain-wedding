@@ -11,6 +11,9 @@ export const KEYS = {
   viewedStories: 'viewedStories',
   likedPosts: 'likedPosts',
   bookmarkedPosts: 'bookmarkedPosts',
+  commentedPosts: 'commentedPosts',
+  playedTracks: 'playedTracks',
+  achievements: 'achievements',
 }
 
 // ── Raw JSON get/set ─────────────────────────────────────────────────────────
@@ -106,3 +109,17 @@ function useStringSet(key) {
 export const useViewedStories = () => useStringSet(KEYS.viewedStories)
 export const useLikedPosts = () => useStringSet(KEYS.likedPosts)
 export const useBookmarkedPosts = () => useStringSet(KEYS.bookmarkedPosts)
+export const useCommentedPosts = () => useStringSet(KEYS.commentedPosts)
+export const usePlayedTracks = () => useStringSet(KEYS.playedTracks)
+export const useAchievements = () => useStringSet(KEYS.achievements)
+
+/**
+ * Non-reactive set insert, for modules that live outside React (the music
+ * player) and still need to record progress. Writing through writeJSON keeps
+ * the pub/sub emit, so any mounted hook on the same key re-renders.
+ */
+export function addToSet(key, id) {
+  const cur = readJSON(key, [])
+  if (!Array.isArray(cur) || cur.includes(id)) return
+  writeJSON(key, [...cur, id])
+}

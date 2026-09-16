@@ -11,6 +11,8 @@ import {
 import { submitRsvp } from '../lib/api'
 import { getUserId } from '../lib/storage'
 import { useToast } from '../components/toast-context'
+import BackHeader from '../components/BackHeader'
+import { haptic } from '../lib/haptics'
 
 const RSVP_KEY = 'rsvp_submission'
 
@@ -286,16 +288,13 @@ export default function RSVPPage() {
     // effect above takes it from here.
     saveSubmission(entry)
     setSubmitted(entry)
+    haptic('success')
     toast('🎉 Shukriya! Confirmation mil gaya.')
   }
 
   return (
     <div data-testid="rsvp-page">
-      <header className="sticky top-0 z-20 border-b border-ig-border bg-ig-black/90 backdrop-blur">
-        <div className="flex h-12 items-center justify-center px-4">
-          <span className="font-logo text-2xl leading-none">Confirmation</span>
-        </div>
-      </header>
+      <BackHeader title="Confirmation" />
 
       <div className="px-4 pt-5">
         <h2 className="text-lg font-semibold">Aana confirm karo 🎊</h2>

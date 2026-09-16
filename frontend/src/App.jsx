@@ -6,6 +6,9 @@ import { FeedDataProvider, useFeedData } from './lib/feedData'
 import FeedPage from './routes/FeedPage'
 import EventsPage from './routes/EventsPage'
 import RSVPPage from './routes/RSVPPage'
+import MorePage from './routes/MorePage'
+import QuizPage from './routes/QuizPage'
+import WishesPage from './routes/WishesPage'
 import SecretPage from './routes/SecretPage'
 import { consumeAccessKeyFromUrl } from './lib/access'
 import { getUserId } from './lib/storage'
@@ -42,7 +45,10 @@ export default function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<FeedPage />} />
             <Route path="/events" element={<EventsPage />} />
+            <Route path="/more" element={<MorePage />} />
             <Route path="/rsvp" element={<RSVPPage />} />
+            <Route path="/quiz" element={<QuizPage />} />
+            <Route path="/wishes" element={<WishesPage />} />
             <Route path="/psst" element={<SecretPage />} />
             <Route path="*" element={<FeedPage />} />
           </Route>

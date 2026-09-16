@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { MAX_COMMENTS_PER_POST, MAX_COMMENT_LENGTH, COMMENT_EASTER_EGG } from '../config'
 import { getComments, postComment } from '../lib/api'
-import { getUserId, useUserName } from '../lib/storage'
+import { getUserId, useCommentedPosts, useUserName } from '../lib/storage'
 import { playChime } from '../lib/sound'
+import { haptic } from '../lib/haptics'
 import { useToast } from './toast-context'
 import EasterEggModal from './EasterEggModal'
 
@@ -17,6 +18,7 @@ export default function Comments({ postId, expanded, onToggle }) {
   const [error, setError] = useState(false)
 
   const [savedName, setSavedName] = useUserName()
+  const { add: addCommented } = useCommentedPosts()
   const [nameDraft, setNameDraft] = useState('')
   const [text, setText] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -56,6 +58,10 @@ export default function Comments({ postId, expanded, onToggle }) {
       const created = await postComment(postId, { text: body, userName: name, userId })
       if (!savedName) setSavedName(name)
       setComments((cur) => [...(cur || []), created])
+      // Recorded only after the write succeeds, so a failed comment never
+      // counts toward the commenting badges.
+      addCommented(postId)
+      haptic('tap')
       setText('')
       setNameDraft('')
       if (body.toLowerCase().includes(COMMENT_EASTER_EGG.word)) {

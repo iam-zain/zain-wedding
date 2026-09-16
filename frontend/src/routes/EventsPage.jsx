@@ -1,6 +1,9 @@
 import { siteConfig } from '../config'
 import { formatEventDate } from '../lib/time'
-import { ExternalLinkIcon } from '../components/icons'
+import { buildIcs, downloadIcs } from '../lib/calendar'
+import { haptic } from '../lib/haptics'
+import { useToast } from '../components/toast-context'
+import { CalendarIcon, ExternalLinkIcon } from '../components/icons'
 
 const DRESSCODE_PLACEHOLDER = '/assets/dresscode/placeholder.svg'
 
@@ -60,7 +63,21 @@ function EventCard({ ev, last }) {
 }
 
 export default function EventsPage() {
+  const toast = useToast()
   const events = [...(siteConfig.events || [])].sort(byDateAsc)
+
+  function addAllToCalendar() {
+    if (events.length === 0) return
+    haptic('success')
+    downloadIcs(
+      'zain-uzma-wedding.ics',
+      buildIcs(events, {
+        hashtag: siteConfig.wedding?.hashtag,
+        siteUrl: siteConfig.profile?.link,
+      }),
+    )
+    toast('📅 Calendar file ban gayi — apne calendar mein add kar lo!', { duration: 4500 })
+  }
 
   return (
     <div data-testid="events-page">
@@ -75,6 +92,16 @@ export default function EventsPage() {
         <p className="mt-0.5 text-sm text-ig-muted">
           Har rasm ka schedule — RSVP zaroor karna!
         </p>
+
+        <button
+          type="button"
+          onClick={addAllToCalendar}
+          data-testid="events-add-all-calendar"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-ig-border bg-ig-elevated py-2.5 text-sm font-semibold active:opacity-80"
+        >
+          <CalendarIcon size={18} />
+          Saare events calendar mein daalo
+        </button>
       </div>
 
       <div className="px-4 pt-5">

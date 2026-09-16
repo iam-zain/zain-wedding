@@ -176,6 +176,197 @@ export const WALEEMA_EGG_MESSAGES = [
   "🎶 Gaana-bajana, khaana aur ek yaadgaar shaam — Waleema mein zaroor aana!",
 ]
 
+/** Shown once when the device loses its connection. */
+export const OFFLINE_MESSAGE = "📴 Network gaya, par pyaar nahi 🤍 Jo dekh chuke ho woh yahin hai."
+
+/** Shown once when the connection comes back. */
+export const ONLINE_MESSAGE = "📶 Network wapas aa gaya — chalo, aage dekhte hain!"
+
+/** Shown once per session when the device is plugged in and charging. */
+export const BATTERY_CHARGING_MESSAGE = "🔌 Charge ho raha hai? Ab toh poori raat scroll karo!"
+
+/** Shown when a screenshot is (heuristically) detected. */
+export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej do — group mein daal dena!"
+
+/** Shown the first time the phone is turned sideways. */
+export const LANDSCAPE_MESSAGE = "🔄 Phone ghuma diya! Ab tasveerein aur badi lagengi — maza aayega."
+
+/** Shown when a guest pinch-zooms a post photo. One picked at random. */
+export const PINCH_ZOOM_MESSAGES = [
+  "🤍 Itna zoom mat karo, sab kuch dil se dikhta hai!",
+  "🔍 Itna paas se dekh rahe ho? Nazar na lag jaaye!",
+  "👀 Zoom karke kya dhoond rahe ho? Hum toh saamne hi hain!",
+]
+
+// ── Story replies ────────────────────────────────────────────────────────────
+/** Quick-reaction emoji on the story viewer, Instagram-style. */
+export const STORY_REACTIONS = ['❤️', '🔥', '😂', '🥹', '👏', '🤍']
+
+export const STORY_REPLY_THANKS = '💬 Reply mil gaya — shukriya!'
+
+// ── Quiz ─────────────────────────────────────────────────────────────────────
+/**
+ * "How well do you know us" questions. Scored entirely on the device — no
+ * backend, no submission, nothing stored beyond the best score below.
+ *
+ * Every answer here is drawn from the `events` block in config/site.json, so
+ * these two MUST be kept in step: change a date, venue or dress code there and
+ * the matching question here goes stale. (Same arrangement as the RSVP_*
+ * windows, which are mirrored between config.js and the rsvp Lambda.)
+ *
+ * `answer` is an index into `options`.
+ */
+export const QUIZ_QUESTIONS = [
+  {
+    id: 'nikah-date',
+    question: 'Nikah kis din hai?',
+    options: ['26 October 2026', '27 October 2026', '28 October 2026', '30 October 2026'],
+    answer: 2,
+  },
+  {
+    id: 'haldi-dress',
+    question: 'Haldi ka dress code kya hai?',
+    options: ['Pista Green', 'Yellow, Mustard', 'Rose Gold', 'Plum, Deep Teal'],
+    answer: 1,
+  },
+  {
+    id: 'nikah-place',
+    question: 'Nikah kahan ho raha hai?',
+    options: ['Chittaranjan', 'Gaya, Bihar', 'Lucknow', 'Patna'],
+    answer: 1,
+  },
+  {
+    id: 'mehendi-dress',
+    question: 'Mehendi ke liye kaunsa rang?',
+    options: ['Pista Green / Floral', 'Beige Cream', 'Grey, Black', 'Yellow, Mustard'],
+    answer: 0,
+  },
+  {
+    id: 'walima-place',
+    question: 'Walima kahan hoga?',
+    options: ['Gaya, Bihar', 'Area-8, Chittaranjan', 'Dhanbad', 'Asansol'],
+    answer: 1,
+  },
+  {
+    id: 'event-count',
+    question: 'Kitne events hain is shaadi mein?',
+    options: ['2', '3', '4', '5'],
+    answer: 2,
+  },
+  {
+    id: 'hashtag',
+    question: 'Shaadi ka hashtag kya hai?',
+    options: [
+      '#ZainAurUzmaKiShaadi',
+      '#ZainWedsUzma2026',
+      '#UzmaAurZain',
+      '#ZainUzmaForever',
+    ],
+    answer: 0,
+  },
+  {
+    id: 'walima-dress',
+    question: 'Walima mein women ka dress code?',
+    options: ['Rose Gold', 'Yellow, Mustard', 'Plum, Deep Teal', 'Pista Green'],
+    answer: 2,
+  },
+]
+
+/** Result copy by score band — `min` is the lowest score that earns it. */
+export const QUIZ_RESULTS = [
+  { min: 8, emoji: '🏆', title: 'Perfect!', message: 'Sab sahi! Aap toh ghar ke hi aadmi nikle 🤍' },
+  { min: 6, emoji: '🎉', title: 'Kamaal!', message: 'Zyaada tar sahi — aap dhyan se sab padhte ho!' },
+  { min: 4, emoji: '🙂', title: 'Theek-thaak', message: 'Aadha sahi. Events page ek baar aur dekh lo!' },
+  { min: 0, emoji: '😅', title: 'Arre!', message: 'Koi baat nahi — Events page pe sab likha hai, dobara try karo!' },
+]
+
+export const QUIZ_BEST_KEY = 'quizBest'
+
+// ── Wishes wall ──────────────────────────────────────────────────────────────
+/**
+ * Synthetic post ids the wishes wall is stored under.
+ *
+ * The deployed comment API caps each post at MAX_COMMENTS_PER_POST (25), so a
+ * single bucket would reject the 26th guest. Spreading across shards lifts the
+ * ceiling to shards x 25 without touching the backend. Shards fill strictly in
+ * order, which is what lets the reader stop at the first non-full one.
+ *
+ * Only ever APPEND to this list — removing or reordering an id orphans every
+ * wish already stored under it.
+ */
+export const WISHES_SHARDS = [
+  'wishes-1',
+  'wishes-2',
+  'wishes-3',
+  'wishes-4',
+  'wishes-5',
+  'wishes-6',
+]
+
+export const WISHES_EMPTY_MESSAGE = 'Abhi tak koi paigham nahi — pehla aap likho 🤍'
+export const WISHES_FULL_MESSAGE = 'Wishes wall bhar gayi 🙏 Itna pyaar dene ke liye shukriya!'
+export const WISHES_THANKS_MESSAGE = '🤍 Shukriya! Aapka paigham humesha yaad rahega.'
+
+// ── Achievements ─────────────────────────────────────────────────────────────
+/**
+ * Unlockable badges. `metric` names the counter the engine feeds in and `goal`
+ * is either a number or 'all' (meaning "every item that exists right now").
+ * Order is the order they appear on the badge shelf.
+ */
+export const ACHIEVEMENTS = [
+  {
+    id: 'like-3',
+    metric: 'likes',
+    goal: 3,
+    emoji: '❤️',
+    title: 'Teen dil',
+    message: 'Teen posts ko dil de diya — shuruaat acchi hai!',
+  },
+  {
+    id: 'like-all',
+    metric: 'likes',
+    goal: 'all',
+    emoji: '💘',
+    title: 'Dil hi dil mein',
+    message: 'Har ek post ko dil diya! Aap toh sachche fan nikle 🤍',
+  },
+  {
+    id: 'comment-5',
+    metric: 'comments',
+    goal: 5,
+    emoji: '💬',
+    title: 'Baatuni',
+    message: 'Paanch posts pe comment! Aapse baat karke accha laga.',
+  },
+  {
+    id: 'comment-all',
+    metric: 'comments',
+    goal: 'all',
+    emoji: '🗣️',
+    title: 'Har baat pe haazir',
+    message: 'Har post pe kuch na kuch kaha — kamaal ho aap!',
+  },
+  {
+    id: 'stories-all',
+    metric: 'stories',
+    goal: 'all',
+    emoji: '👀',
+    title: 'Sab dekh liya',
+    message: 'Saari stories dekh daali — ek bhi nahi chhodi!',
+  },
+  {
+    id: 'music-all',
+    metric: 'tracks',
+    goal: 'all',
+    emoji: '🎧',
+    title: 'Poora DJ',
+    message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
+  },
+]
+
+/** Toast shown the moment a badge unlocks. */
+export const ACHIEVEMENT_UNLOCK_PREFIX = '🏆 Unlocked'
+
 /** Day-counts (until an event) that trigger a milestone banner. 0 = the event's own day. */
 export const MILESTONE_DAYS = [50, 30, 20, 14, 10, 7, 3, 2, 1, 0]
 

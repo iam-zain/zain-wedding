@@ -10,6 +10,10 @@ import HeartGestureEasterEgg from './HeartGestureEasterEgg'
 import IdleEasterEgg from './IdleEasterEgg'
 import TimeOfDayEasterEgg from './TimeOfDayEasterEgg'
 import BatteryEasterEgg from './BatteryEasterEgg'
+import OfflineEasterEgg from './OfflineEasterEgg'
+import LandscapeEasterEgg from './LandscapeEasterEgg'
+import ScreenshotEasterEgg from './ScreenshotEasterEgg'
+import AchievementWatcher from './AchievementWatcher'
 
 // Re-mounts (via the pathname key) on every route change so its entrance
 // animation replays; direction comes from navigate(path, { state }) —
@@ -57,6 +61,10 @@ export default function Layout() {
       <IdleEasterEgg />
       <TimeOfDayEasterEgg />
       <BatteryEasterEgg />
+      <OfflineEasterEgg />
+      <LandscapeEasterEgg />
+      <ScreenshotEasterEgg />
+      <AchievementWatcher />
     </div>
   )
 }
