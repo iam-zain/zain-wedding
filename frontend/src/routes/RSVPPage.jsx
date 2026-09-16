@@ -12,7 +12,11 @@ import { submitRsvp } from '../lib/api'
 import { getUserId } from '../lib/storage'
 import { useToast } from '../components/toast-context'
 import BackHeader from '../components/BackHeader'
+import { moreLinkById } from '../lib/tabs'
 import { haptic } from '../lib/haptics'
+
+// Same gradient the Confirmation tile on the hub wears.
+const { from: RSVP_FROM, via: RSVP_VIA } = moreLinkById('rsvp')
 
 const RSVP_KEY = 'rsvp_submission'
 
@@ -102,9 +106,18 @@ function timeFrom(value) {
 }
 
 // ── Pieces ───────────────────────────────────────────────────────────────────
-function SectionCard({ title, emoji, subtitle, children, testId }) {
+function SectionCard({ title, emoji, subtitle, children, testId, accent }) {
   return (
-    <section data-testid={testId} className="rounded-2xl border border-ig-border bg-ig-elevated p-4">
+    <section
+      data-testid={testId}
+      className="rounded-2xl border p-4"
+      style={{
+        borderColor: accent ? `${accent}59` : 'var(--color-ig-border)',
+        background: accent
+          ? `linear-gradient(135deg, ${accent}1a, ${accent}07)`
+          : 'var(--color-ig-elevated)',
+      }}
+    >
       <div className="flex items-baseline gap-2">
         <span aria-hidden="true" className="text-lg leading-none">{emoji}</span>
         <h3 className="text-sm font-semibold">{title}</h3>
@@ -294,10 +307,19 @@ export default function RSVPPage() {
 
   return (
     <div data-testid="rsvp-page">
-      <BackHeader title="Confirmation" />
+      <BackHeader title="Confirmation" linkId="rsvp" />
 
       <div className="px-4 pt-5">
-        <h2 className="text-lg font-semibold">Aana confirm karo 🎊</h2>
+        <h2
+          className="text-lg font-semibold text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(90deg, ${RSVP_FROM}, ${RSVP_VIA})`,
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+          }}
+        >
+          Aana confirm karo 🎊
+        </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
           Bas ye batao ki kahan aur kab pahunch rahe ho — baaki intezaam hamara. 🤍
         </p>
@@ -305,7 +327,14 @@ export default function RSVPPage() {
 
       {submitted ? (
         <div className="px-4 pt-5">
-          <div data-testid="rsvp-confirmed" className="rounded-2xl border border-ig-border bg-ig-elevated p-4">
+          <div
+            data-testid="rsvp-confirmed"
+            className="rounded-2xl border p-4"
+            style={{
+              borderColor: `${RSVP_FROM}66`,
+              background: `linear-gradient(135deg, ${RSVP_FROM}1f, ${RSVP_VIA}0a)`,
+            }}
+          >
             <div className="flex items-center gap-2">
               <span aria-hidden="true" className="text-lg leading-none">✅</span>
               <div>
@@ -407,6 +436,7 @@ export default function RSVPPage() {
           <SectionCard
             testId="rsvp-arrival-section"
             emoji="🛬"
+            accent={RSVP_FROM}
             title="Aana — arrival"
             subtitle="24 Oct se 30 Oct ke beech"
           >
@@ -434,6 +464,7 @@ export default function RSVPPage() {
           <SectionCard
             testId="rsvp-departure-section"
             emoji="🛫"
+            accent={RSVP_VIA}
             title="Jaana — departure"
             subtitle="28 Oct se 3 Nov ke beech"
           >
@@ -471,14 +502,18 @@ export default function RSVPPage() {
               className="mb-2 h-1 overflow-hidden rounded-full bg-ig-card"
             >
               <div
-                className="h-full rounded-full bg-wa transition-[width] duration-300"
-                style={{ width: `${(filled / total) * 100}%` }}
+                className="h-full rounded-full transition-[width] duration-300"
+                style={{
+                  width: `${(filled / total) * 100}%`,
+                  background: `linear-gradient(90deg, ${RSVP_FROM}, ${RSVP_VIA})`,
+                }}
               />
             </div>
             <button
               type="submit"
               data-testid="rsvp-submit"
-              className="w-full rounded-xl bg-ig-blue py-3 text-sm font-semibold text-white active:opacity-90"
+              className="w-full rounded-xl py-3 text-sm font-semibold text-white active:opacity-90"
+              style={{ background: `linear-gradient(135deg, ${RSVP_FROM}, ${RSVP_VIA})` }}
             >
               {filled === total ? 'Confirm 🎉' : `Confirm (${filled}/${total})`}
             </button>

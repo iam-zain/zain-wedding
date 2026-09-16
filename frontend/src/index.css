@@ -121,6 +121,43 @@
   animation: page-slide-from-left 0.28s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
+/* Story-to-story swap: a short fade with a small slide from the side the guest
+   came from, plus a touch of scale so it reads as a card moving rather than a
+   photo sliding. Deliberately quick — a story viewer is tapped through fast,
+   and anything longer starts to feel like lag.
+
+   `backwards`, NOT `both`, for the same reason as the page slides above: a
+   retained transform turns the element into the containing block for its
+   position: fixed descendants. The end keyframe matches the resting style, so
+   dropping `forwards` costs nothing visually. */
+@keyframes story-swap-from-right {
+  from { opacity: 0; transform: translateX(18px) scale(0.985); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes story-swap-from-left {
+  from { opacity: 0; transform: translateX(-18px) scale(0.985); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+.story-swap-from-right {
+  animation: story-swap-from-right 0.22s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.story-swap-from-left {
+  animation: story-swap-from-left 0.22s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Guests who asked the OS for less motion get the cross-fade only — the story
+   still changes visibly, it just doesn't travel. */
+@media (prefers-reduced-motion: reduce) {
+  .story-swap-from-right,
+  .story-swap-from-left {
+    animation: story-swap-fade 0.16s ease-out backwards;
+  }
+}
+@keyframes story-swap-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Hourglass replacement — the arc itself is computed frame-by-frame in JS
    (exact trigonometry, no dasharray/dashoffset tricks), this is just the glow. */
 .ring-progress-arc {

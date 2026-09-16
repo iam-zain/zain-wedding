@@ -6,6 +6,10 @@ import { haptic } from '../lib/haptics'
 import { playChime } from '../lib/sound'
 import BackHeader from '../components/BackHeader'
 import Confetti from '../components/Confetti'
+import { moreLinkById } from '../lib/tabs'
+
+// Same gradient the Quiz tile on the hub wears.
+const { from: QUIZ_FROM, via: QUIZ_VIA } = moreLinkById('quiz')
 
 // How long the right/wrong colours stay up before the next question slides in.
 const REVEAL_MS = 900
@@ -71,7 +75,7 @@ export default function QuizPage() {
   if (!question && !done) {
     return (
       <div data-testid="quiz-page">
-        <BackHeader title="Quiz" />
+        <BackHeader title="Quiz" linkId="quiz" />
         <p className="px-4 pt-8 text-sm text-ig-muted">Quiz jald hi aayega.</p>
       </div>
     )
@@ -79,23 +83,39 @@ export default function QuizPage() {
 
   return (
     <div data-testid="quiz-page">
-      <BackHeader title="Quiz" />
+      <BackHeader title="Quiz" linkId="quiz" />
 
       {perfect && <Confetti count={160} />}
 
       {!done ? (
         <div className="px-4 pt-5">
           <div className="flex items-baseline justify-between">
-            <h2 className="text-lg font-semibold">Humein kitna jaante ho? 🤔</h2>
-            <span data-testid="quiz-progress" className="shrink-0 text-xs text-ig-muted">
+            <h2
+              className="text-lg font-semibold text-transparent"
+              style={{
+                backgroundImage: `linear-gradient(90deg, ${QUIZ_FROM}, ${QUIZ_VIA})`,
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+              }}
+            >
+              Humein kitna jaante ho? 🤔
+            </h2>
+            <span
+              data-testid="quiz-progress"
+              className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums"
+              style={{ backgroundColor: `${QUIZ_FROM}26`, color: QUIZ_FROM }}
+            >
               {index + 1}/{total}
             </span>
           </div>
 
           <div aria-hidden="true" className="mt-2 h-1 overflow-hidden rounded-full bg-ig-card">
             <div
-              className="h-full rounded-full bg-wa transition-[width] duration-300"
-              style={{ width: `${((index + (picked !== null ? 1 : 0)) / total) * 100}%` }}
+              className="h-full rounded-full transition-[width] duration-300"
+              style={{
+                width: `${((index + (picked !== null ? 1 : 0)) / total) * 100}%`,
+                background: `linear-gradient(90deg, ${QUIZ_FROM}, ${QUIZ_VIA})`,
+              }}
             />
           </div>
 
@@ -184,7 +204,8 @@ export default function QuizPage() {
             type="button"
             onClick={restart}
             data-testid="quiz-restart"
-            className="mt-6 w-full rounded-xl bg-ig-blue py-3 text-sm font-semibold text-white active:opacity-90"
+            className="mt-6 w-full rounded-xl py-3 text-sm font-semibold text-white active:opacity-90"
+            style={{ background: `linear-gradient(135deg, ${QUIZ_FROM}, ${QUIZ_VIA})` }}
           >
             Naye sawaal khelo 🔁
           </button>

@@ -22,8 +22,19 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
     if (current) onViewed?.(current.id)
   }, [current, onViewed])
 
-  const next = () => setIndex((i) => (i + 1 < stories.length ? i + 1 : (onClose(), i)))
-  const prev = () => setIndex((i) => (i > 0 ? i - 1 : i))
+  // Which way the last move went, so the incoming story slides in from the
+  // side the guest came from. Set before the index changes; the image wrapper
+  // is keyed on the index, so it remounts and replays the animation.
+  const [dir, setDir] = useState('next')
+
+  const next = () => {
+    setDir('next')
+    setIndex((i) => (i + 1 < stories.length ? i + 1 : (onClose(), i)))
+  }
+  const prev = () => {
+    setDir('prev')
+    setIndex((i) => (i > 0 ? i - 1 : i))
+  }
 
   // The track is started by the story circle's tap handler (see StoriesRow —
   // it has to happen inside the gesture for mobile autoplay), so this owns
@@ -132,8 +143,15 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
           <CloseIcon size={26} />
         </button>
 
-        {/* Image */}
-        <div className="flex flex-1 items-center justify-center">
+        {/* Image. Keyed on the index so each change remounts this wrapper and
+            replays the slide; only the photo moves, so the progress bars and
+            close button stay put. */}
+        <div
+          key={index}
+          className={`flex flex-1 items-center justify-center overflow-hidden ${
+            dir === 'prev' ? 'story-swap-from-left' : 'story-swap-from-right'
+          }`}
+        >
           <img
             src={current.imageUrl}
             alt=""

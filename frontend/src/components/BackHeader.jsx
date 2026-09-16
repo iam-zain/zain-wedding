@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ChevronLeftIcon } from './icons'
 import { haptic } from '../lib/haptics'
+import { moreLinkById } from '../lib/tabs'
 
 /**
  * Sticky header for a page that lives under the More hub.
@@ -11,8 +12,14 @@ import { haptic } from '../lib/haptics'
  *
  * The back link carries swipeDir 'left' so returning to the hub plays the same
  * backwards slide a swipe would.
+ *
+ * `linkId` pulls the page's gradient from its hub entry, so the title wears the
+ * same colours as the tile the guest just tapped.
  */
-export default function BackHeader({ title, to = '/more' }) {
+export default function BackHeader({ title, to = '/more', linkId }) {
+  const link = linkId ? moreLinkById(linkId) : null
+  const gradient = link ? `linear-gradient(90deg, ${link.from}, ${link.via})` : null
+
   return (
     <header className="sticky top-0 z-20 border-b border-ig-border bg-ig-black/90 backdrop-blur">
       <div className="relative flex h-12 items-center justify-center px-4">
@@ -26,8 +33,20 @@ export default function BackHeader({ title, to = '/more' }) {
         >
           <ChevronLeftIcon size={22} />
         </Link>
-        <span className="font-logo text-2xl leading-none">{title}</span>
+        <span
+          className={`font-logo text-2xl leading-none ${gradient ? 'text-transparent' : ''}`}
+          style={
+            gradient
+              ? { backgroundImage: gradient, backgroundClip: 'text', WebkitBackgroundClip: 'text' }
+              : undefined
+          }
+        >
+          {title}
+        </span>
       </div>
+      {/* Hairline of the page's own colour, so each destination is instantly
+          recognisable even before the content loads. */}
+      {gradient && <div aria-hidden="true" className="h-0.5 w-full" style={{ background: gradient }} />}
     </header>
   )
 }

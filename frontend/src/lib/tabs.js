@@ -55,6 +55,15 @@ const PATHS = TABS.map((t) => t.to)
 const MORE_PATHS = MORE_LINKS.map((l) => l.to)
 
 /**
+ * A hub entry by id, so a page can wear the same gradient as the tile that
+ * leads to it. Looking it up (rather than restating the hex on the page) means
+ * changing a colour here recolours both at once and they can't drift apart.
+ */
+export function moreLinkById(id) {
+  return MORE_LINKS.find((l) => l.id === id)
+}
+
+/**
  * True on a page that lives *under* the hub (/rsvp, /quiz, /wishes).
  *
  * Used only to keep the More tab lit while a guest is on one of its pages.

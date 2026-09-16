@@ -12,15 +12,27 @@ import { relativeTime } from '../lib/time'
 import { playChime } from '../lib/sound'
 import { useToast } from '../components/toast-context'
 import BackHeader from '../components/BackHeader'
+import { moreLinkById } from '../lib/tabs'
 
-function WishCard({ wish, isMine }) {
+// Same gradient the Wishes tile on the hub wears.
+const { from: WISH_FROM, via: WISH_VIA } = moreLinkById('wishes')
+
+// Each wish card takes the next accent in this rotation, so a long wall reads
+// as a colourful stream rather than a column of identical grey boxes.
+const CARD_ACCENTS = ['#a855f7', '#0095f6', '#ed4956', '#25d366', '#f7971e', '#00b8d4']
+
+function WishCard({ wish, isMine, accent }) {
   return (
     <li
       data-testid={`wish-${wish.id}`}
-      className="rounded-2xl border border-ig-border bg-ig-elevated p-3.5"
+      className="rounded-2xl border p-3.5"
+      style={{
+        borderColor: `${accent}59`,
+        background: `linear-gradient(135deg, ${accent}1f, ${accent}08)`,
+      }}
     >
       <div className="flex items-baseline justify-between gap-2">
-        <p className="truncate text-sm font-semibold">
+        <p className="truncate text-sm font-semibold" style={{ color: accent }}>
           {isMine ? 'You' : wish.userName}
         </p>
         <p className="shrink-0 text-[10px] uppercase tracking-wide text-ig-faint">
@@ -98,10 +110,19 @@ export default function WishesPage() {
 
   return (
     <div data-testid="wishes-page">
-      <BackHeader title="Wishes" />
+      <BackHeader title="Wishes" linkId="wishes" />
 
       <div className="px-4 pt-5">
-        <h2 className="text-lg font-semibold">Duaon ka silsila 🤍</h2>
+        <h2
+          className="text-lg font-semibold text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(90deg, ${WISH_FROM}, ${WISH_VIA})`,
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+          }}
+        >
+          Duaon ka silsila 🤍
+        </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
           Do lafz likh jao — dua, mubarakbaad ya koi purani yaad. Hum sab padhenge.
         </p>
@@ -137,7 +158,8 @@ export default function WishesPage() {
               type="submit"
               disabled={!canSend}
               data-testid="wishes-submit"
-              className="rounded-xl bg-ig-blue px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40 active:opacity-90"
+              className="rounded-xl px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40 active:opacity-90"
+              style={{ background: `linear-gradient(135deg, ${WISH_FROM}, ${WISH_VIA})` }}
             >
               {sending ? 'Bhej rahe hain…' : 'Bhejo 🤍'}
             </button>
@@ -173,11 +195,12 @@ export default function WishesPage() {
               {wishes.length === 1 ? '1 paigham' : `${wishes.length} paighaam`}
             </p>
             <ul data-testid="wishes-list" className="space-y-2">
-              {wishes.map((wish) => (
+              {wishes.map((wish, i) => (
                 <WishCard
                   key={wish.id || `${wish.createdAt}-${wish.userId}`}
                   wish={wish}
                   isMine={wish.userId === userId}
+                  accent={CARD_ACCENTS[i % CARD_ACCENTS.length]}
                 />
               ))}
             </ul>
