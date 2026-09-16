@@ -381,6 +381,20 @@ export const QUIZ_QUESTIONS = [
     options: ['@zain.weds.uzma', '@uzma.weds.zain', '@zainuzma2026', '@zain.uzma.shaadi'],
     answer: 0,
   },
+  {
+    id: 'chittaranjan-state',
+    question: 'Chittaranjan kis state mein hai?',
+    options: ['Bihar', 'West Bengal', 'Jharkhand', 'Odisha'],
+    answer: 1,
+  },
+  {
+    // Pays off SECRET_MESSAGES, which tells whoever finds it the station code
+    // "ab quiz mein aa sakta hai". Now it does.
+    id: 'crj-code',
+    question: 'Chittaranjan railway station ka code kya hai?',
+    options: ['CTJ', 'CRJ', 'CHJ', 'CJN'],
+    answer: 1,
+  },
 
   // ── About the couple ───────────────────────────────────────────────────────
   // UNLIKE everything above, these answers come from Zain & Uzma directly and
@@ -452,6 +466,66 @@ export const QUIZ_QUESTIONS = [
     question: 'Uzma behno mein kaunse number pe hai?',
     options: ['Pehli', 'Doosri', 'Teesri', 'Chauthi'],
     answer: 1,
+  },
+  {
+    id: 'zain-khala',
+    question: 'Zain ki kitni khala hain?',
+    options: ['2', '3', '4', '5'],
+    answer: 2,
+  },
+  {
+    id: 'zain-fufi',
+    question: 'Zain ki kitni fufi hain?',
+    options: ['2', '3', '4', '5'],
+    answer: 2,
+  },
+  {
+    id: 'zain-mama',
+    question: 'Zain ke kitne mama hain?',
+    options: ['1', '2', '3', '4'],
+    answer: 0,
+  },
+  {
+    // The diplomatic answer IS the answer — and the only safe one to print on
+    // a page the whole family will read.
+    id: 'fav-fufi',
+    question: 'Zain ki sabse favourite fufi kaun?',
+    options: ['Badi wali', 'Manjhli wali', 'Chhoti wali', 'Saari barabar 🤍'],
+    answer: 3,
+  },
+  {
+    id: 'fav-khala',
+    question: 'Zain ki sabse favourite khala kaun?',
+    options: ['Badi wali', 'Manjhli wali', 'Chhoti wali', 'Saari barabar 🤍'],
+    answer: 3,
+  },
+
+  // ── Just for fun ───────────────────────────────────────────────────────────
+  // No right answer in any factual sense — the joke is the answer. These make
+  // no claim about Zain or Uzma, so they need no fact-checking.
+  {
+    id: 'baraat-time',
+    question: 'Baraat time pe pahunchegi?',
+    options: ['Bilkul, minute pe', 'Thodi si late', 'Baraat ka koi time hota hai? 😄', 'Ek din pehle'],
+    answer: 2,
+  },
+  {
+    id: 'photographer',
+    question: '"Bas ek aur photo" ka asli matlab?',
+    options: ['Ek aur photo', 'Aur 20 photos 📸', 'Ho gaya, chalo', 'Photo delete kar do'],
+    answer: 1,
+  },
+  {
+    id: 'biryani-aloo',
+    question: 'Biryani mein aloo hona chahiye ya nahi?',
+    options: ['Bilkul hona chahiye 🥔', 'Kabhi nahi', 'Sirf Sunday ko', 'Aloo kya hota hai?'],
+    answer: 0,
+  },
+  {
+    id: 'mehendi-dry',
+    question: 'Mehendi sukhne mein kitna time lagta hai?',
+    options: ['5 minute', 'Ek ghanta', 'Poori raat 🌙', 'Sukhti hi nahi'],
+    answer: 2,
   },
 ]
 
