@@ -4,6 +4,7 @@ import { buildIcs, downloadIcs } from '../lib/calendar'
 import { haptic } from '../lib/haptics'
 import { useToast } from '../components/toast-context'
 import { CalendarIcon, ExternalLinkIcon } from '../components/icons'
+import EventTimeline from '../components/EventTimeline'
 
 const DRESSCODE_PLACEHOLDER = '/assets/dresscode/placeholder.svg'
 
@@ -145,8 +146,10 @@ export default function EventsPage() {
       <div className="px-4 pt-5">
         <h2 className="text-lg font-semibold">Saare Functions 🎊</h2>
         <p className="mt-0.5 text-sm text-ig-muted">
-          Har rasm ka schedule — RSVP zaroor karna!
+          Har function ka din, jagah aur dress code — sab kuch yahan 🤍
         </p>
+
+        <EventTimeline />
 
         <button
           type="button"

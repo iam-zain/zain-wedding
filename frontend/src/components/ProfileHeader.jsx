@@ -33,7 +33,7 @@ export default function ProfileHeader() {
   const [accessSheetOpen, setAccessSheetOpen] = useState(false)
   const [accessInput, setAccessInput] = useState('')
   const toast = useToast()
-  const { isPlaying, label: trackName, toggle: toggleMusic, skip: skipMusic } = useMusic()
+  const { isPlaying, toggle: toggleMusic } = useMusic()
   const [poppingStat, setPoppingStat] = useState(null)
   const [egg, setEgg] = useState(null)
   const statTapTimesRef = useRef({})
@@ -280,32 +280,6 @@ export default function ProfileHeader() {
           />
         </div>
       </div>
-
-      {/* Now playing — only while a track is running, so it never takes up
-          space for the guests who never tap the avatar. */}
-      {isPlaying && trackName && (
-        <div
-          data-testid="now-playing"
-          className="mt-3 flex items-center gap-2 rounded-xl border px-3 py-2"
-          style={{ borderColor: '#a855f759', background: 'linear-gradient(135deg,#a855f71f,#0095f60a)' }}
-        >
-          <span aria-hidden="true" className="text-sm leading-none">🎵</span>
-          <span className="min-w-0 flex-1 truncate text-xs">
-            <span className="text-ig-muted">Ab baj raha hai · </span>
-            <span className="font-semibold" style={{ color: '#c084fc' }}>{trackName}</span>
-          </span>
-          <button
-            type="button"
-            data-testid="music-skip"
-            aria-label="Next track"
-            onClick={skipMusic}
-            className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold text-white active:opacity-80"
-            style={{ backgroundColor: '#a855f7' }}
-          >
-            Agla ⏭
-          </button>
-        </div>
-      )}
 
       {/* Name + bio + link */}
       <div className="mt-3">
