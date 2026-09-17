@@ -6,14 +6,12 @@ import {
   likeMilestoneMessage,
   MOST_LOVED_LABEL,
   PINCH_ZOOM_MESSAGES,
-  POST_REACTIONS,
-  POST_REACTIONS_KEY,
 } from '../config'
 import { likePost } from '../lib/api'
 import { shareUrl } from '../lib/share'
 import { haptic } from '../lib/haptics'
 import { relativeTime } from '../lib/time'
-import { getUserId, useBookmarkedPosts, useLikedPosts, useLocalStorage } from '../lib/storage'
+import { getUserId, useBookmarkedPosts, useLikedPosts } from '../lib/storage'
 import Carousel from './Carousel'
 import Comments from './Comments'
 import EasterEggModal from './EasterEggModal'
@@ -60,21 +58,6 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   // two or three times before `liked` has re-rendered — each one POSTing
   // another increment. This latches on the first call instead.
   const likeSentRef = useRef(false)
-
-  // postId -> emoji. One reaction per post per device; tapping the same one
-  // again clears it, so it reads as a toggle rather than a vote you can't undo.
-  const [reactions, setReactions] = useLocalStorage(POST_REACTIONS_KEY, {})
-  const myReaction = reactions?.[post.id] || null
-
-  function toggleReaction(emoji) {
-    haptic(emoji === myReaction ? 'unlike' : 'like')
-    setReactions((cur) => {
-      const next = { ...(cur || {}) }
-      if (next[post.id] === emoji) delete next[post.id]
-      else next[post.id] = emoji
-      return next
-    })
-  }
 
   // liveCount = likes beyond likes_base, owned + polled by FeedPage. The floor
   // keeps this device's own like visible in LOCAL_MODE, where there is no
@@ -273,32 +256,6 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
               <HeartIcon filled size={96} className="like-burst relative text-white" />
             </span>
           </div>
-        )}
-      </div>
-
-      {/* Quick reactions — device-local (see POST_REACTIONS in config), so they
-          never consume a post's comment budget. */}
-      <div data-testid={`post-reactions-${post.id}`} className="flex items-center gap-1.5 px-3 pt-2.5">
-        {POST_REACTIONS.map((emoji) => {
-          const active = myReaction === emoji
-          return (
-            <button
-              key={emoji}
-              type="button"
-              aria-label={`React ${emoji}`}
-              aria-pressed={active}
-              data-testid={`post-react-${post.id}-${emoji}`}
-              onClick={() => toggleReaction(emoji)}
-              className={`rounded-full border px-2 py-0.5 text-sm leading-none transition-transform active:scale-125 ${
-                active ? 'border-ig-blue bg-ig-blue/20 scale-110' : 'border-ig-border bg-ig-card opacity-70'
-              }`}
-            >
-              {emoji}
-            </button>
-          )
-        })}
-        {myReaction && (
-          <span className="ml-1 text-[10px] text-ig-faint">aapka reaction</span>
         )}
       </div>
 

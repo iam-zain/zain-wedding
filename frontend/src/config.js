@@ -260,20 +260,6 @@ export const PINCH_ZOOM_MESSAGES = [
   "👀 Zoom karke kya dhoond rahe ho? Hum toh saamne hi hain!",
 ]
 
-// ── Post reactions ───────────────────────────────────────────────────────────
-/**
- * Quick reactions under a post, alongside the heart.
- *
- * Deliberately DEVICE-LOCAL, not written to the comment API like story replies
- * are: comments are capped at MAX_COMMENTS_PER_POST per post, and a guest
- * tapping reactions a few times would burn that budget and lock real comments
- * out of that post. A reaction is a private little "this one got me", and the
- * heart remains the thing that actually counts.
- */
-export const POST_REACTIONS = ['🔥', '😂', '🥹', '👏', '🤍']
-
-export const POST_REACTIONS_KEY = 'postReactions'
-
 // ── Story replies ────────────────────────────────────────────────────────────
 /** Quick-reaction emoji on the story viewer, Instagram-style. */
 export const STORY_REACTIONS = ['❤️', '🔥', '😂', '🥹', '👏', '🤍']
