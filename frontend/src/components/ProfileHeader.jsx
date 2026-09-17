@@ -4,13 +4,17 @@ import { siteConfig, SITE_URL, ACCESS_KEY_PARAM, STAT_EASTER_EGGS, AVATAR_LONGPR
 import { shareUrl } from '../lib/share'
 import { applyAccessKeyParam, useUnlockedTiers } from '../lib/access'
 import { playChime } from '../lib/sound'
+import { haptic } from '../lib/haptics'
 import { useToast } from './toast-context'
 import EasterEggModal from './EasterEggModal'
 import { DownloadIcon, ExternalLinkIcon, HangerIcon, KeyIcon, MoreIcon, RsvpIcon, ShareIcon, WhatsAppIcon } from './icons'
 import { useMusic } from '../lib/musicPlayer'
 
-const STAT_TAP_WINDOW_MS = 3000
-const STAT_TAPS_REQUIRED = 5
+// A double-tap, and a tight window so it reads as one deliberate gesture
+// rather than two idle taps a second apart. This used to need FIVE taps inside
+// three seconds, which essentially nobody discovered by accident.
+const STAT_TAP_WINDOW_MS = 600
+const STAT_TAPS_REQUIRED = 2
 const AVATAR_LONG_PRESS_MS = 600
 
 function Stat({ value, label, onTap, popping }) {
@@ -68,6 +72,9 @@ export default function ProfileHeader() {
   }
 
   function handleStatTap(label) {
+    // Two taps is a low bar, so ignore further taps while a reveal is already
+    // open — otherwise a guest drumming on the number stacks modals.
+    if (egg) return
     const now = Date.now()
     const recent = (statTapTimesRef.current[label] || []).filter((ts) => now - ts < STAT_TAP_WINDOW_MS)
     recent.push(now)
@@ -78,6 +85,7 @@ export default function ProfileHeader() {
 
     const messages = STAT_EASTER_EGGS[label]
     if (messages?.length) setEgg({ message: messages[Math.floor(Math.random() * messages.length)], icon: '🎊' })
+    haptic('like')
     playChime()
     setPoppingStat(label)
     setTimeout(() => setPoppingStat(null), 400)

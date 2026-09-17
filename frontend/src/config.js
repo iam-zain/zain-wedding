@@ -52,19 +52,31 @@ export const SECRET_MESSAGES = [
   "🚂 Chittaranjan ka Railway Station code hai: CRJ. Ab quiz mein aa sakta hai. 😄",
 ]
 
-/** Fun messages for the profile-stats tap easter egg. One is picked at random per stat. */
+/** Fun messages for the profile-stats double-tap easter egg. One is picked at random per stat. */
 export const STAT_EASTER_EGGS = {
   posts: [
     "📸 Itne saare posts scroll kar liye — you deserve a virtual hug!",
     "Behind every post, ek chhota sa kissa hai. Thanks for reading them all 🤍",
+    "🖼️ Har post ek yaad hai — aur aap sab dekh rahe ho. Shukriya!",
+    "😄 Ginne baithe ho kya? Hum bhi nahi gin paaye.",
+    "✨ Itni photos toh humne shaadi se pehle hi kharch kar di!",
+    "📷 Aur bhi aayengi — shaadi ke baad toh poora album banega.",
   ],
   guests: [
     "🎉 Itne guests ke beech, tum ek khaas guest ho!",
     "The more the merrier — glad you're one of them 💫",
+    "🎊 Sabko bulaya hai — aur har ek ka intezaar hai.",
+    "😅 Itne log aa rahe hain... khaana kam na pad jaye!",
+    "🤍 Har naam ke peeche ek rishta hai.",
+    "📖 List lambi hai, par dil usse bhi bada.",
   ],
   families: [
     "👨‍👩‍👧‍👦 Do families, ek dil se jud rahi hain — welcome to it!",
     "Families jud rahi hain, aur tum is jashn ka hissa ho ✨",
+    "🏡 Do ghar, ek kahani.",
+    "🤝 Do parivaar mile — ab sab ek hain.",
+    "💫 Do se shuru, hamesha ke liye.",
+    "🫂 Do families, ek hi chhat ke neeche.",
   ],
 }
 
