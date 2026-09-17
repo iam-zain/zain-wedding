@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
+import { EXPLORE_DONE_MESSAGE, EXPLORE_TITLE, QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
 import { MORE_LINKS } from '../lib/tabs'
 import { titleFor } from '../lib/quiz'
 import { achievementList } from '../lib/achievements'
 import { useAchievementCounts } from '../lib/useAchievementCounts'
 import { useAchievements, useLocalStorage } from '../lib/storage'
 import { haptic } from '../lib/haptics'
-import { ChevronRightIcon, QuizIcon, RsvpIcon, TrophyIcon, WishesIcon } from '../components/icons'
+import { BookmarkIcon, ChevronRightIcon, QuizIcon, RsvpIcon, TrophyIcon, WishesIcon } from '../components/icons'
 
 const LINK_ICONS = {
   rsvp: RsvpIcon,
   quiz: QuizIcon,
+  saved: BookmarkIcon,
   wishes: WishesIcon,
 }
 
@@ -150,6 +151,8 @@ export default function MorePage() {
   const [openBadge, setOpenBadge] = useState(null)
   const [quizBest] = useLocalStorage(QUIZ_BEST_KEY, null)
   const rank = titleFor(typeof quizBest === 'number' ? quizBest : 0)
+  const explored = counts.explored
+  const explorePct = explored.total > 0 ? Math.round((explored.count / explored.total) * 100) : 0
 
   return (
     <div data-testid="more-page">
@@ -230,6 +233,29 @@ export default function MorePage() {
             </Link>
           </div>
         )}
+
+        {/* Explore meter — a summary of the badges directly below it, so it
+            belongs here rather than competing for space on the profile. */}
+        <div data-testid="explore-meter" className="mb-5">
+          <div className="flex items-baseline justify-between">
+            <h3 className="text-sm font-semibold">🧭 {EXPLORE_TITLE}</h3>
+            <span className="text-xs tabular-nums text-ig-muted">{explorePct}%</span>
+          </div>
+          <div aria-hidden="true" className="mt-2 h-2 overflow-hidden rounded-full bg-ig-card">
+            <div
+              className="h-full rounded-full transition-[width] duration-700"
+              style={{
+                width: `${explorePct}%`,
+                background: 'linear-gradient(90deg,#f472b6,#a855f7,#0095f6)',
+              }}
+            />
+          </div>
+          <p className="mt-1.5 text-[11px] text-ig-faint">
+            {explorePct === 100
+              ? EXPLORE_DONE_MESSAGE
+              : `${explored.count}/${explored.total} pages dekh liye — baaki bhi ghoom aao`}
+          </p>
+        </div>
 
         <div className="flex items-center gap-2">
           <TrophyIcon size={18} style={{ color: '#f7971e' }} />

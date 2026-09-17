@@ -1,12 +1,18 @@
 import { useEffect, useRef } from 'react'
-import { NIGHT_OWL_MESSAGE } from '../config'
+import { TIME_OF_DAY_MESSAGES } from '../config'
 import { useToast } from './toast-context'
 
-const NIGHT_OWL_START_HOUR = 1
-const NIGHT_OWL_END_HOUR = 5
 const DELAY_MS = 3000 // let the feed settle before showing anything
 
-/** Global — mount once in Layout. Fires once per session for visitors browsing late at night. */
+/**
+ * Global — mount once in Layout. Greets the guest according to the hour on
+ * their own clock: late-night scrolling, morning baraat, evening getting-ready,
+ * and the 7 PM start every function shares.
+ *
+ * Fires at most ONCE per session even if a guest leaves the tab open across a
+ * window boundary — the hour is read once on mount rather than polled, because
+ * a second greeting an hour later reads as a bug rather than a charm.
+ */
 export default function TimeOfDayEasterEgg() {
   const toast = useToast()
   const firedRef = useRef(false)
@@ -14,10 +20,12 @@ export default function TimeOfDayEasterEgg() {
   useEffect(() => {
     if (firedRef.current) return
     const hour = new Date().getHours()
-    if (hour < NIGHT_OWL_START_HOUR || hour >= NIGHT_OWL_END_HOUR) return
+    // First match wins; the windows in config are non-overlapping.
+    const slot = TIME_OF_DAY_MESSAGES.find((s) => hour >= s.from && hour < s.to)
+    if (!slot) return
 
     firedRef.current = true
-    const t = setTimeout(() => toast(NIGHT_OWL_MESSAGE, { duration: 5000 }), DELAY_MS)
+    const t = setTimeout(() => toast(slot.message, { duration: 5000 }), DELAY_MS)
     return () => clearTimeout(t)
   }, [toast])
 

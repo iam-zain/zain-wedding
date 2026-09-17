@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
+import { EXPLORE_PAGES, QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
 import { MUSIC_TRACKS } from './musicConfig'
 import { useVisibleFeed } from './useVisibleFeed'
 import {
@@ -8,6 +8,7 @@ import {
   useLocalStorage,
   usePlayedTracks,
   useViewedStories,
+  useVisitedPages,
 } from './storage'
 
 /**
@@ -31,6 +32,7 @@ export function useAchievementCounts() {
   const { list: viewed } = useViewedStories()
   const { list: played } = usePlayedTracks()
   const [quizBest] = useLocalStorage(QUIZ_BEST_KEY, null)
+  const { list: visited } = useVisitedPages()
 
   const totalPosts = visiblePosts.length
   const totalStories = visibleStories.length
@@ -44,6 +46,10 @@ export function useAchievementCounts() {
   const visibleIds = useMemo(() => new Set(visiblePosts.map((p) => p.id)), [visiblePosts])
   const visibleStoryIds = useMemo(() => new Set(visibleStories.map((s) => s.id)), [visibleStories])
 
+  // Counted against the current page list, so a route removed from
+  // EXPLORE_PAGES can't leave someone stuck above 100%.
+  const exploredCount = EXPLORE_PAGES.filter((path) => visited.includes(path)).length
+
   const likedVisible = liked.filter((id) => visibleIds.has(id)).length
   const commentedVisible = commented.filter((id) => visibleIds.has(id)).length
   const viewedVisible = viewed.filter((id) => visibleStoryIds.has(id)).length
@@ -55,7 +61,8 @@ export function useAchievementCounts() {
       stories: { count: viewedVisible, total: totalStories },
       tracks: { count: played.length, total: MUSIC_TRACKS.length },
       quiz: { count: bestScore, total: QUIZ_PER_ROUND },
+      explored: { count: exploredCount, total: EXPLORE_PAGES.length },
     }),
-    [likedVisible, commentedVisible, viewedVisible, played.length, totalPosts, totalStories, bestScore],
+    [likedVisible, commentedVisible, viewedVisible, played.length, totalPosts, totalStories, bestScore, exploredCount],
   )
 }

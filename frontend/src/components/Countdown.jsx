@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { siteConfig, SECRET_MESSAGES, NIKAH_EGG_MESSAGES, WALEEMA_EGG_MESSAGES } from '../config'
+import { siteConfig, SECRET_MESSAGES, NIKAH_EGG_MESSAGES, WALEEMA_EGG_MESSAGES, BAAT_PAKKI } from '../config'
 import { countdownParts } from '../lib/time'
 import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
@@ -132,9 +132,33 @@ function Cell({ value, label, testId }) {
   )
 }
 
+/**
+ * Baat pakki plus every function, oldest first — the whole story in one row.
+ * Built from site.json rather than restated, so a date change there moves the
+ * timeline too. `time` lets each step light up once it has actually happened.
+ */
+const TIMELINE = [BAAT_PAKKI, ...(siteConfig.events || [])]
+  .map((e) => ({
+    label: e.label || e.name,
+    emoji: e.emoji || '💫',
+    time: Date.parse(e.date),
+    short: new Date(e.date).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      timeZone: 'Asia/Kolkata',
+    }),
+  }))
+  .filter((e) => Number.isFinite(e.time))
+  .sort((a, b) => a.time - b.time)
+
 export default function Countdown() {
   const [now, setNow] = useState(() => Date.now())
-  const [alt, setAlt] = useState(false)
+  // 0 = live countdown, 1 = months/weeks overview, 2 = the whole timeline.
+  // One cycling toggle rather than a new gesture: the countdown's taps are
+  // already spoken for by the SECRET_MESSAGES treasure hunt, and the caption
+  // below always says what the next tap does.
+  const [view, setView] = useState(0)
+  const alt = view === 1
   const [pressed, setPressed] = useState(false)
   const [secret, setSecret] = useState(null)
   const [nikahReveal, setNikahReveal] = useState(null) // message string | null
@@ -165,8 +189,8 @@ export default function Countdown() {
   const alreadySeen = localStorage.getItem(SEEN_KEY)
 
   function handleClick() {
-    // Toggle alt view (existing behaviour)
-    setAlt(a => !a)
+    // Cycle the view (existing behaviour, now three-way)
+    setView(v => (v + 1) % 3)
 
     // Subtle press ripple
     setPressed(true)
@@ -224,10 +248,15 @@ export default function Countdown() {
             </span>
           </div>
 
-          <div className="relative mt-2 h-10 overflow-hidden">
+          {/* Taller on the timeline: three stacked lines per step don't fit the
+              h-10 the two numeric views use. */}
+          <div className={`relative mt-2 overflow-hidden transition-[height] duration-300 ${view === 2 ? 'h-14' : 'h-10'}`}>
             {/* primary: days · hrs · min · sec */}
             <div className={`absolute inset-0 flex items-center justify-center gap-5 transition-all duration-300 ease-in-out ${
-              alt ? 'opacity-0 -translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0'
+              // Explicit view === 0, not "not alt": with three states, "not the
+              // overview" is also true on the timeline, which left the live
+              // cells painted underneath it.
+              view === 0 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
             }`}>
               <Cell value={day} label="days" testId="countdown-cell-days" />
               <span className="text-lg text-ig-faint">:</span>
@@ -248,12 +277,40 @@ export default function Countdown() {
               <span className="text-lg text-ig-faint">·</span>
               <Cell value={days} label="days" testId="countdown-cell-remainder-days" />
             </div>
+
+            {/* timeline: baat pakki through walima */}
+            <div
+              data-testid="countdown-timeline"
+              className={`absolute inset-0 flex items-start justify-between gap-1 px-1 transition-all duration-300 ease-in-out ${
+                view === 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+              }`}
+            >
+              {TIMELINE.map((t) => {
+                const done = now >= t.time
+                return (
+                  <div key={t.label} className="flex min-w-0 flex-1 flex-col items-center">
+                    <span
+                      aria-hidden="true"
+                      className="text-[13px] leading-none transition-opacity"
+                      style={{ opacity: done ? 1 : 0.45 }}
+                    >
+                      {t.emoji}
+                    </span>
+                    <span
+                      className="mt-1 w-full truncate text-center text-[9px] leading-tight"
+                      style={{ color: done ? '#25d366' : 'var(--color-ig-muted)' }}
+                    >
+                      {t.label}
+                    </span>
+                    <span className="text-[8px] leading-tight text-ig-faint">{t.short}</span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
-          <div className={`mt-1 text-center text-[9px] transition-opacity duration-300 ${
-            alt ? 'text-ig-faint' : 'text-ig-faint opacity-60'
-          }`}>
-            {alt ? 'tap for live countdown' : 'tap for overview'}
+          <div className="mt-1 text-center text-[9px] text-ig-faint transition-opacity duration-300">
+            {view === 0 ? 'tap for overview' : view === 1 ? 'tap for timeline' : 'tap for live countdown'}
           </div>
         </div>
       </div>

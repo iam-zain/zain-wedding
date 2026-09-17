@@ -41,6 +41,15 @@ export const MORE_LINKS = [
     via: '#ed4956',
   },
   {
+    id: 'saved',
+    to: '/saved',
+    icon: 'saved',
+    label: 'Saved',
+    hint: 'Jo posts aapne bookmark ki hain',
+    from: '#00b8d4',
+    via: '#0095f6',
+  },
+  {
     id: 'wishes',
     to: '/wishes',
     icon: 'wishes',

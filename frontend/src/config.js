@@ -100,11 +100,31 @@ export const CHAOS_EASTER_EGG_MESSAGES = [
 ]
 
 /** Type-anywhere secret words (checked outside form fields) + messages shown on a hit. */
-export const TYPE_ANYWHERE_WORDS = ['nikah', 'nikaah', 'shaadi', 'wedding', 'marriage', 'waleema', 'walima']
+export const TYPE_ANYWHERE_WORDS = [
+  'nikah',
+  'nikaah',
+  'shaadi',
+  'wedding',
+  'marriage',
+  'waleema',
+  'walima',
+  'biryani',
+  'mehendi',
+  'haldi',
+  'baraat',
+  'dulha',
+  'dulhan',
+  'zain',
+  'uzma',
+]
 export const TYPE_ANYWHERE_MESSAGES = [
   "🕌 Nikah ka zikr kiya aur website bhi khush ho gayi!",
   "💍 Shaadi ho ya waleema, jo bhi type karo — dil se yehi ek baat hai.",
   "🤍 Yeh lafz humein bhi pasand hai. Milte hain jashn mein!",
+  "🥘 Bhookh lag gayi kya? Waleema tak sabr karo!",
+  "🌿 Yeh lafz likhte hi mehek aa gayi — milte hain function mein!",
+  "🎺 Baraat ka naam liya? Taiyari shuru karo phir!",
+  "👀 Naam le liya humara — kaan garam ho gaye!",
 ]
 
 /**
@@ -154,6 +174,21 @@ export const IDLE_EASTER_EGG_MESSAGES = [
 /** Shown once per session for visitors browsing very late at night. */
 export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe ho? Neend bhi zaroori hai — subah shaadi ki tayyari bhi toh karni hai!"
 
+/**
+ * Time-of-day greetings, checked in order — the FIRST window that contains the
+ * current hour wins, so they must not overlap. Hours are the visitor's own
+ * local clock, `from` inclusive and `to` exclusive.
+ *
+ * The evening ones line up with the real schedule: every function starts at
+ * 7 PM, so 5 PM is "start getting ready" and 7 PM is "it's happening now".
+ */
+export const TIME_OF_DAY_MESSAGES = [
+  { from: 1, to: 5, message: NIGHT_OWL_MESSAGE },
+  { from: 6, to: 9, message: "🌅 Subah ho gayi — baraat ke liye ready ho jao!" },
+  { from: 17, to: 19, message: "👗 Paanch baj gaye — taiyari shuru karo, function shaam ko hai!" },
+  { from: 19, to: 21, message: "🕌 Saat baj gaye — abhi toh function shuru hua hoga. Aa jao!" },
+]
+
 /** Shown once per session when the device battery is low and not charging. */
 export const BATTERY_LOW_MESSAGE = "🔋 Battery kam hai — thodi charge kar lo, shaadi lambi chalegi!"
 
@@ -185,6 +220,33 @@ export const ONLINE_MESSAGE = "📶 Network wapas aa gaya — chalo, aage dekhte
 /** Shown once per session when the device is plugged in and charging. */
 export const BATTERY_CHARGING_MESSAGE = "🔌 Charge ho raha hai? Ab toh poori raat scroll karo!"
 
+/** Shown once when the battery reaches a full charge. */
+export const BATTERY_FULL_MESSAGE = "🔋 Full charge! Ab toh poori shaadi cover kar loge 📸"
+
+/** Shown once when the battery is critically low — more urgent than the 15% nudge. */
+export const BATTERY_CRITICAL_MESSAGE = "🪫 Battery bilkul khatam hone wali hai! Jaldi charge pe lagao."
+
+/** Shown the first time the phone is tilted noticeably. */
+export const TILT_MESSAGE = "📱 Phone tedha kar ke kya dhoond rahe ho? Sab kuch saamne hi hai 😄"
+
+/**
+ * The day the rishta was settled — the start of the timeline the countdown
+ * shows on its third tap. Not in site.json because it isn't an event guests
+ * attend; it's the beginning of the story.
+ */
+export const BAAT_PAKKI = { label: 'Baat pakki', emoji: '🤝', date: '2026-05-31T00:00:00+05:30' }
+
+// ── Explore meter ────────────────────────────────────────────────────────────
+/**
+ * Routes that count toward "poora ghoom liya". Only pages a guest can reach by
+ * tapping — /psst is deliberately absent, since it's a secret and demanding it
+ * would make the meter impossible for anyone who never found it.
+ */
+export const EXPLORE_PAGES = ['/', '/events', '/more', '/rsvp', '/quiz', '/saved', '/wishes']
+
+export const EXPLORE_TITLE = 'Kitna ghoom liya?'
+export const EXPLORE_DONE_MESSAGE = '🧭 Poori website ghoom li — kuch nahi chhoda!'
+
 /** Shown when a screenshot is (heuristically) detected. */
 export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej do — group mein daal dena!"
 
@@ -197,6 +259,20 @@ export const PINCH_ZOOM_MESSAGES = [
   "🔍 Itna paas se dekh rahe ho? Nazar na lag jaaye!",
   "👀 Zoom karke kya dhoond rahe ho? Hum toh saamne hi hain!",
 ]
+
+// ── Post reactions ───────────────────────────────────────────────────────────
+/**
+ * Quick reactions under a post, alongside the heart.
+ *
+ * Deliberately DEVICE-LOCAL, not written to the comment API like story replies
+ * are: comments are capped at MAX_COMMENTS_PER_POST per post, and a guest
+ * tapping reactions a few times would burn that budget and lock real comments
+ * out of that post. A reaction is a private little "this one got me", and the
+ * heart remains the thing that actually counts.
+ */
+export const POST_REACTIONS = ['🔥', '😂', '🥹', '👏', '🤍']
+
+export const POST_REACTIONS_KEY = 'postReactions'
 
 // ── Story replies ────────────────────────────────────────────────────────────
 /** Quick-reaction emoji on the story viewer, Instagram-style. */
@@ -761,6 +837,16 @@ export const ACHIEVEMENTS = [
     message: 'Har ek post ko dil diya! Aap toh sachche fan nikle 🤍',
   },
   {
+    id: 'comment-1',
+    metric: 'comments',
+    goal: 1,
+    emoji: '✍️',
+    color: '#38bdf8',
+    title: 'Pehla lafz',
+    how: 'Kisi ek post pe comment karo',
+    message: 'Pehla comment likh diya! Aapki baat humesha yaad rahegi 🤍',
+  },
+  {
     id: 'comment-5',
     metric: 'comments',
     goal: 5,
@@ -799,6 +885,16 @@ export const ACHIEVEMENTS = [
     title: 'Poora DJ',
     how: 'Profile photo tap karke saare gaane suno',
     message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
+  },
+  {
+    id: 'explored-all',
+    metric: 'explored',
+    goal: 'all',
+    emoji: '🧭',
+    color: '#f472b6',
+    title: 'Poora ghoom liya',
+    how: 'Saare pages ek baar khol ke dekho',
+    message: 'Har page dekh liya! Ab aapse zyada koi nahi jaanta is site ko 🧭',
   },
   {
     // Rides the same count/total engine: `count` is the best round score and

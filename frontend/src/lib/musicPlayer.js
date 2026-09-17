@@ -10,7 +10,7 @@
 // browser-initiated pauses (tab switch, iOS interruptions) stay in sync for free.
 // ─────────────────────────────────────────────────────────────────────────────
 import { useSyncExternalStore } from 'react'
-import { MUSIC_TRACKS } from './musicConfig'
+import { MUSIC_TRACKS, trackLabel } from './musicConfig'
 import { addToSet, KEYS } from './storage'
 
 const VOLUME = 0.85
@@ -40,6 +40,26 @@ function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+/**
+ * Starts a track. `avoid` is the src currently playing, so a skip never lands
+ * back on the same one — with 11 tracks a plain random pick repeats often
+ * enough to look broken.
+ */
+function playTrack(el, avoid) {
+  const pool = MUSIC_TRACKS.length > 1 ? MUSIC_TRACKS.filter((t) => t.src !== avoid) : MUSIC_TRACKS
+  const track = pickRandom(pool)
+  el.src = track.src
+  el.volume = VOLUME
+  el.play()
+    // Recorded only once playback actually starts, so a track blocked by
+    // autoplay policy never counts toward the "heard them all" badge.
+    .then(() => {
+      addToSet(KEYS.playedTracks, track.src)
+      emit() // refresh the now-playing label
+    })
+    .catch(() => emit()) // autoplay blocked — element stays paused
+}
+
 /** Toggles playback. Must be called from a user gesture to start. */
 export function toggleMusic() {
   const el = ensureAudio()
@@ -48,14 +68,13 @@ export function toggleMusic() {
     el.pause()
     return
   }
-  const track = pickRandom(MUSIC_TRACKS)
-  el.src = track
-  el.volume = VOLUME
-  el.play()
-    // Recorded only once playback actually starts, so a track blocked by
-    // autoplay policy never counts toward the "heard them all" badge.
-    .then(() => addToSet(KEYS.playedTracks, track))
-    .catch(() => emit()) // autoplay blocked — element stays paused
+  playTrack(el, null)
+}
+
+/** Jumps to a different random track. Starts playback if nothing was playing. */
+export function skipTrack() {
+  const el = ensureAudio()
+  playTrack(el, el.src ? el.src.replace(window.location.origin, '') : null)
 }
 
 /**
@@ -84,7 +103,9 @@ export function startStoryMusic() {
     storyAudio = new Audio()
     storyAudio.loop = false
   }
-  storyAudio.src = pickRandom(MUSIC_TRACKS)
+  // .src, not the track object — MUSIC_TRACKS holds { src, label } now, and
+  // assigning the object here would set the audio source to "[object Object]".
+  storyAudio.src = pickRandom(MUSIC_TRACKS).src
   storyAudio.volume = VOLUME
   storyPausedByTabSwitch = false
   storyAudio.play().catch(() => {}) // autoplay blocked — silence, not an error
@@ -128,11 +149,24 @@ function subscribe(listener) {
   return () => listeners.delete(listener)
 }
 
-const getSnapshot = () => !!audio && !audio.paused
-const getServerSnapshot = () => false
+// Both halves of the state in ONE string, because useSyncExternalStore
+// compares snapshots with Object.is — returning a fresh { isPlaying, label }
+// object every call would be a new reference each time and loop forever.
+const getSnapshot = () => {
+  if (!audio) return 'idle|'
+  const src = audio.src ? audio.src.replace(window.location.origin, '') : ''
+  return `${audio.paused ? 'paused' : 'playing'}|${src}`
+}
+const getServerSnapshot = () => 'idle|'
 
-/** `{ isPlaying, toggle }` — playback survives route changes. */
+/** `{ isPlaying, label, toggle, skip }` — playback survives route changes. */
 export function useMusic() {
-  const isPlaying = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-  return { isPlaying, toggle: toggleMusic }
+  const snap = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const [state, src] = snap.split('|')
+  return {
+    isPlaying: state === 'playing',
+    label: src ? trackLabel(src) : null,
+    toggle: toggleMusic,
+    skip: skipTrack,
+  }
 }

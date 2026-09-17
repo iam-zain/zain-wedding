@@ -14,6 +14,7 @@ export const KEYS = {
   commentedPosts: 'commentedPosts',
   playedTracks: 'playedTracks',
   achievements: 'achievements',
+  visitedPages: 'visitedPages',
 }
 
 // ── Raw JSON get/set ─────────────────────────────────────────────────────────
@@ -112,6 +113,7 @@ export const useBookmarkedPosts = () => useStringSet(KEYS.bookmarkedPosts)
 export const useCommentedPosts = () => useStringSet(KEYS.commentedPosts)
 export const usePlayedTracks = () => useStringSet(KEYS.playedTracks)
 export const useAchievements = () => useStringSet(KEYS.achievements)
+export const useVisitedPages = () => useStringSet(KEYS.visitedPages)
 
 /**
  * Non-reactive set insert, for modules that live outside React (the music

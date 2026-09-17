@@ -9,20 +9,56 @@ const DRESSCODE_PLACEHOLDER = '/assets/dresscode/placeholder.svg'
 
 const byDateAsc = (a, b) => Date.parse(a.date) - Date.parse(b.date)
 
+/**
+ * Each function's own colours, keyed by event id — drawn from the dress code
+ * it already carries, so the page looks like the outfits guests are being
+ * asked to wear. Falls back to the neutral card if an id isn't listed, so a
+ * new event in site.json renders fine before anyone picks colours for it.
+ */
+const EVENT_COLORS = {
+  haldi: { accent: '#f7c948', swatches: ['#F7C948', '#D69E2E'] },
+  mehendi: { accent: '#79b473', swatches: ['#79B473', '#3F7D4F'] },
+  nikah: { accent: '#e8b4a0', swatches: ['#EADBC8', '#E8B4A0'] },
+  walima: { accent: '#a1547f', swatches: ['#7B3F61', '#2F6F6B'] },
+}
+
 function EventCard({ ev, last }) {
+  const theme = EVENT_COLORS[ev.id]
+  const accent = theme?.accent
+
   return (
     <div data-testid={`event-card-${ev.id}`} className="relative flex gap-4">
       {/* Timeline rail */}
       <div className="flex flex-col items-center">
-        <div className="z-10 flex h-11 w-11 items-center justify-center rounded-full bg-ig-card text-xl ring-2 ring-ig-border">
+        <div
+          className="z-10 flex h-11 w-11 items-center justify-center rounded-full text-xl ring-2"
+          style={{
+            backgroundColor: accent ? `${accent}26` : 'var(--color-ig-card)',
+            '--tw-ring-color': accent || 'var(--color-ig-border)',
+          }}
+        >
           <span aria-hidden="true">{ev.emoji || '💫'}</span>
         </div>
         {!last && <div className="mt-1 w-px flex-1 bg-ig-border" />}
       </div>
 
       {/* Card */}
-      <div className="mb-5 flex-1 rounded-xl border border-ig-border bg-ig-elevated p-4">
-        <h3 data-testid={`event-name-${ev.id}`} className="text-base font-semibold">{ev.name}</h3>
+      <div
+        className="mb-5 flex-1 rounded-xl border p-4"
+        style={{
+          borderColor: accent ? `${accent}59` : 'var(--color-ig-border)',
+          background: accent
+            ? `linear-gradient(135deg, ${accent}1a, ${accent}07)`
+            : 'var(--color-ig-elevated)',
+        }}
+      >
+        <h3
+          data-testid={`event-name-${ev.id}`}
+          className="text-base font-semibold"
+          style={{ color: accent }}
+        >
+          {ev.name}
+        </h3>
         <p className="mt-0.5 text-sm text-ig-muted">{formatEventDate(ev.date)}</p>
 
         <a
@@ -55,6 +91,25 @@ function EventCard({ ev, last }) {
               />
             </div>
             <p className="mt-1.5 text-xs text-ig-text">{ev.dresscode}</p>
+            {theme?.swatches?.length > 0 && (
+              <div
+                data-testid={`event-swatches-${ev.id}`}
+                className="mt-2 flex items-center gap-1.5"
+              >
+                {theme.swatches.map((hex) => (
+                  <span
+                    key={hex}
+                    title={hex}
+                    aria-label={`Colour ${hex}`}
+                    className="size-5 rounded-full ring-1 ring-white/25"
+                    style={{ backgroundColor: hex }}
+                  />
+                ))}
+                <span className="ml-1 text-[10px] uppercase tracking-wide text-ig-faint">
+                  colour guide
+                </span>
+              </div>
+            )}
           </div>
         )}
       </div>

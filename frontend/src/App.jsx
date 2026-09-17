@@ -9,6 +9,7 @@ import RSVPPage from './routes/RSVPPage'
 import MorePage from './routes/MorePage'
 import QuizPage from './routes/QuizPage'
 import WishesPage from './routes/WishesPage'
+import SavedPage from './routes/SavedPage'
 import SecretPage from './routes/SecretPage'
 import { consumeAccessKeyFromUrl } from './lib/access'
 import { getUserId } from './lib/storage'
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/more" element={<MorePage />} />
             <Route path="/rsvp" element={<RSVPPage />} />
             <Route path="/quiz" element={<QuizPage />} />
+            <Route path="/saved" element={<SavedPage />} />
             <Route path="/wishes" element={<WishesPage />} />
             <Route path="/psst" element={<SecretPage />} />
             <Route path="*" element={<FeedPage />} />

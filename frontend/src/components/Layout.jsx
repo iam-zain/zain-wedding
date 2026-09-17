@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useMotionPermission } from '../lib/useMotionPermission'
 import { stopMusic } from '../lib/musicPlayer'
 import { useSwipeTabNav } from '../lib/useSwipeTabNav'
+import { useVisitedPages } from '../lib/storage'
 import BottomNav from './BottomNav'
 import ShakeEasterEgg from './ShakeEasterEgg'
 import TypeAnywhereEasterEgg from './TypeAnywhereEasterEgg'
@@ -14,6 +15,7 @@ import OfflineEasterEgg from './OfflineEasterEgg'
 import LandscapeEasterEgg from './LandscapeEasterEgg'
 import ScreenshotEasterEgg from './ScreenshotEasterEgg'
 import AchievementWatcher from './AchievementWatcher'
+import TiltEasterEgg from './TiltEasterEgg'
 
 // Re-mounts (via the pathname key) on every route change so its entrance
 // animation replays; direction comes from navigate(path, { state }) —
@@ -33,6 +35,14 @@ export default function Layout() {
   const { pathname } = useLocation()
   useMotionPermission()
   useSwipeTabNav()
+
+  // Records every page the guest opens, for the "poora ghoom liya" badge.
+  // Stored as the raw pathname; useAchievementCounts decides which of them
+  // count, so adding a page here never retroactively breaks anyone's progress.
+  const { add: markVisited } = useVisitedPages()
+  useEffect(() => {
+    markVisited(pathname)
+  }, [pathname, markVisited])
 
   // The record player lives on the feed's avatar, and that's the only place
   // with a control to stop it — so leaving the feed stops the track rather
@@ -65,6 +75,7 @@ export default function Layout() {
       <LandscapeEasterEgg />
       <ScreenshotEasterEgg />
       <AchievementWatcher />
+      <TiltEasterEgg />
     </div>
   )
 }
