@@ -37,17 +37,42 @@ function validTint(t) {
   return t.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? t : null
 }
 
+/** [r,g,b] 0-255 → [h 0-360, s 0-1, l 0-1] */
+function toHsl([r, g, b]) {
+  r /= 255
+  g /= 255
+  b /= 255
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  if (max === min) return [0, 0, l]
+  const d = max - min
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+  let h
+  if (max === r) h = (g - b) / d + (g < b ? 6 : 0)
+  else if (max === g) h = (b - r) / d + 2
+  else h = (r - g) / d + 4
+  return [h * 60, s, l]
+}
+
 /**
- * Soft top-to-bottom wash in the cover's colour. Very dark covers (navy,
- * maroon) would vanish on the black page, so they're lifted to a visible
- * brightness first, keeping their hue. Never fades to zero, so caption and
- * comments stay part of the same card.
+ * The post's background, in the spirit of the profile's HeroGlow: the cover's
+ * hue, made vivid enough to read on black (cover colours are often muted
+ * browns or near-black navy), as a soft wash plus two radial glows lower down
+ * so the actions, caption and comments are coloured as clearly as the top.
  */
 function tintGradient(tint) {
-  const max = Math.max(...tint)
-  const lift = max < 150 ? 150 / Math.max(max, 1) : 1
-  const c = tint.map((n) => Math.min(255, Math.round(n * lift))).join(',')
-  return `linear-gradient(to bottom, rgba(${c},0.24) 0%, rgba(${c},0.14) 50%, rgba(${c},0.08) 100%)`
+  const [h, s] = toHsl(tint)
+  // Greys stay mostly grey; anything with colour gets at least 55% saturation.
+  const sat = s < 0.08 ? 15 : Math.max(55, Math.round(s * 100))
+  const main = `hsla(${Math.round(h)}, ${sat}%, 55%,`
+  const accent = `hsla(${Math.round(h + 35) % 360}, ${sat}%, 58%,`
+  return [
+    `radial-gradient(circle at 12% 78%, ${main} 0.30), transparent 55%)`,
+    `radial-gradient(circle at 92% 96%, ${accent} 0.24), transparent 50%)`,
+    `radial-gradient(circle at 85% 4%, ${main} 0.22), transparent 45%)`,
+    `linear-gradient(to bottom, ${main} 0.16), ${main} 0.10))`,
+  ].join(', ')
 }
 
 export default function PostCard({ post, isMostLoved = false, liveCount = 0, onLiveCount }) {

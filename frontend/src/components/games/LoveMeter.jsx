@@ -109,7 +109,7 @@ export default function LoveMeter() {
           />
         </div>
         <p className="mt-3 text-3xl font-bold tabular-nums" data-testid="love-result">
-          {shown == null ? '— %' : perfect ? '❤️ 100% Mohabbat' : `${value}%`}
+          {shown == null ? '— %' : perfect ? '❤️ 100% Muhabbat' : `${value}%`}
         </p>
         {perfect && (
           <>

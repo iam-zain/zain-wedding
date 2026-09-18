@@ -1024,7 +1024,7 @@ export const ACHIEVEMENTS = [
     emoji: '💖',
     color: '#ff6b81',
     title: 'Dil Banao Ustaad',
-    how: 'ZainUz Match 3 ke ek game mein 300 points banao',
+    how: 'Wedding Crush ke ek game mein 300 points banao',
     message: 'Teen milaye, dil banaye — 300 points! Aap toh match ke ustaad ho 💖',
   },
   {
@@ -1034,7 +1034,7 @@ export const ACHIEVEMENTS = [
     emoji: '💞',
     color: '#a855f7',
     title: 'Love Guru',
-    how: 'Love-o-Meter ko 100% Mohabbat tak le jao',
+    how: 'Love-o-Meter ko 100% Muhabbat tak le jao',
     message: 'Zain + Uzma = ♾️ — connection level Infinity, aapne naap liya! 💞',
   },
   {

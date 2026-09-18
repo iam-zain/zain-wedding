@@ -12,7 +12,7 @@ const STEP_MS = 230 // pop → fall → next cascade
 
 const RUN_POINTS = (len) => (len >= 6 ? 100 : len === 5 ? 50 : len === 4 ? 25 : 10)
 const COMBO_LINES = ['🔥 Combo!', '🔥🔥 Double combo!', '🔥🔥🔥 Dil garden garden ho gaya!', '💥 Unstoppable!']
-const END_WIN = ['Teen milao, dil banao — aur banaye bhi! 💕', 'Dilon ki baarish! 💖', 'Match master! 🏆']
+const END_WIN = ['Wedding Crush champion! 💍', 'Teen milao, dil banao — aur banaye bhi! 💕', 'Dilon ki baarish! 💖', 'Match master! 🏆']
 const END_LOSE = ['Achha khela! 💕', 'Agli baar aur dil banenge 💪', 'Moves khatam, pyaar nahi 🤍']
 
 let nextId = 1
@@ -30,14 +30,18 @@ function newBoard() {
       t = randType()
     } while (
       (c >= 2 && b[i - 1].t === t && b[i - 2].t === t) ||
-      (r >= 2 && b[i - N].t === t && b[i - 2 * N].t === t)
+      (r >= 2 && b[i - N].t === t && b[i - 2 * N].t === t) ||
+      (r >= 1 && c >= 1 && b[i - 1].t === t && b[i - N].t === t && b[i - N - 1].t === t)
     )
     b.push(tile(t))
   }
   return b
 }
 
-/** Every horizontal/vertical run of 3+ identical (non-gold) tiles, as index lists. */
+/**
+ * Every horizontal/vertical run of 3+ identical (non-gold) tiles, plus every
+ * 2×2 square of four, as index lists. Squares carry `.square = true`.
+ */
 function findRuns(b) {
   const runs = []
   const scan = (idx) => {
@@ -54,6 +58,16 @@ function findRuns(b) {
   }
   for (let r = 0; r < N; r++) scan(Array.from({ length: N }, (_, c) => r * N + c))
   for (let c = 0; c < N; c++) scan(Array.from({ length: N }, (_, r) => r * N + c))
+  for (let r = 0; r < N - 1; r++)
+    for (let c = 0; c < N - 1; c++) {
+      const i = r * N + c
+      const t = b[i].t
+      if (t !== GOLD && b[i + 1].t === t && b[i + N].t === t && b[i + N + 1].t === t) {
+        const sq = [i, i + 1, i + N, i + N + 1]
+        sq.square = true
+        runs.push(sq)
+      }
+    }
   return runs
 }
 
@@ -178,7 +192,8 @@ export default function MatchThree() {
     for (const run of runs) {
       points += RUN_POINTS(run.length)
       run.forEach((i) => cleared.add(i))
-      if (run.length >= 4 && goldAt == null && Math.random() < GOLD_CHANCE) {
+      // A 2×2 square always makes a golden heart; a line of 4+ usually does.
+      if (goldAt == null && (run.square || (run.length >= 4 && Math.random() < GOLD_CHANCE))) {
         goldAt = pivot != null && run.includes(pivot) ? pivot : run[Math.floor(run.length / 2)]
       }
     }
@@ -306,12 +321,13 @@ export default function MatchThree() {
         {phase === 'ready' && (
           <GameOverlay
             emoji="💕"
-            title="ZainUz Match 3"
+            title="Wedding Crush 💍"
             lines={[
               '“Teen milao, dil banao!”',
               'Ek tile dabao, phir bagal wali — dono jagah badal lenge',
               `3 → 10 · 4 → 25 · 5 → 50 · 6+ → 100 · ${MOVES} chaal`,
-              '4+ milao toh 💖 Golden Heart — usse chalao, 💥 LOVE BLAST!',
+              '4 ek line mein ya 2×2 chaukor = 💖 Golden Heart',
+              'Golden Heart chalao → 💥 LOVE BLAST!',
             ]}
             button="Shuru karo"
             onButton={start}
