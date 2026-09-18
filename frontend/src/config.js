@@ -281,7 +281,7 @@ export const BAAT_PAKKI = { label: 'Baat pakki', emoji: '🤝', date: '2026-05-3
  * tapping — /psst is deliberately absent, since it's a secret and demanding it
  * would make the meter impossible for anyone who never found it.
  */
-export const EXPLORE_PAGES = ['/', '/events', '/more', '/rsvp', '/quiz', '/saved', '/wishes']
+export const EXPLORE_PAGES = ['/', '/events', '/more', '/rsvp', '/quiz', '/saved', '/wishes', '/games']
 
 export const EXPLORE_TITLE = 'Kitna ghoom liya?'
 export const EXPLORE_DONE_MESSAGE = '🧭 Poori website ghoom li — kuch nahi chhoda!'
@@ -979,6 +979,46 @@ export const ACHIEVEMENTS = [
     title: 'Quiz champion',
     how: 'Quiz mein paanch ke paanch sahi karo',
     message: 'Poora quiz sahi! Humse zyada toh aap jaante ho 🤍',
+  },
+  {
+    id: 'hearts-50',
+    metric: 'hearts',
+    goal: 50,
+    emoji: '💕',
+    color: '#ff6b81',
+    title: 'Dil ka Shikari',
+    how: 'Games → Catch the Hearts mein 50 dil pakdo',
+    message: 'Pachaas dil pakad liye! Aap toh asli dil ke shikari ho 💕',
+  },
+  {
+    id: 'rings-25',
+    metric: 'rings',
+    goal: 25,
+    emoji: '💍',
+    color: '#f7971e',
+    title: 'Ring Master',
+    how: 'Games → Ring Catch mein 25 rings pakdo',
+    message: 'Pachees rings! Ab koi ring aapse bach nahi sakti 💍',
+  },
+  {
+    id: 'hidden-10',
+    metric: 'hidden',
+    goal: 10,
+    emoji: '👀',
+    color: '#a855f7',
+    title: 'Dil Dhoond Liya',
+    how: 'Games → Find the Hidden Heart mein 10 chhupe dil dhoondo',
+    message: 'Das chhupe dil dhoond liye — aapki nazar se kuch nahi bachta 👀',
+  },
+  {
+    id: 'memory-perfect',
+    metric: 'memory',
+    goal: 1,
+    emoji: '🧠',
+    color: '#25d366',
+    title: 'Yaad Reh Gaya',
+    how: 'Heart Memory bina galti ke poora karo (dekha hua card dobara galat mat kholo)',
+    message: 'Ek bhi galti nahi! Yaaddasht ho toh aisi 🧠',
   },
 ]
 

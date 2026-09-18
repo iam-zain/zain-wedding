@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { EXPLORE_PAGES, QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
 import { MUSIC_TRACKS } from './musicConfig'
 import { useVisibleFeed } from './useVisibleFeed'
+import { useGameStats } from './games'
 import {
   KEYS,
   useCommentedPosts,
@@ -36,6 +37,11 @@ export function useAchievementCounts() {
   const { list: visited } = useVisitedPages()
   const [minutes] = useLocalStorage(KEYS.timeSpent, 0)
   const [rsvp] = useLocalStorage(KEYS.rsvpSubmission, null)
+  const games = useGameStats()
+  const hearts = Number(games.hearts) || 0
+  const rings = Number(games.rings) || 0
+  const hidden = Number(games.hidden) || 0
+  const memory = games.memoryPerfect > 0 ? 1 : 0
 
   const totalPosts = visiblePosts.length
   const totalStories = visibleStories.length
@@ -73,6 +79,10 @@ export function useAchievementCounts() {
       // never has to special-case these.
       time: { count: minutesOnSite, total: 60 },
       rsvp: { count: rsvpDone, total: 1 },
+      hearts: { count: hearts, total: 50 },
+      rings: { count: rings, total: 25 },
+      hidden: { count: hidden, total: 10 },
+      memory: { count: memory, total: 1 },
     }),
     [
       likedVisible,
@@ -85,6 +95,10 @@ export function useAchievementCounts() {
       exploredCount,
       minutesOnSite,
       rsvpDone,
+      hearts,
+      rings,
+      hidden,
+      memory,
     ],
   )
 }

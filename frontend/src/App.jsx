@@ -8,6 +8,7 @@ import EventsPage from './routes/EventsPage'
 import RSVPPage from './routes/RSVPPage'
 import MorePage from './routes/MorePage'
 import QuizPage from './routes/QuizPage'
+import GamesPage from './routes/GamesPage'
 import WishesPage from './routes/WishesPage'
 import SavedPage from './routes/SavedPage'
 import SecretPage from './routes/SecretPage'
@@ -49,6 +50,7 @@ export default function App() {
             <Route path="/more" element={<MorePage />} />
             <Route path="/rsvp" element={<RSVPPage />} />
             <Route path="/quiz" element={<QuizPage />} />
+            <Route path="/games" element={<GamesPage />} />
             <Route path="/saved" element={<SavedPage />} />
             <Route path="/wishes" element={<WishesPage />} />
             <Route path="/psst" element={<SecretPage />} />

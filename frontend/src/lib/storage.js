@@ -21,6 +21,8 @@ export const KEYS = {
   timeSpent: 'timeSpent',
   // Owned by RSVPPage; named here so the achievement engine can read it too.
   rsvpSubmission: 'rsvp_submission',
+  // Mini-game lifetime counters + best scores (lib/games.js).
+  gameStats: 'gameStats',
 }
 
 // ── Raw JSON get/set ─────────────────────────────────────────────────────────

@@ -7,10 +7,11 @@ import { achievementList } from '../lib/achievements'
 import { useAchievementCounts } from '../lib/useAchievementCounts'
 import { useAchievements, useLocalStorage } from '../lib/storage'
 import { haptic } from '../lib/haptics'
-import { BookmarkIcon, ChevronRightIcon, QuizIcon, RsvpIcon, TrophyIcon, WishesIcon } from '../components/icons'
+import { BookmarkIcon, ChevronRightIcon, GamesIcon, QuizIcon, RsvpIcon, TrophyIcon, WishesIcon } from '../components/icons'
 
 const LINK_ICONS = {
   rsvp: RsvpIcon,
+  games: GamesIcon,
   quiz: QuizIcon,
   saved: BookmarkIcon,
   wishes: WishesIcon,

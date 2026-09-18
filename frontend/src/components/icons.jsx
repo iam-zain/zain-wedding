@@ -183,6 +183,16 @@ export const WishesIcon = (p) => (
   </Svg>
 )
 
+/** Games — a gamepad. */
+export const GamesIcon = (p) => (
+  <Svg {...p}>
+    <path d="M7.5 7.5h9a4.5 4.5 0 0 1 4.4 5.4l-.7 3.4a2.4 2.4 0 0 1-4.2 1L14.6 16H9.4L8 17.3a2.4 2.4 0 0 1-4.2-1l-.7-3.4A4.5 4.5 0 0 1 7.5 7.5z" />
+    <path d="M8 10.5v3M6.5 12h3" />
+    <circle cx="15.5" cy="11" r=".9" fill="currentColor" stroke="none" />
+    <circle cx="17" cy="13" r=".9" fill="currentColor" stroke="none" />
+  </Svg>
+)
+
 /** Achievements shelf. */
 export const TrophyIcon = (p) => (
   <Svg {...p}>

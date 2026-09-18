@@ -295,3 +295,28 @@
 .splash-message {
   animation: splash-message-in 400ms ease-out both;
 }
+
+/* ── Mini-games ─────────────────────────────────────────────────────────────
+   Transform/opacity only, so they stay on the compositor on old phones. */
+@keyframes zu-pop {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes zu-fall {
+  from { transform: translate3d(0, -70px, 0); }
+  to { transform: translate3d(0, var(--fall, 440px), 0); }
+}
+@keyframes zu-float {
+  to { transform: translateY(-30px); opacity: 0; }
+}
+@keyframes zu-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.zu-game-arena {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}

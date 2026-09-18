@@ -32,6 +32,15 @@ export const MORE_LINKS = [
     via: '#0aa7a0',
   },
   {
+    id: 'games',
+    to: '/games',
+    icon: 'games',
+    label: 'Games',
+    hint: 'Dil pakdo, ring pakdo — chhote khel 🎮',
+    from: '#ff6b81',
+    via: '#a855f7',
+  },
+  {
     id: 'quiz',
     to: '/quiz',
     icon: 'quiz',
