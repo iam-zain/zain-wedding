@@ -1031,18 +1031,13 @@ export const RSVP_DEFAULT_TIME = '12:00'
 export const RSVP_GUESTS_MIN = 0
 export const RSVP_GUESTS_MAX = 9
 
-/**
- * How a guest knows the couple. Deliberately OPTIONAL — the three sides below
- * are the ones asked for, and a guest from Uzma's family (or anyone who fits
- * none of them) must not be blocked from confirming by a question that has no
- * right answer for them.
- */
+/** How a guest knows Zain. Required on the form; shown in this order. */
 export const RSVP_RELATIONS = [
   {
-    id: 'friend',
-    emoji: '🤝',
-    label: 'Friend',
-    line: 'Dosti wali side! Bina inke toh mehfil adhoori hai.',
+    id: 'dadi',
+    emoji: '🏠',
+    label: 'Dadi Ghar Wale',
+    line: 'Dadi ghar ka pyaar — jahan se sab kuch shuru hua.',
   },
   {
     id: 'nani',
@@ -1051,10 +1046,10 @@ export const RSVP_RELATIONS = [
     line: 'Nani ghar ki mithaas — bachpan ki poori duniya wahin thi.',
   },
   {
-    id: 'dadi',
-    emoji: '🏠',
-    label: 'Dadi Ghar Wale',
-    line: 'Dadi ghar ka pyaar — jahan se sab kuch shuru hua.',
+    id: 'friend',
+    emoji: '🤝',
+    label: 'Friend',
+    line: 'Dosti wali side! Bina inke toh mehfil adhoori hai.',
   },
 ]
 

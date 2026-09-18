@@ -319,8 +319,8 @@ export default function RSVPPage() {
   const [departureTime, setDepartureTime] = useState(() => timeFrom(stored?.departure))
 
   const phoneOk = isValidPhone(phone)
-  const filled = [name.trim(), phoneOk, arrivalPlace, arrivalDay, departurePlace, departureDay].filter(Boolean).length
-  const total = 6
+  const filled = [name.trim(), phoneOk, relation, arrivalPlace, arrivalDay, departurePlace, departureDay].filter(Boolean).length
+  const total = 7
 
   // The ONLY place a confirmation is sent — first submit and later retries
   // alike. Driving it off state rather than the submit handler means a save
@@ -347,6 +347,7 @@ export default function RSVPPage() {
     if (!name.trim()) return toast('Naam toh likho 🙂')
     if (!phone) return toast('WhatsApp number daal do 📱')
     if (!phoneOk) return toast(`${RSVP_PHONE_DIGITS} digit ka sahi mobile number daalo 📱`)
+    if (!relation) return toast('Zain se aapka rishta chun lo 🤝')
     if (!arrivalPlace) return toast('Kahan pahunch rahe ho? Chittaranjan ya Gaya 🚉')
     if (!arrivalDay) return toast('Aane ka din chun lo 📅')
     if (!departurePlace) return toast('Wapsi kahan se hogi? 🛫')
@@ -496,7 +497,7 @@ export default function RSVPPage() {
           </div>
 
           <div className="rounded-2xl border border-ig-border bg-ig-elevated p-4">
-            <p className="text-xs text-ig-muted">Zain se aapka rishta? <span className="text-ig-faint">(optional)</span></p>
+            <p className="flex items-center gap-1.5 text-xs text-ig-muted"><span>Zain se aapka rishta?</span>{relation && <span aria-hidden="true" className="text-wa">✓</span>}</p>
             <div className="mt-2 space-y-2">
               {RSVP_RELATIONS.map((r) => {
                 const active = relation === r.id
@@ -506,7 +507,7 @@ export default function RSVPPage() {
                     type="button"
                     aria-pressed={active}
                     data-testid={`rsvp-relation-${r.id}`}
-                    onClick={() => { haptic('tap'); setRelation(active ? '' : r.id) }}
+                    onClick={() => { haptic('tap'); setRelation(r.id) }}
                     className={`w-full rounded-xl border px-3 py-2.5 text-left transition-colors ${
                       active ? 'text-ig-text' : 'border-ig-border bg-ig-card text-ig-muted active:opacity-80'
                     }`}

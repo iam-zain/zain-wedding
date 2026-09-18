@@ -11,8 +11,11 @@ import { moreLinkById } from '../lib/tabs'
 // Same gradient the Quiz tile on the hub wears.
 const { from: QUIZ_FROM, via: QUIZ_VIA } = moreLinkById('quiz')
 
-// How long the right/wrong colours stay up before the next question slides in.
-const REVEAL_MS = 900
+// How long the answer stays on screen before the next question slides in.
+// Longer after a wrong pick: the guest has to find and read the correct option
+// too, and at the old 0.9s several people never saw it.
+const REVEAL_CORRECT_MS = 1600
+const REVEAL_WRONG_MS = 2800
 
 // Indexed by option position. Falls back to a number if a question ever
 // carries more options than there are letters.
@@ -60,7 +63,7 @@ export default function QuizPage() {
       // the pre-answer value and a perfect run would save as total - 1.
       if (best === null || nextScore > best) setBest(nextScore)
       if (nextScore === total) playChime()
-    }, REVEAL_MS)
+    }, correct ? REVEAL_CORRECT_MS : REVEAL_WRONG_MS)
   }
 
   function restart() {
