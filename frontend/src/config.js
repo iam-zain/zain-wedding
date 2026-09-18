@@ -960,8 +960,8 @@ export const RSVP_LOCATIONS = [
 ]
 
 /** Inclusive date windows (YYYY-MM-DD) guests may pick from. */
-export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-26', end: '2026-10-30' }
-export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-01' }
+export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-24', end: '2026-10-30' }
+export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-03' }
 
 /**
  * "26 Oct se 30 Oct ke beech" for a window. Derived rather than written out,

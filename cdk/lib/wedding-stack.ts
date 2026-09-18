@@ -211,10 +211,10 @@ export class WeddingStack extends cdk.Stack {
         TABLE_NAME: table.tableName,
         WRITE_API_KEY: writeApiKey,
         ADMIN_API_KEY: adminApiKey,
-        RSVP_ARRIVAL_FROM: '2026-10-26',
+        RSVP_ARRIVAL_FROM: '2026-10-24',
         RSVP_ARRIVAL_TO: '2026-10-30',
         RSVP_DEPARTURE_FROM: '2026-10-28',
-        RSVP_DEPARTURE_TO: '2026-11-01',
+        RSVP_DEPARTURE_TO: '2026-11-03',
       },
     })
     const adminFn = new lambda.Function(this, 'AdminApi', {
