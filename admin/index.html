@@ -480,6 +480,7 @@
       // ── Guest RSVPs ─────────────────────────────────────────────────────────
       let RSVPS = []
       const PLACE_LABEL = { chittaranjan: 'Chittaranjan', gaya: 'Gaya' }
+      const RELATION_LABEL = { friend: '🤝 Friend', nani: '🏡 Nani Ghar Wale', dadi: '🏠 Dadi Ghar Wale' }
 
       function fmtStamp(v) {
         if (!v) return '—'
@@ -501,24 +502,39 @@
             const g = Number.isFinite(Number(r.guests)) ? Math.max(0, Math.round(Number(r.guests))) : 0
             // The person who filled the form counts too — this is the number
             // that actually matters for catering and seating.
-            return Object.assign({}, r, { guests: g, partyTotal: g + 1 })
+            return Object.assign({}, r, { guests: g, partyTotal: g + 1, hidden: r.hidden === true })
           })
-          const heads = RSVPS.reduce((n, r) => n + r.partyTotal, 0)
+          // Hidden rows stay listed but are excluded from BOTH totals — a
+          // cancelled guest still shouldn't be cooked for.
+          const active = RSVPS.filter((r) => !r.hidden)
+          const heads = active.reduce((n, r) => n + r.partyTotal, 0)
+          const hiddenCount = RSVPS.length - active.length
           $('rsvpCount').textContent = RSVPS.length
-            ? '(' + RSVPS.length + ' confirmations · ' + heads + ' people)'
+            ? '(' + active.length + ' confirmations · ' + heads + ' people'
+              + (hiddenCount ? ' · ' + hiddenCount + ' hidden' : '') + ')'
             : ''
           if (!RSVPS.length) { el.textContent = 'No confirmations yet.'; return }
           el.className = ''
-          el.innerHTML = RSVPS.map((r) => `
-            <div class="item">
+          // Serial numbers count the ACTIVE rows only, so 1..N stays unbroken
+          // when something is hidden; hidden rows show a dash instead.
+          let serial = 0
+          el.innerHTML = RSVPS.map((r) => {
+            const sr = r.hidden ? '—' : String(++serial)
+            const rel = RELATION_LABEL[r.relation] || ''
+            return `
+            <div class="item" style="${r.hidden ? 'opacity:.45;' : ''}">
               <div class="meta">
-                <div class="t">${escapeHtml(r.name || '—')}</div>
+                <div class="t">
+                  <span style="color:var(--muted);font-weight:600;">${escapeHtml(sr)}.</span>
+                  ${escapeHtml(r.name || '—')}
+                  ${r.hidden ? '<span style="color:var(--muted);font-weight:400;font-size:12px;"> (hidden)</span>' : ''}
+                </div>
                 <div class="s">
                   <a href="https://wa.me/${encodeURIComponent(String(r.dialCode || '+91').replace('+', '') + (r.phone || ''))}"
                      target="_blank" rel="noopener noreferrer">${escapeHtml((r.dialCode || '+91') + ' ' + (r.phone || ''))}</a>
                 </div>
                 <div class="s">
-                  👥 ${r.guests > 0 ? escapeHtml(r.partyTotal + ' people (+' + r.guests + ')') : 'Coming alone'}
+                  👥 ${r.guests > 0 ? escapeHtml(r.partyTotal + ' people (+' + r.guests + ')') : 'Coming alone'}${rel ? ' · ' + escapeHtml(rel) : ''}
                 </div>
                 <div class="s">
                   🛬 ${escapeHtml(PLACE_LABEL[r.arrivalPlace] || r.arrivalPlace || '—')} · ${escapeHtml(fmtStamp(r.arrival))}
@@ -526,8 +542,14 @@
                 <div class="s">
                   🛫 ${escapeHtml(PLACE_LABEL[r.departurePlace] || r.departurePlace || '—')} · ${escapeHtml(fmtStamp(r.departure))}
                 </div>
+                <div style="margin-top:8px;">
+                  <button onclick="toggleRsvpHidden('${escapeHtml(r.userId)}', ${r.hidden ? 'false' : 'true'})">
+                    ${r.hidden ? 'Restore' : 'Hide'}
+                  </button>
+                </div>
               </div>
-            </div>`).join('')
+            </div>`
+          }).join('')
         } catch (e) {
           el.className = ''
           el.textContent = 'Failed to load: ' + e.message
@@ -542,11 +564,36 @@
         return '"' + safe.replace(/"/g, '""') + '"'
       }
 
+      // Soft-hide / restore. Nothing is ever deleted: a guest who cancels may
+      // un-cancel, and a row hidden by mistake has to be recoverable.
+      async function toggleRsvpHidden(userId, hidden) {
+        const who = (RSVPS.find((r) => r.userId === userId) || {}).name || 'this entry'
+        if (!confirm((hidden ? 'Hide ' : 'Restore ') + who + '?')) return
+        try {
+          await api('/admin/rsvp/' + encodeURIComponent(userId), {
+            method: 'PATCH',
+            body: JSON.stringify({ hidden: hidden }),
+          })
+          await loadRsvps()
+        } catch (e) {
+          alert('Could not update: ' + e.message)
+        }
+      }
+
       function downloadRsvpCsv() {
         if (!RSVPS.length) return alert('Nothing to export yet.')
-        const cols = ['name', 'dialCode', 'phone', 'guests', 'partyTotal', 'arrivalPlace', 'arrival', 'departurePlace', 'departure', 'createdAt', 'updatedAt', 'userId']
-        const head = ['Name', 'Code', 'Phone', 'Extra guests', 'Total in party', 'Arrival place', 'Arrival', 'Departure place', 'Departure', 'First submitted', 'Last updated', 'Device id']
-        const rows = RSVPS.map((r) => cols.map((c) => csvCell(r[c])).join(','))
+        const cols = ['sr', 'name', 'dialCode', 'phone', 'guests', 'partyTotal', 'relationLabel', 'arrivalPlace', 'arrival', 'departurePlace', 'departure', 'hidden', 'createdAt', 'updatedAt', 'userId']
+        const head = ['#', 'Name', 'Code', 'Phone', 'Extra guests', 'Total in party', 'Relation', 'Arrival place', 'Arrival', 'Departure place', 'Departure', 'Hidden', 'First submitted', 'Last updated', 'Device id']
+        // Same numbering the list shows, so a printed sheet and the screen agree.
+        let csvSerial = 0
+        const rows = RSVPS.map((r) => {
+          const row = Object.assign({}, r, {
+            sr: r.hidden ? '' : String(++csvSerial),
+            relationLabel: RELATION_LABEL[r.relation] || '',
+            hidden: r.hidden ? 'yes' : '',
+          })
+          return cols.map((c) => csvCell(row[c])).join(',')
+        })
         // BOM so Excel opens the file as UTF-8 rather than mangling names.
         const BOM = String.fromCharCode(0xFEFF) // Excel needs it to read the file as UTF-8
         const CRLF = String.fromCharCode(13, 10) // CSV line ending Excel is happiest with

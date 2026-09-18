@@ -11,6 +11,8 @@ const DEPARTURE_FROM = process.env.RSVP_DEPARTURE_FROM || '2026-10-28'
 const DEPARTURE_TO = process.env.RSVP_DEPARTURE_TO || '2026-11-03'
 
 const PLACES = new Set(['chittaranjan', 'gaya'])
+// Optional — a guest from neither side must still be able to confirm.
+const RELATIONS = new Set(['friend', 'nani', 'dadi'])
 // Extra people a guest brings. 0 is valid and is the common answer, so this is
 // bounded rather than required. Keep in step with RSVP_GUESTS_* in config.js.
 const GUESTS_MIN = 0
@@ -47,6 +49,7 @@ async function submit(event) {
   const phone = String(b.phone || '').replace(/\D/g, '')
   const arrivalPlace = String(b.arrivalPlace || '').toLowerCase()
   const departurePlace = String(b.departurePlace || '').toLowerCase()
+  const relation = RELATIONS.has(String(b.relation || '')) ? String(b.relation) : ''
   const arrival = String(b.arrival || '')
   const departure = String(b.departure || '')
   // Coerced and clamped rather than rejected: a missing field means an older
@@ -80,6 +83,7 @@ async function submit(event) {
           'SET #name = :name',
           'phone = :phone',
           'guests = :guests',
+          'relation = :relation',
           'dialCode = :dial',
           'arrivalPlace = :ap',
           'arrival = :arr',
@@ -94,6 +98,7 @@ async function submit(event) {
           ':name': name,
           ':phone': phone,
           ':guests': guests,
+          ':relation': relation,
           ':dial': String(b.dialCode || '+91').slice(0, 5),
           ':ap': arrivalPlace,
           ':arr': arrival,
@@ -134,6 +139,10 @@ async function list(event) {
           name: it.name,
           phone: it.phone,
           guests: typeof it.guests === 'number' ? it.guests : 0,
+          relation: it.relation || '',
+          // Soft-hidden rows are still returned; the console decides how to
+          // show them, so a mistaken hide can always be undone.
+          hidden: it.hidden === true,
           dialCode: it.dialCode,
           arrivalPlace: it.arrivalPlace,
           arrival: it.arrival,
@@ -154,7 +163,53 @@ async function list(event) {
   }
 }
 
+/**
+ * PATCH /admin/rsvp/{userId} — soft-hide or restore one confirmation.
+ *
+ * Never deletes. A guest who cancels may un-cancel, a row hidden by mistake
+ * has to come back, and the couple's own test entries are worth keeping out of
+ * the count without destroying anything. Matches the soft-delete rule the rest
+ * of the admin console already follows.
+ */
+async function setHidden(event) {
+  if (!checkAdminKey(event)) return unauthorized()
+
+  const userId = event.pathParameters?.userId
+  if (!userId) return badRequest('userId required')
+
+  let b
+  try {
+    b = parseBody(event)
+  } catch {
+    return badRequest('invalid json body')
+  }
+  const hidden = b.hidden === true
+
+  try {
+    await ddb.send(
+      new UpdateCommand({
+        TableName: TABLE,
+        Key: { pk: `RSVP#${userId}`, sk: 'PROFILE' },
+        // 'hidden' is a DynamoDB reserved keyword, so it has to go through an
+        // expression-attribute name — same reason '#name' is aliased above.
+        UpdateExpression: 'SET #hidden = :h',
+        ExpressionAttributeNames: { '#hidden': 'hidden' },
+        ExpressionAttributeValues: { ':h': hidden },
+        // Only touch a row that exists, so a wrong id can't create a ghost.
+        ConditionExpression: 'attribute_exists(pk)',
+      }),
+    )
+    return ok({ ok: true, userId, hidden })
+  } catch (err) {
+    if (err?.name === 'ConditionalCheckFailedException') return badRequest('no such confirmation')
+    console.error('rsvp hide error', err)
+    return serverError()
+  }
+}
+
 export const handler = async (event) => {
-  if ((event.routeKey || '').startsWith('GET /admin/rsvps')) return list(event)
+  const route = event.routeKey || ''
+  if (route.startsWith('GET /admin/rsvps')) return list(event)
+  if (route.startsWith('PATCH /admin/rsvp/')) return setHidden(event)
   return submit(event)
 }

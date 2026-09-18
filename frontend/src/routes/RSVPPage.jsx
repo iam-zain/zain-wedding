@@ -9,12 +9,14 @@ import {
   RSVP_GUESTS_MIN,
   RSVP_LOCATIONS,
   RSVP_PHONE_DIGITS,
+  RSVP_RELATIONS,
   isValidPhone,
 } from '../config'
 import { submitRsvp } from '../lib/api'
 import { getUserId, KEYS } from '../lib/storage'
 import { useToast } from '../components/toast-context'
 import BackHeader from '../components/BackHeader'
+import ConfirmationTicket from '../components/ConfirmationTicket'
 import { moreLinkById } from '../lib/tabs'
 import { haptic } from '../lib/haptics'
 
@@ -56,21 +58,7 @@ function dayParts(ymd) {
   }
 }
 
-/** "Fri, 23 Oct 2026 · 2:30 PM" from a 'YYYY-MM-DD' + 'HH:mm' pair. */
-function formatDayTime(ymd, hm) {
-  if (!ymd) return '—'
-  const { weekday, day, month } = dayParts(ymd)
-  const year = ymd.slice(0, 4)
-  if (!hm) return `${weekday}, ${day} ${month} ${year}`
-  const [h, m] = hm.split(':').map(Number)
-  const suffix = h < 12 ? 'AM' : 'PM'
-  const h12 = h % 12 === 0 ? 12 : h % 12
-  return `${weekday}, ${day} ${month} ${year} · ${h12}:${String(m).padStart(2, '0')} ${suffix}`
-}
 
-function locationName(id) {
-  return RSVP_LOCATIONS.find((l) => l.id === id)?.name || '—'
-}
 
 // ── Storage ──────────────────────────────────────────────────────────────────
 function readSubmission() {
@@ -293,15 +281,6 @@ function TimeField({ id, value, onChange, testId }) {
   )
 }
 
-function SummaryLeg({ label, place, day, time, testId }) {
-  return (
-    <div data-testid={testId} className="flex-1">
-      <p className="text-[11px] uppercase tracking-wide text-ig-muted">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold">{locationName(place)}</p>
-      <p className="mt-0.5 text-xs text-ig-muted">{formatDayTime(day, time)}</p>
-    </div>
-  )
-}
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function RSVPPage() {
@@ -331,6 +310,7 @@ export default function RSVPPage() {
   const [name, setName] = useState(stored?.name || '')
   const [phone, setPhone] = useState(() => normalizePhone(stored?.phone))
   const [guests, setGuests] = useState(() => clampGuests(stored?.guests ?? RSVP_GUESTS_MIN))
+  const [relation, setRelation] = useState(stored?.relation || '')
   const [arrivalPlace, setArrivalPlace] = useState(stored?.arrivalPlace || '')
   const [arrivalDay, setArrivalDay] = useState(() => dayWithin(stored?.arrival, arrivalDays))
   const [arrivalTime, setArrivalTime] = useState(() => timeFrom(stored?.arrival))
@@ -382,6 +362,7 @@ export default function RSVPPage() {
       phone,
       dialCode: RSVP_DIAL_CODE,
       guests,
+      relation,
       arrivalPlace,
       arrival,
       departurePlace,
@@ -420,61 +401,35 @@ export default function RSVPPage() {
 
       {submitted ? (
         <div className="px-4 pt-5">
+          <ConfirmationTicket entry={submitted} guests={clampGuests(submitted.guests)} />
+
           <div
             data-testid="rsvp-confirmed"
-            className="rounded-2xl border p-4"
+            className="mt-4 rounded-2xl border p-4 text-center"
             style={{
               borderColor: `${RSVP_FROM}66`,
               background: `linear-gradient(135deg, ${RSVP_FROM}1f, ${RSVP_VIA}0a)`,
             }}
           >
-            <div className="flex items-center gap-2">
-              <span aria-hidden="true" className="text-lg leading-none">✅</span>
-              <div>
-                <p className="text-[11px] uppercase tracking-wide text-ig-muted">Confirmed as</p>
-                <p data-testid="rsvp-confirmed-name" className="text-base font-semibold leading-tight">
-                  {submitted.name}
-                </p>
-                {submitted.phone && (
-                  <p data-testid="rsvp-confirmed-phone" className="mt-0.5 text-xs text-ig-muted">
-                    💬 {submitted.dialCode || RSVP_DIAL_CODE} {submitted.phone}
-                  </p>
-                )}
-                <p data-testid="rsvp-confirmed-guests" className="mt-0.5 text-xs text-ig-muted">
-                  👥 {clampGuests(submitted.guests) > 0
-                    ? `${clampGuests(submitted.guests) + 1} log aa rahe hain`
-                    : 'Akele aa rahe ho'}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-4 flex items-start gap-3 rounded-xl bg-ig-card p-3">
-              <SummaryLeg
-                label="Aana 🛬"
-                place={submitted.arrivalPlace}
-                day={(submitted.arrival || '').slice(0, 10)}
-                time={(submitted.arrival || '').slice(11, 16)}
-                testId="rsvp-confirmed-arrival"
-              />
-              <span aria-hidden="true" className="pt-4 text-ig-faint">→</span>
-              <SummaryLeg
-                label="Jaana 🛫"
-                place={submitted.departurePlace}
-                day={(submitted.departure || '').slice(0, 10)}
-                time={(submitted.departure || '').slice(11, 16)}
-                testId="rsvp-confirmed-departure"
-              />
-            </div>
-
-            <button
-              type="button"
-              data-testid="rsvp-edit"
-              onClick={() => setSubmitted(null)}
-              className="mt-4 w-full rounded-xl bg-ig-card py-2.5 text-sm font-semibold active:opacity-90"
-            >
-              Edit details
-            </button>
+            <p className="text-2xl leading-none">🤍</p>
+            <p data-testid="rsvp-thankyou" className="mt-2 text-sm font-semibold">
+              Shukriya, {String(submitted.name || '').split(' ')[0]}!
+            </p>
+            <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-ig-muted">
+              Aapne aana confirm kar diya — humare liye isse badi khushi kuch nahi.
+              Baaki ka intezaam hamara, bas aap waqt pe pahunch jaana 🎊
+            </p>
           </div>
+
+          <button
+            type="button"
+            data-testid="rsvp-edit"
+            onClick={() => setSubmitted(null)}
+            className="mt-3 w-full rounded-xl bg-ig-card py-2.5 text-sm font-semibold active:opacity-90"
+          >
+            Edit details
+          </button>
+
           <p className="mt-3 text-center text-xs text-ig-faint">
             {submitted.synced === false
               ? 'Save ho gaya — network aate hi hum tak pahunch jayega 📶'
@@ -538,6 +493,34 @@ export default function RSVPPage() {
               accentFrom={RSVP_FROM}
               accentTo={RSVP_VIA}
             />
+          </div>
+
+          <div className="rounded-2xl border border-ig-border bg-ig-elevated p-4">
+            <p className="text-xs text-ig-muted">Zain se aapka rishta? <span className="text-ig-faint">(optional)</span></p>
+            <div className="mt-2 space-y-2">
+              {RSVP_RELATIONS.map((r) => {
+                const active = relation === r.id
+                return (
+                  <button
+                    key={r.id}
+                    type="button"
+                    aria-pressed={active}
+                    data-testid={`rsvp-relation-${r.id}`}
+                    onClick={() => { haptic('tap'); setRelation(active ? '' : r.id) }}
+                    className={`w-full rounded-xl border px-3 py-2.5 text-left transition-colors ${
+                      active ? 'text-ig-text' : 'border-ig-border bg-ig-card text-ig-muted active:opacity-80'
+                    }`}
+                    style={active ? { borderColor: RSVP_FROM, backgroundColor: `${RSVP_FROM}1f` } : undefined}
+                  >
+                    <span className="flex items-center gap-1.5 text-sm font-semibold">
+                      <span aria-hidden="true">{r.emoji}</span>
+                      <span className="truncate">{r.label}</span>
+                    </span>
+                    <span className="mt-0.5 block text-[11px] leading-snug text-ig-faint">{r.line}</span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
           <SectionCard

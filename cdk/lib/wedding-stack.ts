@@ -252,6 +252,10 @@ export class WeddingStack extends cdk.Stack {
         allowMethods: [
           apigwv2.CorsHttpMethod.GET,
           apigwv2.CorsHttpMethod.POST,
+          // The admin console is served from CloudFront and calls this API on a
+          // different origin, so every method it uses must be listed here or the
+          // browser's preflight blocks it before the request is ever sent.
+          apigwv2.CorsHttpMethod.PATCH,
           apigwv2.CorsHttpMethod.DELETE,
           apigwv2.CorsHttpMethod.OPTIONS,
         ],
@@ -289,6 +293,8 @@ export class WeddingStack extends cdk.Stack {
     // Guest confirmations: public write (write key), admin read (admin key).
     const rsvpRoutes = route('RsvpInt', '/rsvp', apigwv2.HttpMethod.POST, rsvpFn)
     route('AdminRsvpsInt', '/admin/rsvps', apigwv2.HttpMethod.GET, rsvpFn)
+    // Soft-hide / restore one confirmation (admin key).
+    route('AdminRsvpHideInt', '/admin/rsvp/{userId}', apigwv2.HttpMethod.PATCH, rsvpFn)
 
     // Throttling: default 10 rps / 5 burst; tighter on write endpoints.
     const cfnStage = httpApi.defaultStage!.node.defaultChild as apigwv2.CfnStage
