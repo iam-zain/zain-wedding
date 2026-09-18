@@ -14,7 +14,7 @@ const PLACES = new Set(['chittaranjan', 'gaya'])
 // Extra people a guest brings. 0 is valid and is the common answer, so this is
 // bounded rather than required. Keep in step with RSVP_GUESTS_* in config.js.
 const GUESTS_MIN = 0
-const GUESTS_MAX = 99
+const GUESTS_MAX = 9
 const MAX_NAME = 80
 const SCAN_PAGE_LIMIT = 60 // pages to walk before giving up on a very large table
 
