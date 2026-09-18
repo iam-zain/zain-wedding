@@ -33,7 +33,7 @@ function BadgeInfoModal({ badge, onClose }) {
     }
   }, [onClose])
 
-  const { unlocked, current, goal, emoji, title, how, message, color } = badge
+  const { unlocked, current, goal, emoji, title, how, message, color, unit } = badge
 
   return (
     <div
@@ -73,7 +73,7 @@ function BadgeInfoModal({ badge, onClose }) {
               />
             </div>
             <p className="mt-2 text-xs tabular-nums text-ig-muted">
-              {current} / {goal}
+              {current} / {goal}{unit ? ` ${unit}` : ''}
             </p>
           </>
         )}
@@ -87,7 +87,7 @@ function BadgeInfoModal({ badge, onClose }) {
 }
 
 function BadgeCard({ badge, onOpen }) {
-  const { unlocked, current, goal, emoji, title, how, color } = badge
+  const { unlocked, current, goal, emoji, title, how, color, unit } = badge
   const pct = goal > 0 ? Math.min(100, Math.round((current / goal) * 100)) : 0
 
   return (
@@ -134,7 +134,7 @@ function BadgeCard({ badge, onOpen }) {
               />
             </div>
             <p className="mt-1 text-[10px] tabular-nums text-ig-faint">
-              {current} / {goal || '—'}
+              {current} / {goal || '—'}{goal && unit ? ` ${unit}` : ''}
             </p>
           </>
         )}

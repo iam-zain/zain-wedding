@@ -15,6 +15,10 @@ export const KEYS = {
   playedTracks: 'playedTracks',
   achievements: 'achievements',
   visitedPages: 'visitedPages',
+  // Whole minutes spent with the tab visible, accumulated across visits.
+  timeSpent: 'timeSpent',
+  // Owned by RSVPPage; named here so the achievement engine can read it too.
+  rsvpSubmission: 'rsvp_submission',
 }
 
 // ── Raw JSON get/set ─────────────────────────────────────────────────────────

@@ -12,7 +12,7 @@ import {
   isValidPhone,
 } from '../config'
 import { submitRsvp } from '../lib/api'
-import { getUserId } from '../lib/storage'
+import { getUserId, KEYS } from '../lib/storage'
 import { useToast } from '../components/toast-context'
 import BackHeader from '../components/BackHeader'
 import { moreLinkById } from '../lib/tabs'
@@ -21,7 +21,7 @@ import { haptic } from '../lib/haptics'
 // Same gradient the Confirmation tile on the hub wears.
 const { from: RSVP_FROM, via: RSVP_VIA } = moreLinkById('rsvp')
 
-const RSVP_KEY = 'rsvp_submission'
+const RSVP_KEY = KEYS.rsvpSubmission
 
 function saveSubmission(entry) {
   try {

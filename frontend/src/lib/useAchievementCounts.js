@@ -3,6 +3,7 @@ import { EXPLORE_PAGES, QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
 import { MUSIC_TRACKS } from './musicConfig'
 import { useVisibleFeed } from './useVisibleFeed'
 import {
+  KEYS,
   useCommentedPosts,
   useLikedPosts,
   useLocalStorage,
@@ -33,6 +34,8 @@ export function useAchievementCounts() {
   const { list: played } = usePlayedTracks()
   const [quizBest] = useLocalStorage(QUIZ_BEST_KEY, null)
   const { list: visited } = useVisitedPages()
+  const [minutes] = useLocalStorage(KEYS.timeSpent, 0)
+  const [rsvp] = useLocalStorage(KEYS.rsvpSubmission, null)
 
   const totalPosts = visiblePosts.length
   const totalStories = visibleStories.length
@@ -49,6 +52,10 @@ export function useAchievementCounts() {
   // Counted against the current page list, so a route removed from
   // EXPLORE_PAGES can't leave someone stuck above 100%.
   const exploredCount = EXPLORE_PAGES.filter((path) => visited.includes(path)).length
+  const minutesOnSite = typeof minutes === 'number' && Number.isFinite(minutes) ? minutes : 0
+  // A confirmation counts once it exists at all — whether it has reached the
+  // server yet is a network detail the guest shouldn't be graded on.
+  const rsvpDone = rsvp && rsvp.arrival && rsvp.departure ? 1 : 0
 
   const likedVisible = liked.filter((id) => visibleIds.has(id)).length
   const commentedVisible = commented.filter((id) => visibleIds.has(id)).length
@@ -62,7 +69,22 @@ export function useAchievementCounts() {
       tracks: { count: played.length, total: MUSIC_TRACKS.length },
       quiz: { count: bestScore, total: QUIZ_PER_ROUND },
       explored: { count: exploredCount, total: EXPLORE_PAGES.length },
+      // `total` is unused for numeric goals, but kept meaningful so the shelf
+      // never has to special-case these.
+      time: { count: minutesOnSite, total: 60 },
+      rsvp: { count: rsvpDone, total: 1 },
     }),
-    [likedVisible, commentedVisible, viewedVisible, played.length, totalPosts, totalStories, bestScore, exploredCount],
+    [
+      likedVisible,
+      commentedVisible,
+      viewedVisible,
+      played.length,
+      totalPosts,
+      totalStories,
+      bestScore,
+      exploredCount,
+      minutesOnSite,
+      rsvpDone,
+    ],
   )
 }

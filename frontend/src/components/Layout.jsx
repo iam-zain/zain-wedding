@@ -16,6 +16,7 @@ import LandscapeEasterEgg from './LandscapeEasterEgg'
 import ScreenshotEasterEgg from './ScreenshotEasterEgg'
 import AchievementWatcher from './AchievementWatcher'
 import TiltEasterEgg from './TiltEasterEgg'
+import TimeOnSiteTracker from './TimeOnSiteTracker'
 
 // Re-mounts (via the pathname key) on every route change so its entrance
 // animation replays; direction comes from navigate(path, { state }) —
@@ -76,6 +77,7 @@ export default function Layout() {
       <ScreenshotEasterEgg />
       <AchievementWatcher />
       <TiltEasterEgg />
+      <TimeOnSiteTracker />
     </div>
   )
 }
