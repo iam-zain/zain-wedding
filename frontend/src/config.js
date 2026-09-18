@@ -960,8 +960,23 @@ export const RSVP_LOCATIONS = [
 ]
 
 /** Inclusive date windows (YYYY-MM-DD) guests may pick from. */
-export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-24', end: '2026-10-30' }
-export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-03' }
+export const RSVP_ARRIVAL_WINDOW = { start: '2026-10-26', end: '2026-10-30' }
+export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-01' }
+
+/**
+ * "26 Oct se 30 Oct ke beech" for a window. Derived rather than written out,
+ * because the previous hardcoded subtitles kept saying 24 Oct and 3 Nov after
+ * the windows moved — the form and its own caption disagreed.
+ */
+export function describeWindow({ start, end }) {
+  const fmt = (ymd) =>
+    new Date(`${ymd}T00:00:00Z`).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      timeZone: 'UTC',
+    })
+  return `${fmt(start)} se ${fmt(end)} ke beech`
+}
 
 /** Pre-filled time so a guest only has to adjust it, never type it from scratch. */
 export const RSVP_DEFAULT_TIME = '12:00'

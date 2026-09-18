@@ -3,6 +3,7 @@ import {
   RSVP_ARRIVAL_WINDOW,
   RSVP_DEPARTURE_WINDOW,
   RSVP_DEFAULT_TIME,
+  describeWindow,
   RSVP_DIAL_CODE,
   RSVP_GUESTS_MAX,
   RSVP_GUESTS_MIN,
@@ -308,16 +309,34 @@ export default function RSVPPage() {
   const arrivalDays = useMemo(() => daysInWindow(RSVP_ARRIVAL_WINDOW), [])
   const departureDays = useMemo(() => daysInWindow(RSVP_DEPARTURE_WINDOW), [])
 
-  const [submitted, setSubmitted] = useState(readSubmission)
-  const [name, setName] = useState(submitted?.name || '')
-  const [phone, setPhone] = useState(() => normalizePhone(submitted?.phone))
-  const [guests, setGuests] = useState(() => clampGuests(submitted?.guests ?? RSVP_GUESTS_MIN))
-  const [arrivalPlace, setArrivalPlace] = useState(submitted?.arrivalPlace || '')
-  const [arrivalDay, setArrivalDay] = useState(() => dayWithin(submitted?.arrival, arrivalDays))
-  const [arrivalTime, setArrivalTime] = useState(() => timeFrom(submitted?.arrival))
-  const [departurePlace, setDeparturePlace] = useState(submitted?.departurePlace || '')
-  const [departureDay, setDepartureDay] = useState(() => dayWithin(submitted?.departure, departureDays))
-  const [departureTime, setDepartureTime] = useState(() => timeFrom(submitted?.departure))
+  // Read once. `stored` pre-fills the form; `submitted` decides whether the
+  // guest has actually confirmed.
+  const stored = useMemo(readSubmission, [])
+
+  // A confirmation saved under an older, wider window would now be rejected by
+  // the server (400) on every retry, leaving the guest staring at "network aate
+  // hi pahunch jayega" forever. Such an entry counts as not-yet-confirmed, so
+  // the form comes back — but every field it holds is still used below, so the
+  // guest only re-picks the dates that fell outside, not their whole answer.
+  const [submitted, setSubmitted] = useState(() => {
+    if (!stored) return null
+    const inWindow = (stamp, { start, end }) => {
+      const day = String(stamp || '').slice(0, 10)
+      return day >= start && day <= end
+    }
+    if (!inWindow(stored.arrival, RSVP_ARRIVAL_WINDOW)) return null
+    if (!inWindow(stored.departure, RSVP_DEPARTURE_WINDOW)) return null
+    return stored
+  })
+  const [name, setName] = useState(stored?.name || '')
+  const [phone, setPhone] = useState(() => normalizePhone(stored?.phone))
+  const [guests, setGuests] = useState(() => clampGuests(stored?.guests ?? RSVP_GUESTS_MIN))
+  const [arrivalPlace, setArrivalPlace] = useState(stored?.arrivalPlace || '')
+  const [arrivalDay, setArrivalDay] = useState(() => dayWithin(stored?.arrival, arrivalDays))
+  const [arrivalTime, setArrivalTime] = useState(() => timeFrom(stored?.arrival))
+  const [departurePlace, setDeparturePlace] = useState(stored?.departurePlace || '')
+  const [departureDay, setDepartureDay] = useState(() => dayWithin(stored?.departure, departureDays))
+  const [departureTime, setDepartureTime] = useState(() => timeFrom(stored?.departure))
 
   const phoneOk = isValidPhone(phone)
   const filled = [name.trim(), phoneOk, arrivalPlace, arrivalDay, departurePlace, departureDay].filter(Boolean).length
@@ -526,7 +545,7 @@ export default function RSVPPage() {
             emoji="🛬"
             accent={RSVP_FROM}
             title="Aana — arrival"
-            subtitle="24 Oct se 30 Oct ke beech"
+            subtitle={describeWindow(RSVP_ARRIVAL_WINDOW)}
           >
             <div>
               <FieldLabel done={!!arrivalPlace}>Kahan pahunch rahe ho?</FieldLabel>
@@ -554,7 +573,7 @@ export default function RSVPPage() {
             emoji="🛫"
             accent={RSVP_VIA}
             title="Jaana — departure"
-            subtitle="28 Oct se 3 Nov ke beech"
+            subtitle={describeWindow(RSVP_DEPARTURE_WINDOW)}
           >
             <div>
               <FieldLabel done={!!departurePlace}>Wapsi kahan se?</FieldLabel>
