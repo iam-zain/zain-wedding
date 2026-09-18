@@ -15,6 +15,8 @@ export const KEYS = {
   playedTracks: 'playedTracks',
   achievements: 'achievements',
   visitedPages: 'visitedPages',
+  // Kept apart from likedPosts so wish likes never count toward the post badges.
+  likedWishes: 'likedWishes',
   // Whole minutes spent with the tab visible, accumulated across visits.
   timeSpent: 'timeSpent',
   // Owned by RSVPPage; named here so the achievement engine can read it too.
@@ -118,6 +120,7 @@ export const useCommentedPosts = () => useStringSet(KEYS.commentedPosts)
 export const usePlayedTracks = () => useStringSet(KEYS.playedTracks)
 export const useAchievements = () => useStringSet(KEYS.achievements)
 export const useVisitedPages = () => useStringSet(KEYS.visitedPages)
+export const useLikedWishes = () => useStringSet(KEYS.likedWishes)
 
 /**
  * Non-reactive set insert, for modules that live outside React (the music
