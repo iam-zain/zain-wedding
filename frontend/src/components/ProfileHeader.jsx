@@ -13,7 +13,7 @@ import { useMusic } from '../lib/musicPlayer'
 // A double-tap, and a tight window so it reads as one deliberate gesture
 // rather than two idle taps a second apart. This used to need FIVE taps inside
 // three seconds, which essentially nobody discovered by accident.
-const STAT_TAP_WINDOW_MS = 600
+const STAT_TAP_WINDOW_MS = 800
 const STAT_TAPS_REQUIRED = 2
 const AVATAR_LONG_PRESS_MS = 600
 
@@ -23,10 +23,17 @@ function Stat({ value, label, onTap, popping }) {
       type="button"
       data-testid={`profile-stat-${label}`}
       onClick={onTap}
-      className={`egg-tap text-center transition-transform duration-200 ${popping ? 'scale-125' : 'scale-100'}`}
+      // The whole third of the row is the target, not just the digits: the
+      // double-tap egg was only firing on a pixel-perfect hit on the number.
+      // touch-action: manipulation also drops the browser's own double-tap
+      // zoom delay on this element, so both taps register.
+      style={{ touchAction: 'manipulation' }}
+      className="egg-tap flex min-w-0 flex-1 self-stretch flex-col items-center justify-center rounded-xl py-3 text-center active:bg-white/5"
     >
-      <div className="text-base font-semibold leading-tight">{value}</div>
-      <div className="text-xs text-ig-muted">{label}</div>
+      <span className={`block transition-transform duration-200 ${popping ? 'scale-125' : 'scale-100'}`}>
+        <span className="block text-base font-semibold leading-tight">{value}</span>
+        <span className="block text-xs text-ig-muted">{label}</span>
+      </span>
     </button>
   )
 }
@@ -267,7 +274,7 @@ export default function ProfileHeader() {
             </span>
           )}
         </button>
-        <div className="flex flex-1 justify-around">
+        <div className="flex flex-1 items-stretch self-stretch">
           <Stat
             value={profile.postCount}
             label="posts"
