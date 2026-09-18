@@ -314,6 +314,18 @@
   25% { transform: translateX(-4px); }
   75% { transform: translateX(4px); }
 }
+@keyframes zu-drop {
+  from { transform: translateY(-120%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes zu-shrink {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+@keyframes zu-glow {
+  0%, 100% { box-shadow: 0 0 6px 1px rgba(255, 196, 0, 0.55); }
+  50% { box-shadow: 0 0 14px 4px rgba(255, 196, 0, 0.9); }
+}
 .zu-game-arena {
   touch-action: manipulation;
   -webkit-user-select: none;

@@ -407,6 +407,12 @@ export const QUIZ_QUESTIONS = [
     answer: 1,
   },
   {
+    id: 'nikah-venue',
+    question: 'Nikah venue ka naam kya hai?',
+    options: ['Shahi Mahal', 'N.B. Resort', 'Royal Garden', 'Moti Banquet'],
+    answer: 1,
+  },
+  {
     id: 'walima-place',
     question: 'Walima kahan hoga?',
     options: ['Gaya, Bihar', 'Area-8, Chittaranjan', 'Dhanbad', 'Asansol'],
@@ -508,6 +514,13 @@ export const QUIZ_QUESTIONS = [
     answer: 2,
   },
   {
+    // Same trick as Gaya: Jehanabad is its own district.
+    id: 'jehanabad-district',
+    question: 'Jehanabad kaun se zile mein hai?',
+    options: ['Gaya', 'Patna', 'Jehanabad', 'Arwal'],
+    answer: 2,
+  },
+  {
     // Pays off SECRET_MESSAGES, which tells whoever finds it the station code
     // "ab quiz mein aa sakta hai". Now it does.
     id: 'crj-code',
@@ -582,6 +595,12 @@ export const QUIZ_QUESTIONS = [
     answer: 1,
   },
   {
+    id: 'uzma-brothers',
+    question: 'Uzma ke kitne bhai hain?',
+    options: ['1', '2', '3', '4'],
+    answer: 1,
+  },
+  {
     id: 'uzma-order',
     question: 'Uzma behno mein kaunse number pe hai?',
     options: ['Pehli', 'Doosri', 'Teesri', 'Chauthi'],
@@ -638,6 +657,12 @@ export const QUIZ_QUESTIONS = [
   // the punchline never pins anything on a named, real person: "sab milke" and
   // "jo sabse paas rehta hai" are jokes about weddings, not about anyone's
   // family. Keep any future additions to that rule.
+  {
+    id: 'group-chat',
+    question: 'Shaadi ke WhatsApp group mein sabse zyada kya aayega?',
+    options: ['Zaroori updates', 'Venue ki location', '"Good morning" forwards 🌹', 'Kuch nahi, sab chup'],
+    answer: 2,
+  },
   {
     id: 'baraat-time',
     question: 'Baraat time pe pahunchegi?',
@@ -910,7 +935,8 @@ export const ACHIEVEMENTS = [
     emoji: '🎧',
     color: '#25d366',
     title: 'Poora DJ',
-    how: 'Profile photo tap karke saare gaane suno',
+    // Don't give the hiding place away — finding it is half the fun.
+    how: 'Saare gaane suno — player home page pe kahin chhupa hai 🤫',
     message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
   },
   {
@@ -991,34 +1017,35 @@ export const ACHIEVEMENTS = [
     message: 'Pachaas dil pakad liye! Aap toh asli dil ke shikari ho 💕',
   },
   {
-    id: 'rings-25',
-    metric: 'rings',
-    goal: 25,
-    emoji: '💍',
-    color: '#f7971e',
-    title: 'Ring Master',
-    how: 'Games → Ring Catch mein 25 rings pakdo',
-    message: 'Pachees rings! Ab koi ring aapse bach nahi sakti 💍',
+    id: 'match-300',
+    metric: 'matchBest',
+    goal: 300,
+    unit: 'pts',
+    emoji: '💖',
+    color: '#ff6b81',
+    title: 'Dil Banao Ustaad',
+    how: 'ZainUz Match 3 ke ek game mein 300 points banao',
+    message: 'Teen milaye, dil banaye — 300 points! Aap toh match ke ustaad ho 💖',
   },
   {
-    id: 'hidden-10',
-    metric: 'hidden',
-    goal: 10,
-    emoji: '👀',
-    color: '#a855f7',
-    title: 'Dil Dhoond Liya',
-    how: 'Games → Find the Hidden Heart mein 10 chhupe dil dhoondo',
-    message: 'Das chhupe dil dhoond liye — aapki nazar se kuch nahi bachta 👀',
-  },
-  {
-    id: 'memory-perfect',
-    metric: 'memory',
+    id: 'love-100',
+    metric: 'loveMax',
     goal: 1,
-    emoji: '🧠',
-    color: '#25d366',
-    title: 'Yaad Reh Gaya',
-    how: 'Heart Memory bina galti ke poora karo (dekha hua card dobara galat mat kholo)',
-    message: 'Ek bhi galti nahi! Yaaddasht ho toh aisi 🧠',
+    emoji: '💞',
+    color: '#a855f7',
+    title: 'Love Guru',
+    how: 'Love-o-Meter ko 100% Mohabbat tak le jao',
+    message: 'Zain + Uzma = ♾️ — connection level Infinity, aapne naap liya! 💞',
+  },
+  {
+    id: 'games-all',
+    metric: 'gamesTried',
+    goal: 'all',
+    emoji: '🎮',
+    color: '#0095f6',
+    title: 'Har khel ka khiladi',
+    how: 'Games mein har ek khel kam se kam ek baar khelo',
+    message: 'Saare games khel liye! Ab aap official khiladi ho 🎮',
   },
 ]
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { bumpStat, recordBest, shuffle, useTimeouts } from '../../lib/games'
+import { bumpStat, recordBest, recordPlay, shuffle, useTimeouts, LINES, pick } from '../../lib/games'
 import { haptic } from '../../lib/haptics'
 import { GameOverlay, GameStats } from './GameShell'
 
@@ -19,6 +19,8 @@ export default function HeartMemory() {
   const [mistakes, setMistakes] = useState(0)
   const [done, setDone] = useState(false)
   const [newBest, setNewBest] = useState(false)
+  const [toast, setToast] = useState(null) // { ok, text }
+  const [endLine, setEndLine] = useState('')
   const { later, clearAll } = useTimeouts()
 
   function restart() {
@@ -30,6 +32,7 @@ export default function HeartMemory() {
     setMoves(0)
     setMistakes(0)
     setDone(false)
+    setToast(null)
   }
 
   function flip(i) {
@@ -45,6 +48,7 @@ export default function HeartMemory() {
 
     if (cards[a].emoji === cards[b].emoji) {
       haptic('like')
+      setToast({ ok: true, text: pick(LINES.good) })
       const updated = cards.map((c, k) => (k === a || k === b ? { ...c, matched: true } : c))
       later(() => {
         setCards(updated)
@@ -52,6 +56,8 @@ export default function HeartMemory() {
         if (updated.every((c) => c.matched)) {
           setDone(true)
           setNewBest(recordBest('memory', nextMoves, true))
+          recordPlay('memory')
+          setEndLine(pick(LINES.memoryWin))
           if (mistakes === 0) bumpStat('memoryPerfect')
           haptic('success')
         }
@@ -59,7 +65,10 @@ export default function HeartMemory() {
     } else {
       // Only a "real" mistake if you'd already seen one of these cards — a
       // first-ever look can't be remembered, so it isn't held against you.
-      if (seen.has(a) || seen.has(b)) setMistakes((m) => m + 1)
+      if (seen.has(a) || seen.has(b)) {
+        setMistakes((m) => m + 1)
+        setToast({ ok: false, text: pick(LINES.bad) })
+      }
       later(() => setOpen([]), 850)
     }
     setSeen((s) => new Set(s).add(a).add(b))
@@ -107,7 +116,7 @@ export default function HeartMemory() {
         {done && (
           <GameOverlay
             emoji={perfect ? '🧠' : '💗'}
-            title={perfect ? 'Yaad Reh Gaya! Ek bhi galti nahi 🧠' : 'Saare jode mil gaye! 💗'}
+            title={perfect ? 'Yaad Reh Gaya! Ek bhi galti nahi 🧠' : endLine}
             lines={[`${moves} chaal · ${mistakes} galti`, newBest ? '✨ Naya best!' : '']}
             button="Dobara khelo"
             onButton={restart}
@@ -116,7 +125,10 @@ export default function HeartMemory() {
           />
         )}
       </div>
-      <p className="mt-2 text-center text-[11px] text-ig-faint">
+      <p className="mt-2 h-5 text-center text-sm font-semibold" style={{ color: toast?.ok ? '#25d366' : '#ed4956' }}>
+        {done ? '' : toast?.text || ''}
+      </p>
+      <p className="mt-1 text-center text-[11px] text-ig-faint">
         Galti tab ginti hai jab pehle dekha hua card phir galat kholo.
       </p>
     </div>

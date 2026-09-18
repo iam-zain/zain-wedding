@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { bumpStat, rand, recordBest, useTimeouts } from '../../lib/games'
+import { bumpStat, rand, recordBest, recordPlay, useTimeouts, LINES, pick } from '../../lib/games'
 import { haptic } from '../../lib/haptics'
 import { GameOverlay, GameStats } from './GameShell'
 
@@ -26,6 +26,7 @@ export default function RingCatch() {
   const [left, setLeft] = useState(ROUND_S)
   const [items, setItems] = useState([])
   const [newBest, setNewBest] = useState(false)
+  const [endLine, setEndLine] = useState('')
   const { later, clearAll } = useTimeouts()
   const scoreRef = useRef(0)
 
@@ -72,6 +73,8 @@ export default function RingCatch() {
       clearAll()
       setItems([])
       setNewBest(recordBest('ring', scoreRef.current))
+      recordPlay('ring')
+      setEndLine(pick(scoreRef.current >= 15 ? LINES.ringWin : LINES.ringLose))
       setPhase('over')
       haptic('success')
     }
@@ -171,7 +174,7 @@ export default function RingCatch() {
         {phase === 'over' && (
           <GameOverlay
             emoji={score >= 15 ? '🏆' : '💍'}
-            title={score >= 15 ? 'Ring Master! 💍' : 'Achha khela!'}
+            title={endLine}
             lines={[`Score: ${score} · ${rings} rings pakdi`, newBest ? '✨ Naya best score!' : '']}
             button="Dobara khelo"
             onButton={start}

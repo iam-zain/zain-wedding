@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { bumpStat, rand, recordBest, useTimeouts, weighted } from '../../lib/games'
+import { bumpStat, rand, recordBest, recordPlay, useTimeouts, LINES, pick, weighted } from '../../lib/games'
 import { haptic } from '../../lib/haptics'
 import { GameOverlay, GameStats } from './GameShell'
 
@@ -29,6 +29,7 @@ export default function CatchHearts() {
   const [left, setLeft] = useState(ROUND_S)
   const [items, setItems] = useState([])
   const [newBest, setNewBest] = useState(false)
+  const [endLine, setEndLine] = useState('')
   const { later, clearAll } = useTimeouts()
   const scoreRef = useRef(0)
 
@@ -64,6 +65,8 @@ export default function CatchHearts() {
       clearAll()
       setItems([])
       setNewBest(recordBest('catch', scoreRef.current))
+      recordPlay('catch')
+      setEndLine(pick(scoreRef.current >= TARGET ? LINES.catchWin : LINES.catchLose))
       setPhase('over')
       haptic(scoreRef.current >= TARGET ? 'success' : 'warn')
     }
@@ -137,7 +140,7 @@ export default function CatchHearts() {
         {phase === 'over' && (
           <GameOverlay
             emoji={won ? '🏆' : '💔'}
-            title={won ? 'Jeet gaye! Dil hi dil 💕' : 'Thoda aur tez! 😅'}
+            title={endLine}
             lines={[`Score: ${score} · ${caught} dil pakde`, newBest ? '✨ Naya best score!' : '']}
             button="Dobara khelo"
             onButton={start}

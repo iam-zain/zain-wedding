@@ -6,7 +6,21 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { KEYS, readJSON, useLocalStorage, writeJSON } from './storage'
 
-const EMPTY = { hearts: 0, rings: 0, hidden: 0, memoryPerfect: 0, best: {} }
+// Every game on the hub; `tried` lists the ones this device has played.
+export const GAME_IDS = ['match', 'catch', 'ring', 'trueheart', 'tap', 'hidden', 'memory', 'puzzle', 'love']
+
+const EMPTY = {
+  hearts: 0,
+  rings: 0,
+  hidden: 0,
+  memoryPerfect: 0,
+  trueHeart: 0, // Don't Tap the Wrong Heart — rounds cleared, lifetime
+  quick: 0, // Tap the Correct One — correct taps, lifetime
+  puzzles: [], // Emoji Love Puzzle — ids ever solved
+  played: 0,
+  tried: [],
+  best: {},
+}
 
 function read() {
   const s = readJSON(KEYS.gameStats, EMPTY)
@@ -17,6 +31,28 @@ function read() {
 export function bumpStat(field, n = 1) {
   const s = read()
   s[field] = (Number(s[field]) || 0) + n
+  writeJSON(KEYS.gameStats, s)
+}
+
+/**
+ * Counts one finished round of `game` (feeds the games-played badges).
+ * `countRound: false` marks the game as tried without adding to the round
+ * total — for toys like the Love-o-Meter that "finish" in one tap.
+ */
+export function recordPlay(game, countRound = true) {
+  const s = read()
+  if (countRound) s.played = (Number(s.played) || 0) + 1
+  const tried = Array.isArray(s.tried) ? s.tried : []
+  s.tried = tried.includes(game) ? tried : [...tried, game]
+  writeJSON(KEYS.gameStats, s)
+}
+
+/** Adds `id` to a lifetime list (e.g. puzzles solved). */
+export function addStatId(field, id) {
+  const s = read()
+  const cur = Array.isArray(s[field]) ? s[field] : []
+  if (cur.includes(id)) return
+  s[field] = [...cur, id]
   writeJSON(KEYS.gameStats, s)
 }
 
@@ -76,4 +112,19 @@ export function shuffle(arr) {
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
+}
+
+export const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
+
+// ── One-liners ───────────────────────────────────────────────────────────────
+export const LINES = {
+  good: ['Kya nazar hai! ✨', 'Wah! 👏', 'Zabardast 💕', 'Ekdum sahi!', 'Mashallah! 🤍', 'Kya baat hai! 🔥', 'Pakad liya! 💪'],
+  bad: ['Yeh nahi 😅', 'Arre nahi! 🙈', 'Galat jagah 😬', 'Dhyaan se! 👀', 'Oops! 😵', 'Thoda aur dekho 🔍'],
+  hiddenFound: ['Kya nazar hai! 👀', 'Mil gaya dil 💕', 'Detective ho aap 🕵️', 'Wah! Agla dhoondo', 'Itni jaldi? Kamaal! ⚡', 'Dil ne dil ko pehchaan liya 🤍'],
+  hiddenMissed: ['Time khatam! ⏰', 'Dil bhaag gaya 🏃', 'Agli baar pakka! 🤞', 'Chhup gaya tha shaitan 😄'],
+  catchWin: ['Jeet gaye! Dil hi dil 💕', 'Dilon ke badshah! 👑', 'Itne dil? Kamaal ho aap 💖', 'Pyaar hi pyaar! 💕'],
+  catchLose: ['Thoda aur tez! 😅', 'Dil haath se nikal gaye 💔', 'Agli baar pakka! 💪', 'Ungliyan garam karo 🔥'],
+  ringWin: ['Ring Master! 💍', 'Uzma ki ring safe hai 💍', 'Ek bhi ring nahi giri (lagbhag) 😄', 'Dulha khush ho gaya 🤵'],
+  ringLose: ['Achha khela! 💍', 'Ring phisal gayi 😅', 'Bomb se bach ke! 💣', 'Dobara try karo 💪'],
+  memoryWin: ['Saare jode mil gaye! 💗', 'Jodi no. 1 💕', 'Yaaddasht tez hai 🧠', 'Rab ne bana di jodi 🤍'],
 }

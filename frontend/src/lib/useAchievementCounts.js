@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { EXPLORE_PAGES, QUIZ_BEST_KEY, QUIZ_PER_ROUND } from '../config'
 import { MUSIC_TRACKS } from './musicConfig'
 import { useVisibleFeed } from './useVisibleFeed'
-import { useGameStats } from './games'
+import { GAME_IDS, useGameStats } from './games'
+import { PUZZLES } from '../components/games/EmojiPuzzle'
 import {
   KEYS,
   useCommentedPosts,
@@ -42,6 +43,13 @@ export function useAchievementCounts() {
   const rings = Number(games.rings) || 0
   const hidden = Number(games.hidden) || 0
   const memory = games.memoryPerfect > 0 ? 1 : 0
+  const gamesPlayed = Number(games.played) || 0
+  const matchBest = Number(games.best.match) || 0
+  const trueHeart = Number(games.trueHeart) || 0
+  const quick = Number(games.quick) || 0
+  const loveMax = games.best.love >= 100 ? 1 : 0
+  const puzzles = PUZZLES.filter((p) => Array.isArray(games.puzzles) && games.puzzles.includes(p.id)).length
+  const gamesTried = GAME_IDS.filter((g) => Array.isArray(games.tried) && games.tried.includes(g)).length
 
   const totalPosts = visiblePosts.length
   const totalStories = visibleStories.length
@@ -83,6 +91,13 @@ export function useAchievementCounts() {
       rings: { count: rings, total: 25 },
       hidden: { count: hidden, total: 10 },
       memory: { count: memory, total: 1 },
+      gamesPlayed: { count: gamesPlayed, total: 20 },
+      gamesTried: { count: gamesTried, total: GAME_IDS.length },
+      matchBest: { count: matchBest, total: 300 },
+      trueHeart: { count: trueHeart, total: 30 },
+      quick: { count: quick, total: 20 },
+      loveMax: { count: loveMax, total: 1 },
+      puzzles: { count: puzzles, total: PUZZLES.length },
     }),
     [
       likedVisible,
@@ -99,6 +114,13 @@ export function useAchievementCounts() {
       rings,
       hidden,
       memory,
+      gamesPlayed,
+      gamesTried,
+      matchBest,
+      trueHeart,
+      quick,
+      loveMax,
+      puzzles,
     ],
   )
 }
