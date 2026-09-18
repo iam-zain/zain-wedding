@@ -6,6 +6,7 @@ import {
   likeMilestoneMessage,
   MOST_LOVED_LABEL,
   PINCH_ZOOM_MESSAGES,
+  POST_HEADER_TAP_MESSAGES,
 } from '../config'
 import { likePost } from '../lib/api'
 import { shareUrl } from '../lib/share'
@@ -29,6 +30,12 @@ const FLOAT_HEART_COUNT = 7
 const FLOAT_HEART_LIFE_MS = 1800
 // 8 evenly-spaced directions (every 45°) for the YouTube-style radiating burst.
 const BURST_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315]
+
+/** [r, g, b] with each 0-255, or null — anything else is ignored. */
+function validTint(t) {
+  if (!Array.isArray(t) || t.length !== 3) return null
+  return t.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? t : null
+}
 
 export default function PostCard({ post, isMostLoved = false, liveCount = 0, onLiveCount }) {
   const { profile } = siteConfig
@@ -227,12 +234,46 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
     else if (result === 'failed') toast('Share nahi ho paaya 😅')
   }
 
+  // The cover's colour, worked out once when the post was uploaded and stored
+  // on the post. Read from data rather than sampled in the browser: CloudFront
+  // doesn't send CORS headers for images, and the covers are ~2 MB each, so
+  // sampling here would mean re-downloading every cover on every guest's phone.
+  const tint = validTint(post.tint)
+
+  // Avatar / username jump back to the profile at the top, like tapping the
+  // header on a long Instagram scroll.
+  function toTop() {
+    haptic('tap')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    toast(POST_HEADER_TAP_MESSAGES[Math.floor(Math.random() * POST_HEADER_TAP_MESSAGES.length)])
+  }
+
   return (
-    <article data-testid={`post-card-${post.id}`} className="mb-1 border-b border-ig-border pb-2">
+    <article
+      data-testid={`post-card-${post.id}`}
+      data-tint={tint ? tint.join(',') : ''}
+      className="mb-1 border-b border-ig-border pb-2 transition-[background] duration-700"
+      // The cover's own colour, faint at the top and fading to black at the
+      // bottom — enough to give each post a mood without competing with the
+      // photo. Stays plain black until (or unless) the colour is known.
+      style={
+        tint
+          ? { background: `linear-gradient(to bottom, rgba(${tint.join(',')},0.22) 0%, rgba(${tint.join(',')},0.08) 55%, rgba(${tint.join(',')},0) 100%)` }
+          : undefined
+      }
+    >
       {/* Header */}
       <header className="flex items-center gap-2.5 px-3 py-2">
-        <img src={profile.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover ring-1 ring-ig-border" />
-        <span className="text-sm font-semibold">{profile.username}</span>
+        <button
+          type="button"
+          onClick={toTop}
+          aria-label="Back to top"
+          data-testid={`post-header-${post.id}`}
+          className="flex items-center gap-2.5 rounded-full pr-2 active:opacity-70"
+        >
+          <img src={profile.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover ring-1 ring-ig-border" />
+          <span className="text-sm font-semibold">{profile.username}</span>
+        </button>
       </header>
 
       {/* Media + double-tap burst */}

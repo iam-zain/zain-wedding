@@ -148,6 +148,7 @@ export default function MorePage() {
   const { list: unlockedIds } = useAchievements()
   const badges = achievementList(counts, unlockedIds)
   const earned = badges.filter((b) => b.unlocked).length
+  const achievedPct = badges.length > 0 ? Math.round((earned / badges.length) * 100) : 0
   const [openBadge, setOpenBadge] = useState(null)
   const [quizBest] = useLocalStorage(QUIZ_BEST_KEY, null)
   const rank = titleFor(typeof quizBest === 'number' ? quizBest : 0)
@@ -257,19 +258,32 @@ export default function MorePage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <TrophyIcon size={18} style={{ color: '#f7971e' }} />
-          <h3 className="text-sm font-semibold">Achievements</h3>
-          <span
-            className="rounded-full px-2 py-0.5 text-[11px] font-semibold tabular-nums"
-            style={{ backgroundColor: '#f7971e26', color: '#f7971e' }}
-          >
-            {earned}/{badges.length}
-          </span>
+        {/* Same shape as the explore meter above, so the two read as a pair. */}
+        <div data-testid="achievements-meter">
+          <div className="flex items-baseline justify-between">
+            <h3 className="flex items-center gap-2 text-sm font-semibold">
+              <TrophyIcon size={18} style={{ color: '#f7971e' }} />
+              Achievements
+            </h3>
+            <span className="text-xs tabular-nums text-ig-muted">
+              {earned}/{badges.length} · {achievedPct}%
+            </span>
+          </div>
+          <div aria-hidden="true" className="mt-2 h-2 overflow-hidden rounded-full bg-ig-card">
+            <div
+              className="h-full rounded-full transition-[width] duration-700"
+              style={{
+                width: `${achievedPct}%`,
+                background: 'linear-gradient(90deg,#f7971e,#ed4956,#a855f7)',
+              }}
+            />
+          </div>
+          <p className="mt-1.5 text-[11px] text-ig-faint">
+            {earned === badges.length
+              ? '🏆 Saare achievements mil gaye — aap champion ho!'
+              : 'Tap karke dekho kaise milega 🤍'}
+          </p>
         </div>
-        <p className="mt-0.5 text-xs text-ig-faint">
-          Tap karke dekho kaise milega 🤍
-        </p>
         <ul className="mt-3 grid grid-cols-2 gap-2.5">
           {badges.map((badge) => (
             <BadgeCard key={badge.id} badge={badge} onOpen={() => { haptic('tap'); setOpenBadge(badge.id) }} />

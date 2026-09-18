@@ -41,6 +41,17 @@ async function listPosts() {
   return ok(await readJson(POSTS_KEY, { posts: [] }))
 }
 
+/**
+ * The cover's colour as [r, g, b], computed by the admin console from the file
+ * being uploaded. Validated here because posts.json is served straight to
+ * every guest; anything malformed is dropped and the post simply has no tint.
+ */
+function toTint(t) {
+  if (!Array.isArray(t) || t.length !== 3) return undefined
+  const rgb = t.map((n) => Math.round(Number(n)))
+  return rgb.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? rgb : undefined
+}
+
 async function createPost(event) {
   const b = parseBody(event)
   const post = {
@@ -49,6 +60,7 @@ async function createPost(event) {
     description: String(b.description || ''),
     images: Array.isArray(b.images) ? b.images.filter(Boolean) : [],
     likes_base: Number(b.likes_base || 0),
+    tint: toTint(b.tint),
     access: toAccess(b.access),
     active_from: b.active_from || new Date().toISOString(),
     active_upto: b.active_upto || '2099-12-31T00:00:00Z',

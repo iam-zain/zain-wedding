@@ -84,9 +84,24 @@ export const STAT_EASTER_EGGS = {
 export const AVATAR_LONGPRESS_MESSAGES = [
   "🤍 Thoda ruk kar dekhne ke liye shukriya — dil se milte hain, waqt lagta hai.",
   "🎵 Music ke peeche ek chhota sa raaz bhi hai — dhoondte rehna!",
+  "🎶 Tap karke dekho — gaana bhi bajta hai!",
+  "👀 Itni der dekhoge toh dulha sharma jayega.",
+  "💍 Ek tasveer, hazaar kahaniyan.",
 ]
 
 /** Shown on the feed brand logo after several rapid taps. */
+/** Shown when a post's avatar or username is tapped, which scrolls back to the top. */
+export const POST_HEADER_TAP_MESSAGES = [
+  "⬆️ Chalo, shuru se dekhte hain!",
+  "🏠 Wapas ghar aa gaye — profile yahin hai.",
+  "🚀 Seedha upar! Kuch miss toh nahi kiya?",
+  "👆 Upar se phir se — har post ek nayi yaad.",
+  "💍 Zain & Uzma ki taraf se wapas swagat hai!",
+  "📜 Kahani shuru se sunoge? Chaliye!",
+  "🎈 Upar chale — countdown bhi dekh lo!",
+  "🤍 Scroll karte karte thak gaye? Lo, seedha top pe.",
+]
+
 export const LOGO_TAP_MESSAGE = "✨ Made with 🤍 for this big day — thanks for finding this!"
 
 /** Comment secret word — case-insensitive substring match triggers a fun reply toast. */
@@ -102,6 +117,9 @@ export const WEDDING_DAY_MESSAGE = { title: 'Aaj wohi din hai! 🎉', subtitle: 
 export const STORY_LONGPRESS_MESSAGES = [
   "🤍 Ruk gaye? Yeh moment bhi yaad rakhna.",
   "📸 Har story ke peeche ek pal hai — dekhne ke liye shukriya.",
+  "⏸️ Rok ke dekh rahe ho — yeh pal bhi khaas hai.",
+  "🤍 Kuch lamhe aise hi thehar jaane chahiye.",
+  "✨ Ek aur baar dekh lo, ji nahi bharega.",
 ]
 
 /** Shown after a very hard/vigorous shake "breaks" and reassembles the UI. One is picked at random. */
@@ -109,6 +127,8 @@ export const CHAOS_EASTER_EGG_MESSAGES = [
   "😅 Relax, relax — the app's fine! Bas thoda mazaak tha.",
   "🫠 Panicked for a sec? Same. Sab kuch wapas normal hai.",
   "🔧 Kuch nahi tuta — bas test kar rahe the kitna zor se hila sakte ho.",
+  "🌀 Itna hilaaya ki sab ghoom gaya! Ab theek hai.",
+  "🫨 Shaadi se pehle hi itna josh? Sambhal ke!",
 ]
 
 /** Type-anywhere secret words (checked outside form fields) + messages shown on a hit. */
@@ -137,6 +157,8 @@ export const TYPE_ANYWHERE_MESSAGES = [
   "🌿 Yeh lafz likhte hi mehek aa gayi — milte hain function mein!",
   "🎺 Baraat ka naam liya? Taiyari shuru karo phir!",
   "👀 Naam le liya humara — kaan garam ho gaye!",
+  "💌 Likh diya toh dil tak pahunch gaya!",
+  "🎉 Yeh lafz sunke hi mood ban gaya!",
 ]
 
 /**
@@ -155,6 +177,8 @@ const LIKE_MILESTONE_TEMPLATES = [
   "💫 {n} likes — is post ne dil jeet liya!",
   "🤍 {n} logon ne pyaar dikhaya — shukriya!",
   "✨ {n} likes ho gaye — chhota sa milestone, bada sa shukriya!",
+  "🎊 {n} likes! Sab ka pyaar ek jagah.",
+  "💞 {n} dil — aur ginte rahenge!",
 ]
 
 export function likeMilestoneMessage(n) {
@@ -181,6 +205,9 @@ export const IDLE_EASTER_EGG_MESSAGES = [
   "😴 Neend aa rahi hai kya? Utho, shaadi ki taiyari abhi baaki hai!",
   "🎉 Ruk kyun gaye? Aage bhi bahut kuch dekhna baaki hai!",
   "🫠 Screen ko itni der ghoor rahe ho... hum bhi thoda sharma gaye.",
+  "☕ Chai pe gaye ho kya? Hum yahin wait kar rahe hain!",
+  "📱 Phone rakh ke so gaye? Shaadi mein neend nahi aayegi!",
+  "🤔 Soch rahe ho kya pehnoge? Events page dekh lo!",
 ]
 
 /** Shown once per session for visitors browsing very late at night. */
@@ -270,6 +297,8 @@ export const PINCH_ZOOM_MESSAGES = [
   "🤍 Itna zoom mat karo, sab kuch dil se dikhta hai!",
   "🔍 Itna paas se dekh rahe ho? Nazar na lag jaaye!",
   "👀 Zoom karke kya dhoond rahe ho? Hum toh saamne hi hain!",
+  "🧐 Jasoosi chal rahi hai kya? Sab kuch saaf hai!",
+  "📸 Zoom karke bhi utne hi pyaare lag rahe hain.",
 ]
 
 // ── Story replies ────────────────────────────────────────────────────────────
@@ -991,10 +1020,19 @@ export const SPLASH_MESSAGES = [
   "📸 Photographer ko dhoondh rahe hain…",
   "💐 Phoolon ka rate negotiate ho raha hai…",
   "🎵 Band waale ko address bhej rahe hain…",
-  "🧿 Nazar utaari jaa rahi hai…",
   "🚗 Baaraat GPS pe daali jaa rahi hai…",
   "☕ Chachu ko chai di jaa rahi hai…",
   "🤍 Bas do minute… matlab do second!",
+  "🌸 Mehendi ka design final ho raha hai…",
+  "🍛 Biryani ki deg khuli, khushboo aa rahi hai…",
+  "👗 Last-minute tailor ko phone jaa raha hai…",
+  "🎁 Gift wrapping ki jaa rahi hai…",
+  "🪔 Diye jalaaye jaa rahe hain…",
+  "🎶 Dholak waale ki dholak tune ho rahi hai…",
+  "🕌 Qazi sahab ka intezaar ho raha hai…",
+  "📋 Guest list teesri baar check ho rahi hai…",
+  "🧁 Meetha counter pehle se bhar rahe hain…",
+  "👟 Joote chhupaane ki planning chal rahi hai…",
 ]
 
 // ── Guest confirmation (RSVP) ────────────────────────────────────────────────
