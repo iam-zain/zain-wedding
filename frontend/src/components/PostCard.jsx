@@ -37,6 +37,19 @@ function validTint(t) {
   return t.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? t : null
 }
 
+/**
+ * Soft top-to-bottom wash in the cover's colour. Very dark covers (navy,
+ * maroon) would vanish on the black page, so they're lifted to a visible
+ * brightness first, keeping their hue. Never fades to zero, so caption and
+ * comments stay part of the same card.
+ */
+function tintGradient(tint) {
+  const max = Math.max(...tint)
+  const lift = max < 150 ? 150 / Math.max(max, 1) : 1
+  const c = tint.map((n) => Math.min(255, Math.round(n * lift))).join(',')
+  return `linear-gradient(to bottom, rgba(${c},0.24) 0%, rgba(${c},0.14) 50%, rgba(${c},0.08) 100%)`
+}
+
 export default function PostCard({ post, isMostLoved = false, liveCount = 0, onLiveCount }) {
   const { profile } = siteConfig
   const userId = getUserId()
@@ -253,14 +266,10 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
       data-testid={`post-card-${post.id}`}
       data-tint={tint ? tint.join(',') : ''}
       className="mb-1 border-b border-ig-border pb-2 transition-[background] duration-700"
-      // The cover's own colour, faint at the top and fading to black at the
-      // bottom — enough to give each post a mood without competing with the
-      // photo. Stays plain black until (or unless) the colour is known.
-      style={
-        tint
-          ? { background: `linear-gradient(to bottom, rgba(${tint.join(',')},0.22) 0%, rgba(${tint.join(',')},0.08) 55%, rgba(${tint.join(',')},0) 100%)` }
-          : undefined
-      }
+      // The cover's own colour as one even wash behind the whole post —
+      // header, photo, actions, caption and comments — so each post reads as
+      // a single card. Stays plain black when the post has no colour.
+      style={tint ? { background: tintGradient(tint) } : undefined}
     >
       {/* Header */}
       <header className="flex items-center gap-2.5 px-3 py-2">
