@@ -11,6 +11,10 @@ const DEPARTURE_FROM = process.env.RSVP_DEPARTURE_FROM || '2026-10-28'
 const DEPARTURE_TO = process.env.RSVP_DEPARTURE_TO || '2026-11-03'
 
 const PLACES = new Set(['chittaranjan', 'gaya'])
+// Extra people a guest brings. 0 is valid and is the common answer, so this is
+// bounded rather than required. Keep in step with RSVP_GUESTS_* in config.js.
+const GUESTS_MIN = 0
+const GUESTS_MAX = 99
 const MAX_NAME = 80
 const SCAN_PAGE_LIMIT = 60 // pages to walk before giving up on a very large table
 
@@ -45,6 +49,12 @@ async function submit(event) {
   const departurePlace = String(b.departurePlace || '').toLowerCase()
   const arrival = String(b.arrival || '')
   const departure = String(b.departure || '')
+  // Coerced and clamped rather than rejected: a missing field means an older
+  // client that predates this question, and that submission is still valid.
+  const guestsRaw = Math.round(Number(b.guests))
+  const guests = Number.isFinite(guestsRaw)
+    ? Math.min(GUESTS_MAX, Math.max(GUESTS_MIN, guestsRaw))
+    : GUESTS_MIN
 
   if (!userId) return badRequest('userId required')
   if (!name) return badRequest('name required')
@@ -69,6 +79,7 @@ async function submit(event) {
         UpdateExpression: [
           'SET #name = :name',
           'phone = :phone',
+          'guests = :guests',
           'dialCode = :dial',
           'arrivalPlace = :ap',
           'arrival = :arr',
@@ -82,6 +93,7 @@ async function submit(event) {
         ExpressionAttributeValues: {
           ':name': name,
           ':phone': phone,
+          ':guests': guests,
           ':dial': String(b.dialCode || '+91').slice(0, 5),
           ':ap': arrivalPlace,
           ':arr': arrival,
@@ -121,6 +133,7 @@ async function list(event) {
           userId: it.userId,
           name: it.name,
           phone: it.phone,
+          guests: typeof it.guests === 'number' ? it.guests : 0,
           dialCode: it.dialCode,
           arrivalPlace: it.arrivalPlace,
           arrival: it.arrival,

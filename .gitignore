@@ -32,3 +32,12 @@ npm-debug.log*
 
 # Local Claude Code settings (personal, not shared)
 .claude/settings.local.json
+
+# Credential files must never be committed — and never live under
+# frontend/public, which Vite copies verbatim into the published site.
+# An AWS accessKeys.csv was found there on 2026-09-18; it was untracked and
+# never deployed, but it was one `git add -A` away from a public repo.
+*accessKeys*.csv
+*credentials*.csv
+**/public/**/*.csv
+.aws/

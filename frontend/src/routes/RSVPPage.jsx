@@ -4,6 +4,8 @@ import {
   RSVP_DEPARTURE_WINDOW,
   RSVP_DEFAULT_TIME,
   RSVP_DIAL_CODE,
+  RSVP_GUESTS_MAX,
+  RSVP_GUESTS_MIN,
   RSVP_LOCATIONS,
   RSVP_PHONE_DIGITS,
   isValidPhone,
@@ -98,6 +100,17 @@ function normalizePhone(raw) {
     digits = digits.slice(1) // pasted with a trunk 0
   }
   return digits.slice(0, RSVP_PHONE_DIGITS)
+}
+
+/**
+ * Keeps the party size inside its bounds and integral. Guards a stored value
+ * too: an older submission (or a hand-edited localStorage) must not put the
+ * slider somewhere its track can't reach.
+ */
+function clampGuests(value) {
+  const n = Math.round(Number(value))
+  if (!Number.isFinite(n)) return RSVP_GUESTS_MIN
+  return Math.min(RSVP_GUESTS_MAX, Math.max(RSVP_GUESTS_MIN, n))
 }
 
 function timeFrom(value) {
@@ -206,6 +219,65 @@ function DayStrip({ days, value, onChange, name, minDay }) {
   )
 }
 
+/**
+ * Party-size slider. A range input rather than a number field: on a phone it's
+ * one thumb-drag instead of summoning a keyboard, and it can't be left holding
+ * a half-typed or out-of-range value.
+ *
+ * The accent is painted through the filled part of the track with a gradient
+ * background, since range tracks can't be styled per-browser reliably.
+ */
+function GuestSlider({ value, onChange, accentFrom, accentTo }) {
+  const pct = ((value - RSVP_GUESTS_MIN) / (RSVP_GUESTS_MAX - RSVP_GUESTS_MIN)) * 100
+  return (
+    <div>
+      <div className="flex items-baseline justify-between">
+        <label htmlFor="rsvp-guests" className="text-xs text-ig-muted">
+          Aapke saath aur kitne log aa rahe hain?
+        </label>
+        <span
+          data-testid="rsvp-guests-value"
+          className="rounded-full px-2.5 py-0.5 text-sm font-bold tabular-nums text-white"
+          style={{ background: `linear-gradient(135deg, ${accentFrom}, ${accentTo})` }}
+        >
+          {value}
+        </span>
+      </div>
+
+      {/* pan-x + swipe-exempt so dragging the thumb never flips the tab. */}
+      <input
+        id="rsvp-guests"
+        type="range"
+        min={RSVP_GUESTS_MIN}
+        max={RSVP_GUESTS_MAX}
+        step={1}
+        value={value}
+        onChange={(e) => onChange(clampGuests(e.target.value))}
+        data-testid="rsvp-guests-slider"
+        data-swipe-exempt="true"
+        aria-label="Number of extra guests"
+        aria-valuetext={`${value} log`}
+        className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full outline-none"
+        style={{
+          touchAction: 'pan-x',
+          background: `linear-gradient(90deg, ${accentFrom} 0%, ${accentTo} ${pct}%, var(--color-ig-card) ${pct}%, var(--color-ig-card) 100%)`,
+        }}
+      />
+
+      <div className="mt-1 flex justify-between text-[10px] text-ig-faint">
+        <span>Sirf main ({RSVP_GUESTS_MIN})</span>
+        <span>{RSVP_GUESTS_MAX}</span>
+      </div>
+
+      <p className="mt-1.5 text-[11px] text-ig-faint">
+        {value === 0
+          ? 'Akele aa rahe ho — koi baat nahi, hum hain na 🤍'
+          : `Aap + ${value} ${value === 1 ? 'aur' : 'aur log'} = ${value + 1} log`}
+      </p>
+    </div>
+  )
+}
+
 function TimeField({ id, value, onChange, testId }) {
   return (
     <input
@@ -239,6 +311,7 @@ export default function RSVPPage() {
   const [submitted, setSubmitted] = useState(readSubmission)
   const [name, setName] = useState(submitted?.name || '')
   const [phone, setPhone] = useState(() => normalizePhone(submitted?.phone))
+  const [guests, setGuests] = useState(() => clampGuests(submitted?.guests ?? RSVP_GUESTS_MIN))
   const [arrivalPlace, setArrivalPlace] = useState(submitted?.arrivalPlace || '')
   const [arrivalDay, setArrivalDay] = useState(() => dayWithin(submitted?.arrival, arrivalDays))
   const [arrivalTime, setArrivalTime] = useState(() => timeFrom(submitted?.arrival))
@@ -289,6 +362,7 @@ export default function RSVPPage() {
       name: name.trim(),
       phone,
       dialCode: RSVP_DIAL_CODE,
+      guests,
       arrivalPlace,
       arrival,
       departurePlace,
@@ -347,6 +421,11 @@ export default function RSVPPage() {
                     💬 {submitted.dialCode || RSVP_DIAL_CODE} {submitted.phone}
                   </p>
                 )}
+                <p data-testid="rsvp-confirmed-guests" className="mt-0.5 text-xs text-ig-muted">
+                  👥 {clampGuests(submitted.guests) > 0
+                    ? `${clampGuests(submitted.guests) + 1} log aa rahe hain`
+                    : 'Akele aa rahe ho'}
+                </p>
               </div>
             </div>
 
@@ -431,6 +510,15 @@ export default function RSVPPage() {
                 ? `${RSVP_PHONE_DIGITS} digit ka mobile number daalo`
                 : 'WhatsApp wala number behtar hai — updates wahin bhejenge 💬'}
             </p>
+          </div>
+
+          <div className="rounded-2xl border border-ig-border bg-ig-elevated p-4">
+            <GuestSlider
+              value={guests}
+              onChange={setGuests}
+              accentFrom={RSVP_FROM}
+              accentTo={RSVP_VIA}
+            />
           </div>
 
           <SectionCard

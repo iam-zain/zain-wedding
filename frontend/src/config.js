@@ -967,6 +967,10 @@ export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-03' }
 export const RSVP_DEFAULT_TIME = '12:00'
 
 /** Contact number: Indian national format — 10 digits starting 6-9. */
+/** Extra people a guest can say they're bringing. 0 is a valid, common answer. */
+export const RSVP_GUESTS_MIN = 0
+export const RSVP_GUESTS_MAX = 99
+
 export const RSVP_DIAL_CODE = '+91'
 export const RSVP_PHONE_DIGITS = 10
 

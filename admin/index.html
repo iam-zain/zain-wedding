@@ -497,8 +497,16 @@
         el.textContent = 'Loading…'
         try {
           const data = await api('/admin/rsvps')
-          RSVPS = data.rsvps || []
-          $('rsvpCount').textContent = RSVPS.length ? '(' + RSVPS.length + ')' : ''
+          RSVPS = (data.rsvps || []).map((r) => {
+            const g = Number.isFinite(Number(r.guests)) ? Math.max(0, Math.round(Number(r.guests))) : 0
+            // The person who filled the form counts too — this is the number
+            // that actually matters for catering and seating.
+            return Object.assign({}, r, { guests: g, partyTotal: g + 1 })
+          })
+          const heads = RSVPS.reduce((n, r) => n + r.partyTotal, 0)
+          $('rsvpCount').textContent = RSVPS.length
+            ? '(' + RSVPS.length + ' confirmations · ' + heads + ' people)'
+            : ''
           if (!RSVPS.length) { el.textContent = 'No confirmations yet.'; return }
           el.className = ''
           el.innerHTML = RSVPS.map((r) => `
@@ -508,6 +516,9 @@
                 <div class="s">
                   <a href="https://wa.me/${encodeURIComponent(String(r.dialCode || '+91').replace('+', '') + (r.phone || ''))}"
                      target="_blank" rel="noopener noreferrer">${escapeHtml((r.dialCode || '+91') + ' ' + (r.phone || ''))}</a>
+                </div>
+                <div class="s">
+                  👥 ${r.guests > 0 ? escapeHtml(r.partyTotal + ' people (+' + r.guests + ')') : 'Coming alone'}
                 </div>
                 <div class="s">
                   🛬 ${escapeHtml(PLACE_LABEL[r.arrivalPlace] || r.arrivalPlace || '—')} · ${escapeHtml(fmtStamp(r.arrival))}
@@ -533,8 +544,8 @@
 
       function downloadRsvpCsv() {
         if (!RSVPS.length) return alert('Nothing to export yet.')
-        const cols = ['name', 'dialCode', 'phone', 'arrivalPlace', 'arrival', 'departurePlace', 'departure', 'createdAt', 'updatedAt', 'userId']
-        const head = ['Name', 'Code', 'Phone', 'Arrival place', 'Arrival', 'Departure place', 'Departure', 'First submitted', 'Last updated', 'Device id']
+        const cols = ['name', 'dialCode', 'phone', 'guests', 'partyTotal', 'arrivalPlace', 'arrival', 'departurePlace', 'departure', 'createdAt', 'updatedAt', 'userId']
+        const head = ['Name', 'Code', 'Phone', 'Extra guests', 'Total in party', 'Arrival place', 'Arrival', 'Departure place', 'Departure', 'First submitted', 'Last updated', 'Device id']
         const rows = RSVPS.map((r) => cols.map((c) => csvCell(r[c])).join(','))
         // BOM so Excel opens the file as UTF-8 rather than mangling names.
         const BOM = String.fromCharCode(0xFEFF) // Excel needs it to read the file as UTF-8
