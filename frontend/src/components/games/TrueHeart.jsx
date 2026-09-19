@@ -149,7 +149,7 @@ export default function TrueHeart() {
         {phase === 'ready' && (
           <GameOverlay
             emoji="😳"
-            title="Don't Tap the Wrong Heart"
+            title="Sachha Dil"
             lines={['Sirf sachha dil ❤️ dabao — saare!', '💔 dabaya toh jaan gayi', 'Har round tez — aage 🧡 aur 🖤 bhi dhokha denge']}
             button="Shuru karo"
             onButton={start}

@@ -16,6 +16,8 @@ const OBJECTS = [
   { e: '🌙', ask: 'Chaand par tap karo!' },
   { e: '🎁', ask: 'Gift par tap karo!' },
   { e: '🕌', ask: 'Masjid par tap karo!' },
+  { e: '👰', ask: 'Dulhan par tap karo!' },
+  { e: '🤵', ask: 'Dulhe par tap karo!' },
 ]
 
 let nextId = 1
@@ -189,7 +191,7 @@ export default function TapCorrect() {
         {phase === 'ready' && (
           <GameOverlay
             emoji="🎯"
-            title="Tap the Correct One"
+            title="Baraat Reflex"
             lines={['Cheezein uchhal rahi hain — jo bola jaye, wahi dabao', `${ROUND_S} second · galat tap = ek jaan gayi`, 'Har sahi tap ke baad speed badhegi ⚡']}
             button="Shuru karo"
             onButton={start}

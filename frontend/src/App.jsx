@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import SplashScreen from './components/SplashScreen'
@@ -8,7 +8,8 @@ import EventsPage from './routes/EventsPage'
 import RSVPPage from './routes/RSVPPage'
 import MorePage from './routes/MorePage'
 import QuizPage from './routes/QuizPage'
-import GamesPage from './routes/GamesPage'
+// Loaded on first visit to /games, so the 25 games don't weigh down the feed.
+const GamesPage = lazy(() => import('./routes/GamesPage'))
 import WishesPage from './routes/WishesPage'
 import SavedPage from './routes/SavedPage'
 import SecretPage from './routes/SecretPage'
@@ -50,7 +51,14 @@ export default function App() {
             <Route path="/more" element={<MorePage />} />
             <Route path="/rsvp" element={<RSVPPage />} />
             <Route path="/quiz" element={<QuizPage />} />
-            <Route path="/games" element={<GamesPage />} />
+            <Route
+              path="/games"
+              element={
+                <Suspense fallback={<p className="py-16 text-center text-sm text-ig-muted">Games aa rahe hain… 🎮</p>}>
+                  <GamesPage />
+                </Suspense>
+              }
+            />
             <Route path="/saved" element={<SavedPage />} />
             <Route path="/wishes" element={<WishesPage />} />
             <Route path="/psst" element={<SecretPage />} />

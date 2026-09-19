@@ -18,6 +18,9 @@ const OBJECTS = [
   [['🎈', -1, false], 5],
   [['🌸', -1, false], 5],
   [['⭐', -1, false], 4],
+  // The couple wander through too — sweet, but not a heart.
+  [['👰', -1, false], 3],
+  [['🤵', -1, false], 3],
 ]
 
 let nextId = 1
@@ -130,7 +133,7 @@ export default function CatchHearts() {
             lines={[
               `${ROUND_S} second mein ${TARGET} points banao`,
               '❤️ +1 · 💖 +2 · 💍 +5 · 💔 −1',
-              'Jo dil nahi hai (🍬🎈🌸⭐) usse bacho: −1',
+              'Jo dil nahi hai (🍬🎈🌸⭐👰🤵) usse bacho: −1',
             ]}
             button="Shuru karo"
             onButton={start}

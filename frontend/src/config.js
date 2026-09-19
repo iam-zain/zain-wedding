@@ -1013,7 +1013,7 @@ export const ACHIEVEMENTS = [
     emoji: '💕',
     color: '#ff6b81',
     title: 'Dil ka Shikari',
-    how: 'Games → Catch the Hearts mein 50 dil pakdo',
+    how: 'Games → Dil Pakdo mein 50 dil pakdo',
     message: 'Pachaas dil pakad liye! Aap toh asli dil ke shikari ho 💕',
   },
   {

@@ -14,7 +14,7 @@ const MAX_STREAK_MISSES = 3
 const HEARTS = ['❤️', '🧡', '💛', '💚', '💙', '💜']
 // Busy wedding clutter. No hearts (or heart-printed things like 💌) in here —
 // the target has to be the only heart on the board.
-const DECOYS = ['🌸', '🌹', '💐', '🌙', '⭐', '🕌', '🪔', '🎁', '🌼', '🍬', '🎀', '🌷', '✨', '🍭', '🎊', '🪷', '🍓']
+const DECOYS = ['🌸', '🌹', '💐', '🌙', '⭐', '🕌', '🪔', '🎁', '🌼', '🍬', '🎀', '🌷', '✨', '🍭', '🎊', '🪷', '🍓', '👰', '🤵']
 
 function makeBoard() {
   const target = pick(HEARTS)

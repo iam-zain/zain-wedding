@@ -326,6 +326,26 @@
   0%, 100% { box-shadow: 0 0 6px 1px rgba(255, 196, 0, 0.55); }
   50% { box-shadow: 0 0 14px 4px rgba(255, 196, 0, 0.9); }
 }
+@keyframes zu-train {
+  from { transform: translateY(0); }
+  to { transform: translateY(-150px); }
+}
+@keyframes zu-belt {
+  from { left: 100%; }
+  to { left: -80px; }
+}
+@keyframes zu-in-left {
+  from { transform: translate(-250%, 0); }
+  to { transform: translate(-50%, 0); }
+}
+@keyframes zu-in-right {
+  from { transform: translate(150%, 0); }
+  to { transform: translate(-50%, 0); }
+}
+@keyframes zu-in-top {
+  from { transform: translate(-50%, -220%); }
+  to { transform: translate(-50%, 0); }
+}
 .zu-game-arena {
   touch-action: manipulation;
   -webkit-user-select: none;

@@ -7,16 +7,18 @@ import { useCallback, useEffect, useRef } from 'react'
 import { KEYS, readJSON, useLocalStorage, writeJSON } from './storage'
 
 // Every game on the hub; `tried` lists the ones this device has played.
-export const GAME_IDS = ['match', 'catch', 'ring', 'trueheart', 'tap', 'hidden', 'memory', 'puzzle', 'love']
+export const GAME_IDS = ['match', 'catch', 'ring', 'trueheart', 'tap', 'hidden', 'memory', 'puzzle', 'love', 'maze', 'ttt',
+  'ringbox', 'nikahpuzzle', 'connect', 'scramble', 'brideorgroom', 'crj', 'pack',
+  'shoot', 'hold', 'bouquet', 'ringstack', 'gift', 'spotter', 'arrange']
 
 const EMPTY = {
   hearts: 0,
   rings: 0,
   hidden: 0,
   memoryPerfect: 0,
-  trueHeart: 0, // Don't Tap the Wrong Heart — rounds cleared, lifetime
-  quick: 0, // Tap the Correct One — correct taps, lifetime
-  puzzles: [], // Emoji Love Puzzle — ids ever solved
+  trueHeart: 0, // Sachha Dil — rounds cleared, lifetime
+  quick: 0, // Baraat Reflex — correct taps, lifetime
+  puzzles: [], // Emoji Shaadi Puzzle — ids ever solved
   played: 0,
   tried: [],
   best: {},

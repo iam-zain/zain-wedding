@@ -5,7 +5,7 @@ import { GameOverlay, GameStats } from './GameShell'
 
 const N = 6
 const MOVES = 20
-const TYPES = ['❤️', '💍', '🌹', '💌', '💕', '🌙']
+const TYPES = ['❤️', '💍', '🌹', '👰', '🤵', '💕']
 const GOLD = 'gold' // the one special tile: 💖 Golden Heart
 const GOLD_CHANCE = 0.6 // on a 4+ match
 const STEP_MS = 230 // pop → fall → next cascade
@@ -347,7 +347,7 @@ export default function MatchThree() {
         )}
       </div>
       <p className="mt-2 text-center text-[11px] text-ig-faint">
-        ❤️ Muhabbat · 💍 Nikah · 🌹 Ishq · 💌 Khat · 💕 ZainUz · 🌙 Chaand
+        ❤️ Muhabbat · 💍 Nikah · 🌹 Ishq · 👰 Uzma · 🤵 Zain · 💕 ZainUz
       </p>
     </div>
   )
