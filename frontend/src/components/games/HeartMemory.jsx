@@ -118,7 +118,7 @@ export default function HeartMemory() {
             emoji={perfect ? '🧠' : '💗'}
             title={perfect ? 'Yaad Reh Gaya! Ek bhi galti nahi 🧠' : endLine}
             lines={[`${moves} chaal · ${mistakes} galti`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={restart}
             win
             color="#25d366"

@@ -179,7 +179,7 @@ export default function HeartConnect() {
         </span>
         <span className="rounded-full bg-ig-card px-3 py-1 tabular-nums">Bhara {Math.round((filled / (n * n)) * 100)}%</span>
       </div>
-      <p className="mb-2 text-center text-sm">Ek jaise dil jodo — lines ek doosre ko kaatein nahi 💞</p>
+      <p className="mb-2 text-center text-sm">Ek jaise dil jodiye — lines ek doosre ko kaatein nahi 💞</p>
       <div className="relative">
         {solved && <Confetti count={50} />}
         <div
@@ -231,7 +231,7 @@ export default function HeartConnect() {
           </>
         ) : (
           <button type="button" onClick={() => commit({})} className="rounded-full border border-ig-border px-4 py-2 text-sm">
-            Saaf karo 🧹
+            Saaf kariye 🧹
           </button>
         )}
         {solvedCount > 0 && <p className="mt-2 text-[11px] text-ig-faint">Is baar {solvedCount} board hal kiye</p>}

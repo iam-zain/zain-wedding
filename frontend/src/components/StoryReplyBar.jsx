@@ -61,7 +61,7 @@ export default function StoryReplyBar({ storyId, onActivity }) {
       toast(
         err?.message === 'COMMENT_LIMIT'
           ? 'Is story pe bahut replies aa gaye 🙏'
-          : 'Reply nahi gaya 😕 Dobara try karo',
+          : 'Reply nahi gaya 😕 Dobara try kariye',
         { duration: 3000 },
       )
     } finally {
@@ -145,7 +145,7 @@ export default function StoryReplyBar({ storyId, onActivity }) {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onFocus={onActivity}
-            placeholder="Reply bhejo…"
+            placeholder="Reply bhejiye…"
             maxLength={MAX_COMMENT_LENGTH}
             data-testid="story-reply-input"
             className="min-w-0 flex-1 rounded-full border border-white/40 bg-white/10 px-4 py-2.5 text-sm text-white outline-none placeholder:text-white/60 focus:border-white/80"

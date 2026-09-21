@@ -94,7 +94,7 @@ export default function WeddingMaze() {
     setMaze(m)
     setP([m.start])
     setLeft(levelTime(n))
-    setMsg(`${m.walker === BRIDE ? 'Dulhan' : 'Dulha'} ko ${m.other === BRIDE ? 'dulhan' : 'dulhe'} tak pahunchao!`)
+    setMsg(`${m.walker === BRIDE ? 'Dulhan' : 'Dulha'} ko ${m.other === BRIDE ? 'dulhan' : 'dulhe'} tak pahunchaiye!`)
     setPhase('play')
   }
 
@@ -214,7 +214,7 @@ export default function WeddingMaze() {
         ]}
       />
       <p className="mb-2 h-5 text-center text-sm font-semibold" style={{ color: phase === 'won' ? '#25d366' : undefined }}>
-        {phase === 'play' || phase === 'won' ? msg : 'Rasta banao, jodi milao 💕'}
+        {phase === 'play' || phase === 'won' ? msg : 'Rasta banaiye, jodi milaiye 💕'}
       </p>
       <div className="relative">
         {phase === 'won' && <Confetti count={50} />}
@@ -271,8 +271,8 @@ export default function WeddingMaze() {
             <GameOverlay
               emoji="👰💕🤵"
               title="Wedding Maze"
-              lines={['Ungli se rasta banao — dulhan ko dulhe tak (ya ulta!)', 'Galat raasta? Wapas line pe ungli le jao, mit jayega', 'Har level bada maze, time chal raha hai ⏱']}
-              button="Shuru karo"
+              lines={['Ungli se rasta banaiye — dulhan ko dulhe tak (ya ulta!)', 'Galat raasta? Wapas line pe ungli le jaiye, mit jayega', 'Har level bada maze, time chal raha hai ⏱']}
+              button="Shuru kariye"
               onButton={start}
               color="#d4a64a"
             />
@@ -282,7 +282,7 @@ export default function WeddingMaze() {
               emoji="⏰"
               title={endLine}
               lines={[`${level} maze paar kiye`, newBest ? '✨ Naya best!' : '']}
-              button="Dobara khelo"
+              button="Dobara kheliye"
               onButton={start}
               win={level >= 3}
               color="#d4a64a"
@@ -290,7 +290,7 @@ export default function WeddingMaze() {
           )}
         </div>
       </div>
-      <p className="mt-2 text-center text-[11px] text-ig-faint">Ungli uthaye bina chalao — ya ek-ek khaana tap karo</p>
+      <p className="mt-2 text-center text-[11px] text-ig-faint">Ungli uthaye bina chalaiye — ya ek-ek khaana tap kariye</p>
     </div>
   )
 }

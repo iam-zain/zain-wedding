@@ -129,13 +129,13 @@ export default function CatchHearts() {
         {phase === 'ready' && (
           <GameOverlay
             emoji="💕"
-            title="Dil pakdo! 💕"
+            title="Dil pakdiye! 💕"
             lines={[
-              `${ROUND_S} second mein ${TARGET} points banao`,
+              `${ROUND_S} second mein ${TARGET} points banaiye`,
               '❤️ +1 · 💖 +2 · 💍 +5 · 💔 −1',
-              'Jo dil nahi hai (🍬🎈🌸⭐👰🤵) usse bacho: −1',
+              'Jo dil nahi hai (🍬🎈🌸⭐👰🤵) usse bachiye: −1',
             ]}
-            button="Shuru karo"
+            button="Shuru kariye"
             onButton={start}
             color="#ff6b81"
           />
@@ -145,7 +145,7 @@ export default function CatchHearts() {
             emoji={won ? '🏆' : '💔'}
             title={endLine}
             lines={[`Score: ${score} · ${caught} dil pakde`, newBest ? '✨ Naya best score!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={won}
             color="#ff6b81"

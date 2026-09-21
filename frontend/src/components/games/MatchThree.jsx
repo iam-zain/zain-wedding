@@ -12,7 +12,7 @@ const STEP_MS = 230 // pop → fall → next cascade
 
 const RUN_POINTS = (len) => (len >= 6 ? 100 : len === 5 ? 50 : len === 4 ? 25 : 10)
 const COMBO_LINES = ['🔥 Combo!', '🔥🔥 Double combo!', '🔥🔥🔥 Dil garden garden ho gaya!', '💥 Unstoppable!']
-const END_WIN = ['Wedding Crush champion! 💍', 'Teen milao, dil banao — aur banaye bhi! 💕', 'Dilon ki baarish! 💖', 'Match master! 🏆']
+const END_WIN = ['Wedding Crush champion! 💍', 'Teen milaiye, dil banaiye — aur banaye bhi! 💕', 'Dilon ki baarish! 💖', 'Match master! 🏆']
 const END_LOSE = ['Achha khela! 💕', 'Agli baar aur dil banenge 💪', 'Moves khatam, pyaar nahi 🤍']
 
 let nextId = 1
@@ -230,7 +230,7 @@ export default function MatchThree() {
       haptic('warn')
       busy.current = true
       setBoard(next)
-      flashBanner(pick(['Match nahi bana 😅', 'Yeh nahi 🙈', 'Teen milao! 3️⃣']))
+      flashBanner(pick(['Match nahi bana 😅', 'Yeh nahi 🙈', 'Teen milaiye! 3️⃣']))
       later(() => {
         setBoard(board)
         busy.current = false
@@ -323,13 +323,13 @@ export default function MatchThree() {
             emoji="💕"
             title="Wedding Crush 💍"
             lines={[
-              '“Teen milao, dil banao!”',
-              'Ek tile dabao, phir bagal wali — dono jagah badal lenge',
+              '“Teen milaiye, dil banaiye!”',
+              'Ek tile dabaiye, phir bagal wali — dono jagah badal lenge',
               `3 → 10 · 4 → 25 · 5 → 50 · 6+ → 100 · ${MOVES} chaal`,
               '4 ek line mein ya 2×2 chaukor = 💖 Golden Heart',
-              'Golden Heart chalao → 💥 LOVE BLAST!',
+              'Golden Heart chalaiye → 💥 LOVE BLAST!',
             ]}
-            button="Shuru karo"
+            button="Shuru kariye"
             onButton={start}
             color="#ff6b81"
           />
@@ -339,7 +339,7 @@ export default function MatchThree() {
             emoji={scoreRef.current >= 300 ? '🏆' : '💕'}
             title={endLine}
             lines={[`Score: ${score}`, newBest ? '✨ Naya best score!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={scoreRef.current >= 300}
             color="#ff6b81"

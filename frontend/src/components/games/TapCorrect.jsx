@@ -8,16 +8,16 @@ const LIVES = 3
 const COUNT = 5
 const SIZE = 56 // px, tap target
 const OBJECTS = [
-  { e: '💍', ask: 'Ring par tap karo!' },
-  { e: '🌹', ask: 'Rose par tap karo!' },
-  { e: '💔', ask: 'Toote dil par tap karo!' },
-  { e: '🧸', ask: 'Teddy par tap karo!' },
-  { e: '💌', ask: 'Love letter par tap karo!' },
-  { e: '🌙', ask: 'Chaand par tap karo!' },
-  { e: '🎁', ask: 'Gift par tap karo!' },
-  { e: '🕌', ask: 'Masjid par tap karo!' },
-  { e: '👰', ask: 'Dulhan par tap karo!' },
-  { e: '🤵', ask: 'Dulhe par tap karo!' },
+  { e: '💍', ask: 'Ring par tap kariye!' },
+  { e: '🌹', ask: 'Rose par tap kariye!' },
+  { e: '💔', ask: 'Toote dil par tap kariye!' },
+  { e: '🧸', ask: 'Teddy par tap kariye!' },
+  { e: '💌', ask: 'Love letter par tap kariye!' },
+  { e: '🌙', ask: 'Chaand par tap kariye!' },
+  { e: '🎁', ask: 'Gift par tap kariye!' },
+  { e: '🕌', ask: 'Masjid par tap kariye!' },
+  { e: '👰', ask: 'Dulhan par tap kariye!' },
+  { e: '🤵', ask: 'Dulhe par tap kariye!' },
 ]
 
 let nextId = 1
@@ -163,7 +163,7 @@ export default function TapCorrect() {
             <span className="text-2xl">{OBJECTS[target].e}</span> {OBJECTS[target].ask}
           </>
         ) : (
-          'Jo bola jaye, wahi dabao 🎯'
+          'Jo bola jaye, wahi dabaiye 🎯'
         )}
       </p>
       <div
@@ -192,8 +192,8 @@ export default function TapCorrect() {
           <GameOverlay
             emoji="🎯"
             title="Baraat Reflex"
-            lines={['Cheezein uchhal rahi hain — jo bola jaye, wahi dabao', `${ROUND_S} second · galat tap = ek jaan gayi`, 'Har sahi tap ke baad speed badhegi ⚡']}
-            button="Shuru karo"
+            lines={['Cheezein uchhal rahi hain — jo bola jaye, wahi dabaiye', `${ROUND_S} second · galat tap = ek jaan gayi`, 'Har sahi tap ke baad speed badhegi ⚡']}
+            button="Shuru kariye"
             onButton={start}
             color="#0095f6"
           />
@@ -203,7 +203,7 @@ export default function TapCorrect() {
             emoji={score >= 20 ? '⚡' : '🎯'}
             title={score >= 20 ? 'Tez Nazar! ⚡' : score >= 10 ? 'Kya reflexes hain! 👏' : 'Thoda aur dhyaan se 👀'}
             lines={[`${score} sahi tap`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={score >= 20}
             color="#0095f6"

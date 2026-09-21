@@ -70,7 +70,7 @@ export default function TrueHeart() {
         setNewBest(recordBest('trueheart', roundRef.current))
         recordPlay('trueheart')
         setEndLine(
-          roundRef.current >= 15 ? 'Dil Toota Nahi! 💪' : pick(['Dil toot gaya 💔', 'Nakli dil ne dhokha de diya 😅', 'Phir se try karo 🤍']),
+          roundRef.current >= 15 ? 'Dil Toota Nahi! 💪' : pick(['Dil toot gaya 💔', 'Nakli dil ne dhokha de diya 😅', 'Phir se try kariye 🤍']),
         )
         setPhase('over')
       }, 700)
@@ -81,7 +81,7 @@ export default function TrueHeart() {
   useEffect(() => {
     if (phase !== 'play') return undefined
     const t = setTimeout(() => {
-      if (!locked.current) loseLife(pick(['Time khatam! ⏰', 'Jaldi karo! 🏃', 'Der ho gayi 😬']))
+      if (!locked.current) loseLife(pick(['Time khatam! ⏰', 'Jaldi kariye! 🏃', 'Der ho gayi 😬']))
     }, cur.ms)
     return () => clearTimeout(t)
     // Keyed on the round, not the tiles: tapping a heart mustn't restart the clock.
@@ -115,7 +115,7 @@ export default function TrueHeart() {
           ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '—'],
         ]}
       />
-      <p className="mb-1 text-center text-sm font-semibold">Sirf sachha dil ❤️ dabao!</p>
+      <p className="mb-1 text-center text-sm font-semibold">Sirf sachha dil ❤️ dabaiye!</p>
       <div aria-hidden="true" className="mb-2 h-1.5 overflow-hidden rounded-full bg-ig-card">
         {phase === 'play' && (
           <div
@@ -150,8 +150,8 @@ export default function TrueHeart() {
           <GameOverlay
             emoji="😳"
             title="Sachha Dil"
-            lines={['Sirf sachha dil ❤️ dabao — saare!', '💔 dabaya toh jaan gayi', 'Har round tez — aage 🧡 aur 🖤 bhi dhokha denge']}
-            button="Shuru karo"
+            lines={['Sirf sachha dil ❤️ dabaiye — saare!', '💔 dabaya toh jaan gayi', 'Har round tez — aage 🧡 aur 🖤 bhi dhokha denge']}
+            button="Shuru kariye"
             onButton={start}
             color="#ed4956"
           />
@@ -161,7 +161,7 @@ export default function TrueHeart() {
             emoji={round >= 15 ? '🏆' : '💔'}
             title={endLine}
             lines={[`${round} rounds paar kiye`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={round >= 15}
             color="#ed4956"

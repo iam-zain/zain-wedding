@@ -18,7 +18,7 @@ const SETS = [
     items: ['👀 Pehli mulaqat', '🤝 Baat pakki', '💍 Ring', '📜 Nikah', '🤲 Dua', '🍽️ Waleema', '🎉 Jashn'],
   },
   {
-    title: 'Shaadi wala din',
+    title: 'Shaadi wale din',
     items: ['💄 Tayyari', '📸 Photoshoot', '🐎 Baraat', '📜 Nikah', '🍛 Khaana', '😢 Rukhsati'],
   },
 ]
@@ -78,7 +78,7 @@ export default function ArrangeNikah() {
       }, 1500)
     } else {
       haptic('warn')
-      setLine(`${marks.filter(Boolean).length}/${marks.length} sahi jagah pe — laal wale dobara lagao`)
+      setLine(`${marks.filter(Boolean).length}/${marks.length} sahi jagah pe — laal wale dobara lagaiye`)
       later(() => {
         // Keep the right ones in place, send the wrong ones back.
         setTries((t) => t + 1)
@@ -114,7 +114,7 @@ export default function ArrangeNikah() {
       </div>
       <div className="relative rounded-2xl border border-ig-border p-4" style={{ background: 'linear-gradient(160deg, rgba(37,211,102,0.12), rgba(245,197,24,0.12))' }}>
         <p className="text-center text-base font-semibold">{set.title}</p>
-        <p className="text-center text-[11px] text-ig-muted">Sahi tartib mein tap karo — pehle se aakhir tak</p>
+        <p className="text-center text-[11px] text-ig-muted">Sahi tartib mein tap kariye — pehle se aakhir tak</p>
 
         <ol className="mt-3 space-y-1.5" data-testid="arrange-slots">
           {set.items.map((_, i) => {
@@ -165,7 +165,7 @@ export default function ArrangeNikah() {
             emoji="📜"
             title={score >= 7 ? 'Shaadi ke expert! Sab tartib se 📜✨' : 'Saari rasmein samajh aa gayi! 👏'}
             lines={[`Score: ${score}/${SETS.length * 2}`]}
-            button="Phir se khelo"
+            button="Phir se kheliye"
             onButton={again}
             win={score >= 7}
             color="#25d366"

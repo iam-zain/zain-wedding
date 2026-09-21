@@ -159,7 +159,7 @@ export default function WishesPage() {
     } catch {
       removeLiked(wish.id)
       setLikeCounts((cur) => ({ ...cur, [key]: Math.max(0, (cur[key] || 1) - 1) }))
-      toast('Like nahi hua, dobara try karo')
+      toast('Like nahi hua, dobara try kariye')
     }
   }
 
@@ -189,7 +189,7 @@ export default function WishesPage() {
         setFull(true)
         toast(WISHES_FULL_MESSAGE, { duration: 5000 })
       } else {
-        toast('Paigham nahi bheja gaya 😕 Dobara try karo')
+        toast('Paigham nahi bheja gaya 😕 Dobara try kariye')
       }
     } finally {
       setSending(false)
@@ -212,7 +212,7 @@ export default function WishesPage() {
           Duaon ka silsila 🤍
         </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
-          Do lafz likh jao — dua, mubarakbaad ya koi purani yaad. Hum sab padhenge.
+          Do lafz likh jaiye — dua, mubarakbaad ya koi purani yaad. Hum sab padhenge.
         </p>
       </div>
 
@@ -232,7 +232,7 @@ export default function WishesPage() {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Apna paigham likho…"
+            placeholder="Apna paigham likhiye…"
             rows={3}
             maxLength={MAX_COMMENT_LENGTH}
             data-testid="wishes-text-input"
@@ -249,7 +249,7 @@ export default function WishesPage() {
               className="rounded-xl px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40 active:opacity-90"
               style={{ background: `linear-gradient(135deg, ${WISH_FROM}, ${WISH_VIA})` }}
             >
-              {sending ? 'Bhej rahe hain…' : 'Bhejo 🤍'}
+              {sending ? 'Bhej rahe hain…' : 'Bhejiye 🤍'}
             </button>
           </div>
         </form>
@@ -271,7 +271,7 @@ export default function WishesPage() {
             data-testid="wishes-retry"
             className="text-sm text-ig-blue"
           >
-            Load nahi hua — dobara try karo
+            Load nahi hua — dobara try kariye
           </button>
         )}
 

@@ -121,12 +121,12 @@ export const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
 // ── One-liners ───────────────────────────────────────────────────────────────
 export const LINES = {
   good: ['Kya nazar hai! ✨', 'Wah! 👏', 'Zabardast 💕', 'Ekdum sahi!', 'Mashallah! 🤍', 'Kya baat hai! 🔥', 'Pakad liya! 💪'],
-  bad: ['Yeh nahi 😅', 'Arre nahi! 🙈', 'Galat jagah 😬', 'Dhyaan se! 👀', 'Oops! 😵', 'Thoda aur dekho 🔍'],
-  hiddenFound: ['Kya nazar hai! 👀', 'Mil gaya dil 💕', 'Detective ho aap 🕵️', 'Wah! Agla dhoondo', 'Itni jaldi? Kamaal! ⚡', 'Dil ne dil ko pehchaan liya 🤍'],
+  bad: ['Yeh nahi 😅', 'Arre nahi! 🙈', 'Galat jagah 😬', 'Dhyaan se! 👀', 'Oops! 😵', 'Thoda aur dekhiye 🔍'],
+  hiddenFound: ['Kya nazar hai! 👀', 'Mil gaya dil 💕', 'Detective ho aap 🕵️', 'Wah! Agla dhoondiye', 'Itni jaldi? Kamaal! ⚡', 'Dil ne dil ko pehchaan liya 🤍'],
   hiddenMissed: ['Time khatam! ⏰', 'Dil bhaag gaya 🏃', 'Agli baar pakka! 🤞', 'Chhup gaya tha shaitan 😄'],
   catchWin: ['Jeet gaye! Dil hi dil 💕', 'Dilon ke badshah! 👑', 'Itne dil? Kamaal ho aap 💖', 'Pyaar hi pyaar! 💕'],
-  catchLose: ['Thoda aur tez! 😅', 'Dil haath se nikal gaye 💔', 'Agli baar pakka! 💪', 'Ungliyan garam karo 🔥'],
+  catchLose: ['Thoda aur tez! 😅', 'Dil haath se nikal gaye 💔', 'Agli baar pakka! 💪', 'Ungliyan garam kariye 🔥'],
   ringWin: ['Ring Master! 💍', 'Uzma ki ring safe hai 💍', 'Ek bhi ring nahi giri (lagbhag) 😄', 'Dulha khush ho gaya 🤵'],
-  ringLose: ['Achha khela! 💍', 'Ring phisal gayi 😅', 'Bomb se bach ke! 💣', 'Dobara try karo 💪'],
+  ringLose: ['Achha khela! 💍', 'Ring phisal gayi 😅', 'Bomb se bach ke! 💣', 'Dobara try kariye 💪'],
   memoryWin: ['Saare jode mil gaye! 💗', 'Jodi no. 1 💕', 'Yaaddasht tez hai 🧠', 'Rab ne bana di jodi 🤍'],
 }

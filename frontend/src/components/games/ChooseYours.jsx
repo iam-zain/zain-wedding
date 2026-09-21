@@ -139,7 +139,7 @@ export default function ChooseYours() {
       {/* Mode switch */}
       <div className="mb-3 grid grid-cols-2 gap-1 rounded-full bg-ig-card p-1 text-xs font-semibold">
         {[
-          ['cpu', '📱 Phone se khelo'],
+          ['cpu', '📱 Phone se kheliye'],
           ['friend', '👫 Dost ke saath'],
         ].map(([m, label]) => (
           <button

@@ -191,7 +191,7 @@ export default function NikahPuzzle() {
           onPointerLeave={() => setPeek(false)}
           className="rounded-full border border-ig-border px-4 py-2 text-sm font-semibold"
         >
-          👀 Dabake dekho
+          👀 Dabake dekhiye
         </button>
         <button
           type="button"

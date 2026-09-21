@@ -130,7 +130,7 @@ export default function BrideOrGroom() {
             emoji={score >= 8 ? '💞' : '😄'}
             title={score >= 8 ? 'Shaadi expert! 💞' : score >= 5 ? 'Achha andaaza hai! 👏' : 'Dulha dulhan confuse kar diye 😅'}
             lines={[`${score}/${round.length} sahi`, newBest ? '✨ Naya best!' : '']}
-            button="Aur khelo"
+            button="Aur kheliye"
             onButton={again}
             win={score >= 8}
             color="#a855f7"

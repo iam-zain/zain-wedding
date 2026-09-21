@@ -260,7 +260,7 @@ function GuestSlider({ value, onChange, accentFrom, accentTo }) {
 
       <p className="mt-1.5 text-[11px] text-ig-faint">
         {value === 0
-          ? 'Akele aa rahe ho — koi baat nahi, hum hain na 🤍'
+          ? 'Akele aa rahe hain — koi baat nahi, hum hain na 🤍'
           : `Aap + ${value} ${value === 1 ? 'aur' : 'aur log'} = ${value + 1} log`}
       </p>
     </div>
@@ -344,14 +344,14 @@ export default function RSVPPage() {
 
   function onSubmit(e) {
     e.preventDefault()
-    if (!name.trim()) return toast('Naam toh likho 🙂')
-    if (!phone) return toast('WhatsApp number daal do 📱')
-    if (!phoneOk) return toast(`${RSVP_PHONE_DIGITS} digit ka sahi mobile number daalo 📱`)
-    if (!relation) return toast('Zain se aapka rishta chun lo 🤝')
-    if (!arrivalPlace) return toast('Kahan pahunch rahe ho? Chittaranjan ya Gaya 🚉')
-    if (!arrivalDay) return toast('Aane ka din chun lo 📅')
+    if (!name.trim()) return toast('Naam toh likhiye 🙂')
+    if (!phone) return toast('WhatsApp number daal dijiye 📱')
+    if (!phoneOk) return toast(`${RSVP_PHONE_DIGITS} digit ka sahi mobile number daaliye 📱`)
+    if (!relation) return toast('Zain se aapka rishta chun lijiye 🤝')
+    if (!arrivalPlace) return toast('Kahan pahunch rahe hain? Chittaranjan ya Gaya 🚉')
+    if (!arrivalDay) return toast('Aane ka din chun lijiye 📅')
     if (!departurePlace) return toast('Wapsi kahan se hogi? 🛫')
-    if (!departureDay) return toast('Jaane ka din chun lo 📅')
+    if (!departureDay) return toast('Jaane ka din chun lijiye 📅')
 
     const arrival = `${arrivalDay}T${arrivalTime || RSVP_DEFAULT_TIME}`
     const departure = `${departureDay}T${departureTime || RSVP_DEFAULT_TIME}`
@@ -393,10 +393,10 @@ export default function RSVPPage() {
             WebkitBackgroundClip: 'text',
           }}
         >
-          Aana confirm karo 🎊
+          Aana confirm kariye 🎊
         </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
-          Bas ye batao ki kahan aur kab pahunch rahe ho — baaki intezaam hamara. 🤍
+          Bas ye bataiye ki kahan aur kab pahunch rahe hain — baaki intezaam hamara. 🤍
         </p>
       </div>
 
@@ -434,7 +434,7 @@ export default function RSVPPage() {
           <p className="mt-3 text-center text-xs text-ig-faint">
             {submitted.synced === false
               ? 'Save ho gaya — network aate hi hum tak pahunch jayega 📶'
-              : 'Plan badal gaya? Bas Edit dabao — kabhi bhi update kar sakte ho.'}
+              : 'Plan badal gaya? Bas Edit dabaiye — kabhi bhi update kar sakte hain.'}
           </p>
         </div>
       ) : (
@@ -482,8 +482,8 @@ export default function RSVPPage() {
             </div>
             <p className="mt-1 text-[11px] text-ig-faint">
               {phone && !phoneOk
-                ? `${RSVP_PHONE_DIGITS} digit ka mobile number daalo`
-                : 'WhatsApp wala number behtar hai — updates wahin bhejenge 💬'}
+                ? `${RSVP_PHONE_DIGITS} digit ka mobile number daaliye`
+                : 'WhatsApp wale number behtar hai — updates wahin bhejenge 💬'}
             </p>
           </div>
 
@@ -532,7 +532,7 @@ export default function RSVPPage() {
             subtitle={describeWindow(RSVP_ARRIVAL_WINDOW)}
           >
             <div>
-              <FieldLabel done={!!arrivalPlace}>Kahan pahunch rahe ho?</FieldLabel>
+              <FieldLabel done={!!arrivalPlace}>Kahan pahunch rahe hain?</FieldLabel>
               <LocationChips name="arrival" value={arrivalPlace} onChange={setArrivalPlace} />
             </div>
             <div>

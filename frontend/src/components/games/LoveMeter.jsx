@@ -13,7 +13,7 @@ const BANDS = [
 const FACES = ['😐', '🙂', '😊', '😍', '🥰']
 const face = (v) => FACES[Math.min(FACES.length - 1, Math.floor(v / 21))]
 // Tongue-in-cheek nudges shown while the sliders are still short of 100.
-const NUDGES = ['Thoda aur upar! ⬆️', 'Kanjoosi mat karo pyaar mein 😄', 'Dono ko 100 tak le jao 💯', 'Itna kam? Sharma rahe ho? 🙈']
+const NUDGES = ['Thoda aur upar! ⬆️', 'Kanjoosi mat kariye pyaar mein 😄', 'Dono ko 100 tak le jaiye 💯', 'Itna kam? Sharma rahe hain? 🙈']
 
 function Slider({ label, emoji, value, onChange, color, testid }) {
   return (
@@ -91,7 +91,7 @@ export default function LoveMeter() {
 
   return (
     <div data-testid="love-meter">
-      <p className="mb-3 text-center text-sm text-ig-muted">Dono sliders ko 100% tak le jao aur pyaar naapo 💕</p>
+      <p className="mb-3 text-center text-sm text-ig-muted">Dono sliders ko 100% tak le jaiye aur pyaar naapiye 💕</p>
       <div className="space-y-3">
         <Slider label="Zain" emoji="🤵" value={zain} onChange={change(setZain)} color="#0095f6" testid="love-zain" />
         <Slider label="Uzma" emoji="👰" value={uzma} onChange={change(setUzma)} color="#f472b6" testid="love-uzma" />
@@ -131,7 +131,7 @@ export default function LoveMeter() {
           className="mt-4 rounded-full px-6 py-2.5 text-sm font-semibold text-white active:opacity-80"
           style={{ background: 'linear-gradient(90deg,#ed4956,#a855f7)' }}
         >
-          {final == null ? 'Pyaar naapo 💕' : 'Phir se naapo 🔁'}
+          {final == null ? 'Pyaar naapiye 💕' : 'Phir se naapiye 🔁'}
         </button>
       </div>
       <p className="mt-2 text-center text-[11px] text-ig-faint">Sirf mazaak ke liye 😄 — asli pyaar naapa nahi ja sakta.</p>

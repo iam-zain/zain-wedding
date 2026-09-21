@@ -132,7 +132,7 @@ export default function EventsPage() {
         siteUrl: siteConfig.profile?.link,
       }),
     )
-    toast('📅 Calendar file ban gayi — apne calendar mein add kar lo!', { duration: 4500 })
+    toast('📅 Calendar file ban gayi — apne calendar mein add kar lijiye!', { duration: 4500 })
   }
 
   return (
@@ -158,7 +158,7 @@ export default function EventsPage() {
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-ig-border bg-ig-elevated py-2.5 text-sm font-semibold active:opacity-80"
         >
           <CalendarIcon size={18} />
-          Saare events calendar mein daalo
+          Saare events calendar mein daaliye
         </button>
       </div>
 

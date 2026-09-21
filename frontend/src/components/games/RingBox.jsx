@@ -34,7 +34,7 @@ export default function RingBox() {
     setRing(ringId)
     setSpeed(ms)
     setChosen(null)
-    setMsg('Ring dekh lo… 👀')
+    setMsg('Ring dekh lijiye… 👀')
     setPhase('show')
     // Show the ring, cover it, then shuffle.
     later(() => {
@@ -147,8 +147,8 @@ export default function RingBox() {
           <GameOverlay
             emoji="💍"
             title="Ring kahan hai? 👀"
-            lines={['Ek dabbe mein ring hai — dhyaan se dekho', 'Dabbe ghoomenge, phir sahi wala chuno', 'Har round zyada dabbe, tez shuffle!']}
-            button="Shuru karo"
+            lines={['Ek dabbe mein ring hai — dhyaan se dekhiye', 'Dabbe ghoomenge, phir sahi wale chuniye', 'Har round zyada dabbe, tez shuffle!']}
+            button="Shuru kariye"
             onButton={start}
             color="#f7971e"
           />
@@ -158,7 +158,7 @@ export default function RingBox() {
             emoji={round >= 5 ? '🏆' : '🎁'}
             title={round >= 5 ? 'Baaz ki nazar! 🦅' : 'Ring chhup gayi 😅'}
             lines={[`${round} round jeete`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={round >= 5}
             color="#f7971e"

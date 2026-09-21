@@ -44,7 +44,7 @@ export default function SavedPage() {
         </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
           {saved.length === 0
-            ? 'Kisi bhi post pe 🔖 dabao — woh yahan aa jayegi.'
+            ? 'Kisi bhi post pe 🔖 dabaiye — woh yahan aa jayegi.'
             : saved.length === 1
               ? '1 post sambhaali hui hai'
               : `${saved.length} posts sambhaali hui hain`}
@@ -55,7 +55,7 @@ export default function SavedPage() {
         <div data-testid="saved-empty" className="px-4 pt-10 text-center">
           <div className="text-5xl leading-none">🔖</div>
           <p className="mx-auto mt-3 max-w-xs text-sm text-ig-muted">
-            Abhi kuch save nahi kiya. Feed pe jaake jo pasand aaye, uska bookmark dabate jao —
+            Abhi kuch save nahi kiya. Feed pe jaake jo pasand aaye, uska bookmark dabate jaiye —
             sab yahin mil jayega.
           </p>
           <Link
@@ -64,7 +64,7 @@ export default function SavedPage() {
             className="mt-5 inline-block rounded-xl px-5 py-2.5 text-sm font-semibold text-white active:opacity-90"
             style={{ background: `linear-gradient(135deg, ${SAVED_FROM}, ${SAVED_VIA})` }}
           >
-            Feed dekho
+            Feed dekhiye
           </Link>
         </div>
       ) : (

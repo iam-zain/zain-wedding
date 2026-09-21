@@ -140,7 +140,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
       likeSentRef.current = false // let them try again
       removeLike(post.id)
       setLiveCount(Math.max(0, shownLiveCount))
-      toast('Like nahi hua, dobara try karo')
+      toast('Like nahi hua, dobara try kariye')
     }
   }
 

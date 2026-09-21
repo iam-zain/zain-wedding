@@ -72,7 +72,7 @@ export const SITE_URL =
 export const SECRET_MESSAGES = [
   "🤫 Ye secret code-word hai: 'Harry porter ki pen' 🐙 — Isse Waleema mein ek special dish milega! ✨",
   "🎉 Mubarak ho! Aap officially Wedding Detective ban gaye hain. 🕵️",
-  "🫣 Ab itna bhi mat tap karo... website sharma jayegi.",
+  "🫣 Ab itna bhi mat tap kariye... website sharma jayegi.",
   "🏅 Achievement Unlocked: Curious Guest (+100 XP)",
   "🤍 Har guest humare liye khaas hai... aur aap toh secret guest bhi nikle!",
   "😊 Agar aap yahan tak aa gaye hain, toh hum waqai aapko wedding mein dekhna chahte hain.",
@@ -84,13 +84,13 @@ export const STAT_EASTER_EGGS = {
   posts: [
     "📸 Itne saare posts scroll kar liye — you deserve a virtual hug!",
     "Behind every post, ek chhota sa kissa hai. Thanks for reading them all 🤍",
-    "🖼️ Har post ek yaad hai — aur aap sab dekh rahe ho. Shukriya!",
+    "🖼️ Har post ek yaad hai — aur aap sab dekh rahe hain. Shukriya!",
     "😄 Ginne baithe ho kya? Hum bhi nahi gin paaye.",
     "✨ Itni photos toh humne shaadi se pehle hi kharch kar di!",
     "📷 Aur bhi aayengi — shaadi ke baad toh poora album banega.",
   ],
   guests: [
-    "🎉 Itne guests ke beech, tum ek khaas guest ho!",
+    "🎉 Itne guests ke beech, aap ek khaas guest hain!",
     "The more the merrier — glad you're one of them 💫",
     "🎊 Sabko bulaya hai — aur har ek ka intezaar hai.",
     "😅 Itne log aa rahe hain... khaana kam na pad jaye!",
@@ -99,7 +99,7 @@ export const STAT_EASTER_EGGS = {
   ],
   families: [
     "👨‍👩‍👧‍👦 Do families, ek dil se jud rahi hain — welcome to it!",
-    "Families jud rahi hain, aur tum is jashn ka hissa ho ✨",
+    "Families jud rahi hain, aur aap is jashn ka hissa hain ✨",
     "🏡 Do ghar, ek kahani.",
     "🤝 Do parivaar mile — ab sab ek hain.",
     "💫 Do se shuru, hamesha ke liye.",
@@ -111,7 +111,7 @@ export const STAT_EASTER_EGGS = {
 export const AVATAR_LONGPRESS_MESSAGES = [
   "🤍 Thoda ruk kar dekhne ke liye shukriya — dil se milte hain, waqt lagta hai.",
   "🎵 Music ke peeche ek chhota sa raaz bhi hai — dhoondte rehna!",
-  "🎶 Tap karke dekho — gaana bhi bajta hai!",
+  "🎶 Tap karke dekhiye — gaana bhi bajta hai!",
   "👀 Itni der dekhoge toh dulha sharma jayega.",
   "💍 Ek tasveer, hazaar kahaniyan.",
 ]
@@ -119,14 +119,14 @@ export const AVATAR_LONGPRESS_MESSAGES = [
 /** Shown on the feed brand logo after several rapid taps. */
 /** Shown when a post's avatar or username is tapped, which scrolls back to the top. */
 export const POST_HEADER_TAP_MESSAGES = [
-  "⬆️ Chalo, shuru se dekhte hain!",
+  "⬆️ Chaliye, shuru se dekhte hain!",
   "🏠 Wapas ghar aa gaye — profile yahin hai.",
   "🚀 Seedha upar! Kuch miss toh nahi kiya?",
   "👆 Upar se phir se — har post ek nayi yaad.",
   "💍 Zain & Uzma ki taraf se wapas swagat hai!",
-  "📜 Kahani shuru se sunoge? Chaliye!",
-  "🎈 Upar chale — countdown bhi dekh lo!",
-  "🤍 Scroll karte karte thak gaye? Lo, seedha top pe.",
+  "📜 Kahani shuru se suniyega? Chaliye!",
+  "🎈 Upar chale — countdown bhi dekh lijiye!",
+  "🤍 Scroll karte karte thak gaye? Lijiye, seedha top pe.",
 ]
 
 export const LOGO_TAP_MESSAGE = "✨ Made with 🤍 for this big day — thanks for finding this!"
@@ -144,16 +144,16 @@ export const WEDDING_DAY_MESSAGE = { title: 'Aaj wohi din hai! 🎉', subtitle: 
 export const STORY_LONGPRESS_MESSAGES = [
   "🤍 Ruk gaye? Yeh moment bhi yaad rakhna.",
   "📸 Har story ke peeche ek pal hai — dekhne ke liye shukriya.",
-  "⏸️ Rok ke dekh rahe ho — yeh pal bhi khaas hai.",
+  "⏸️ Rok ke dekh rahe hain — yeh pal bhi khaas hai.",
   "🤍 Kuch lamhe aise hi thehar jaane chahiye.",
-  "✨ Ek aur baar dekh lo, ji nahi bharega.",
+  "✨ Ek aur baar dekh lijiye, ji nahi bharega.",
 ]
 
 /** Shown after a very hard/vigorous shake "breaks" and reassembles the UI. One is picked at random. */
 export const CHAOS_EASTER_EGG_MESSAGES = [
   "😅 Relax, relax — the app's fine! Bas thoda mazaak tha.",
   "🫠 Panicked for a sec? Same. Sab kuch wapas normal hai.",
-  "🔧 Kuch nahi tuta — bas test kar rahe the kitna zor se hila sakte ho.",
+  "🔧 Kuch nahi tuta — bas test kar rahe the kitna zor se hila sakte hain.",
   "🌀 Itna hilaaya ki sab ghoom gaya! Ab theek hai.",
   "🫨 Shaadi se pehle hi itna josh? Sambhal ke!",
 ]
@@ -178,11 +178,11 @@ export const TYPE_ANYWHERE_WORDS = [
 ]
 export const TYPE_ANYWHERE_MESSAGES = [
   "🕌 Nikah ka zikr kiya aur website bhi khush ho gayi!",
-  "💍 Shaadi ho ya waleema, jo bhi type karo — dil se yehi ek baat hai.",
+  "💍 Shaadi ho ya waleema, jo bhi type kariye — dil se yehi ek baat hai.",
   "🤍 Yeh lafz humein bhi pasand hai. Milte hain jashn mein!",
-  "🥘 Bhookh lag gayi kya? Waleema tak sabr karo!",
+  "🥘 Bhookh lag gayi kya? Waleema tak sabr kariye!",
   "🌿 Yeh lafz likhte hi mehek aa gayi — milte hain function mein!",
-  "🎺 Baraat ka naam liya? Taiyari shuru karo phir!",
+  "🎺 Baraat ka naam liya? Taiyari shuru kariye phir!",
   "👀 Naam le liya humara — kaan garam ho gaye!",
   "💌 Likh diya toh dil tak pahunch gaya!",
   "🎉 Yeh lafz sunke hi mood ban gaya!",
@@ -214,12 +214,12 @@ export function likeMilestoneMessage(n) {
 }
 
 /** Shown when the feed is pulled well past the normal refresh threshold. */
-export const PULL_REFRESH_EGG_MESSAGE = "🤍 Itna kheencho ge toh rishta ban jaayega! Chalo, dobara dekhte hain kya naya hai."
+export const PULL_REFRESH_EGG_MESSAGE = "🤍 Itna kheenchiyega toh rishta ban jaayega! Chaliye, dobara dekhte hain kya naya hai."
 
 /** Shown at the very bottom of the feed, after the last post. */
 export const FEED_END_MESSAGE = {
   title: "Bas itna hi tha... abhi ke liye 🤍",
-  subtitle: "Baaki sab shaadi mein milte hain — tab tak scroll karte raho, hum kahin nahi ja rahe!",
+  subtitle: "Baaki sab shaadi mein milte hain — tab tak scroll karte rahiye, hum kahin nahi ja rahe!",
 }
 
 /** Shown when a heart-shaped drag gesture is recognized anywhere on screen. */
@@ -228,17 +228,17 @@ export const HEART_GESTURE_MESSAGE = "❤️ Dil banaya aapne? Humein bhi mehsoo
 /** Shown once per session after ~25s of no interaction. One picked at random. */
 export const IDLE_EASTER_EGG_MESSAGES = [
   "👀 Abhi bhi wahin ho? Hum bhi wahin hain, guest ka intezaar karte huye.",
-  "🤍 Thoda scroll karo, kahin kuch chhoot na jaye!",
-  "😴 Neend aa rahi hai kya? Utho, shaadi ki taiyari abhi baaki hai!",
+  "🤍 Thoda scroll kariye, kahin kuch chhoot na jaye!",
+  "😴 Neend aa rahi hai kya? Uthiye, shaadi ki taiyari abhi baaki hai!",
   "🎉 Ruk kyun gaye? Aage bhi bahut kuch dekhna baaki hai!",
-  "🫠 Screen ko itni der ghoor rahe ho... hum bhi thoda sharma gaye.",
-  "☕ Chai pe gaye ho kya? Hum yahin wait kar rahe hain!",
-  "📱 Phone rakh ke so gaye? Shaadi mein neend nahi aayegi!",
-  "🤔 Soch rahe ho kya pehnoge? Events page dekh lo!",
+  "🫠 Screen ko itni der ghoor rahe hain... hum bhi thoda sharma gaye.",
+  "☕ Chai pe gaye hain kya? Hum yahin wait kar rahe hain!",
+  "📱 Phone rakh ke so gaye hain? Shaadi mein neend nahi aayegi!",
+  "🤔 Soch rahe hain kya pehniyega? Events page dekh lijiye!",
 ]
 
 /** Shown once per session for visitors browsing very late at night. */
-export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe ho? Neend bhi zaroori hai — subah shaadi ki tayyari bhi toh karni hai!"
+export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe hain? Neend bhi zaroori hai — subah shaadi ki tayyari bhi toh karni hai!"
 
 /**
  * Time-of-day greetings, checked in order — the FIRST window that contains the
@@ -250,13 +250,13 @@ export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe ho? Neen
  */
 export const TIME_OF_DAY_MESSAGES = [
   { from: 1, to: 5, message: NIGHT_OWL_MESSAGE },
-  { from: 6, to: 9, message: "🌅 Subah ho gayi — baraat ke liye ready ho jao!" },
-  { from: 17, to: 19, message: "👗 Paanch baj gaye — taiyari shuru karo, function shaam ko hai!" },
-  { from: 19, to: 21, message: "🕌 Saat baj gaye — abhi toh function shuru hua hoga. Aa jao!" },
+  { from: 6, to: 9, message: "🌅 Subah ho gayi — baraat ke liye ready ho jaiye!" },
+  { from: 17, to: 19, message: "👗 Paanch baj gaye — taiyari shuru kariye, function shaam ko hai!" },
+  { from: 19, to: 21, message: "🕌 Saat baj gaye — abhi toh function shuru hua hoga. Aa jaiye!" },
 ]
 
 /** Shown once per session when the device battery is low and not charging. */
-export const BATTERY_LOW_MESSAGE = "🔋 Battery kam hai — thodi charge kar lo, shaadi lambi chalegi!"
+export const BATTERY_LOW_MESSAGE = "🔋 Battery kam hai — thodi charge kar lijiye, shaadi lambi chalegi!"
 
 /** Printed to the browser console on app start — a little something for curious devs. */
 export const CONSOLE_EASTER_EGG_MESSAGE = "Aap yahan tak dhundte huye aa gaye? Milte hain shaadi mein! 🎉"
@@ -272,7 +272,7 @@ export const NIKAH_EGG_MESSAGES = [
 /** Shown inline on the Waleema side of the events card for 5s on a tap. One picked at random. */
 export const WALEEMA_EGG_MESSAGES = [
   "🎊 Waleema ki dawat mein maza hi kuch aur hoga — miss mat karna!",
-  "🍽️ Khaane ka poora intezaam hai — bas aap aa jao!",
+  "🍽️ Khaane ka poora intezaam hai — bas aap aa jaiye!",
   "✨ Waleema wali raat khaas hogi — saath mein manaate hain!",
   "🎶 Gaana-bajana, khaana aur ek yaadgaar shaam — Waleema mein zaroor aana!",
 ]
@@ -281,19 +281,19 @@ export const WALEEMA_EGG_MESSAGES = [
 export const OFFLINE_MESSAGE = "📴 Network gaya, par pyaar nahi 🤍 Jo dekh chuke ho woh yahin hai."
 
 /** Shown once when the connection comes back. */
-export const ONLINE_MESSAGE = "📶 Network wapas aa gaya — chalo, aage dekhte hain!"
+export const ONLINE_MESSAGE = "📶 Network wapas aa gaya — chaliye, aage dekhte hain!"
 
 /** Shown once per session when the device is plugged in and charging. */
-export const BATTERY_CHARGING_MESSAGE = "🔌 Charge ho raha hai? Ab toh poori raat scroll karo!"
+export const BATTERY_CHARGING_MESSAGE = "🔌 Charge ho raha hai? Ab toh poori raat scroll kariye!"
 
 /** Shown once when the battery reaches a full charge. */
-export const BATTERY_FULL_MESSAGE = "🔋 Full charge! Ab toh poori shaadi cover kar loge 📸"
+export const BATTERY_FULL_MESSAGE = "🔋 Full charge! Ab toh poori shaadi cover kar lijiyega 📸"
 
 /** Shown once when the battery is critically low — more urgent than the 15% nudge. */
-export const BATTERY_CRITICAL_MESSAGE = "🪫 Battery bilkul khatam hone wali hai! Jaldi charge pe lagao."
+export const BATTERY_CRITICAL_MESSAGE = "🪫 Battery bilkul khatam hone wali hai! Jaldi charge pe lagaiye."
 
 /** Shown the first time the phone is tilted noticeably. */
-export const TILT_MESSAGE = "📱 Phone tedha kar ke kya dhoond rahe ho? Sab kuch saamne hi hai 😄"
+export const TILT_MESSAGE = "📱 Phone tedha kar ke kya dhoond rahe hain? Sab kuch saamne hi hai 😄"
 
 /**
  * The day the rishta was settled — the start of the timeline the countdown
@@ -314,16 +314,16 @@ export const EXPLORE_TITLE = 'Kitna ghoom liya?'
 export const EXPLORE_DONE_MESSAGE = '🧭 Poori website ghoom li — kuch nahi chhoda!'
 
 /** Shown when a screenshot is (heuristically) detected. */
-export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej do — group mein daal dena!"
+export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej dijiye — group mein daal dena!"
 
 /** Shown the first time the phone is turned sideways. */
 export const LANDSCAPE_MESSAGE = "🔄 Phone ghuma diya! Ab tasveerein aur badi lagengi — maza aayega."
 
 /** Shown when a guest pinch-zooms a post photo. One picked at random. */
 export const PINCH_ZOOM_MESSAGES = [
-  "🤍 Itna zoom mat karo, sab kuch dil se dikhta hai!",
-  "🔍 Itna paas se dekh rahe ho? Nazar na lag jaaye!",
-  "👀 Zoom karke kya dhoond rahe ho? Hum toh saamne hi hain!",
+  "🤍 Itna zoom mat kariye, sab kuch dil se dikhta hai!",
+  "🔍 Itna paas se dekh rahe hain? Nazar na lag jaaye!",
+  "👀 Zoom karke kya dhoond rahe hain? Hum toh saamne hi hain!",
   "🧐 Jasoosi chal rahi hai kya? Sab kuch saaf hai!",
   "📸 Zoom karke bhi utne hi pyaare lag rahe hain.",
 ]
@@ -699,7 +699,7 @@ export const QUIZ_QUESTIONS = [
   {
     id: 'photographer',
     question: '"Bas ek aur photo" ka asli matlab?',
-    options: ['Ek aur photo', 'Aur 20 photos 📸', 'Ho gaya, chalo', 'Photo delete kar do'],
+    options: ['Ek aur photo', 'Aur 20 photos 📸', 'Ho gaya, chaliye', 'Photo delete kar dijiye'],
     answer: 1,
   },
   {
@@ -756,7 +756,7 @@ export const QUIZ_QUESTIONS = [
       'Jo keh raha tha "main toh bilkul nahi nachunga" 💃',
       'Jo sach mein dance jaanta hai',
       'Jo DJ ke paas khada hai',
-      'Koi nahi — sab sharma rahe honge',
+      'Koi nahi — sab sharma rahe hainnge',
     ],
     answer: 0,
   },
@@ -824,7 +824,7 @@ export const QUIZ_TITLES = [
   {
     min: 4,
     emoji: '🎉',
-    title: 'Pakka wala dost',
+    title: 'Pakka wale dost',
     color: '#a855f7',
     message: 'Chaar sahi — aap dhyan se sab padhte ho!',
   },
@@ -833,7 +833,7 @@ export const QUIZ_TITLES = [
     emoji: '🙂',
     title: 'Acche padosi',
     color: '#0095f6',
-    message: 'Teen sahi. Thoda aur Events page dekh lo!',
+    message: 'Teen sahi. Thoda aur Events page dekh lijiye!',
   },
   {
     min: 2,
@@ -847,7 +847,7 @@ export const QUIZ_TITLES = [
     emoji: '🫣',
     title: 'Shaadi mein naye ho?',
     color: '#ed4956',
-    message: 'Koi baat nahi — Events page pe sab likha hai, dobara try karo!',
+    message: 'Koi baat nahi — Events page pe sab likha hai, dobara try kariye!',
   },
 ]
 
@@ -874,7 +874,7 @@ export const WISHES_SHARDS = [
   'wishes-6',
 ]
 
-export const WISHES_EMPTY_MESSAGE = 'Abhi tak koi paigham nahi — pehla aap likho 🤍'
+export const WISHES_EMPTY_MESSAGE = 'Abhi tak koi paigham nahi — pehla aap likhiye 🤍'
 export const WISHES_FULL_MESSAGE = 'Wishes wall bhar gayi 🙏 Itna pyaar dene ke liye shukriya!'
 export const WISHES_THANKS_MESSAGE = '🤍 Shukriya! Aapka paigham humesha yaad rahega.'
 
@@ -892,7 +892,7 @@ export const ACHIEVEMENTS = [
     emoji: '💗',
     color: '#ff6b81',
     title: 'Pehla dil',
-    how: 'Kisi ek post pe dil dabao',
+    how: 'Kisi ek post pe dil dabaiye',
     message: 'Pehla dil aapka! Bas yahin se sab shuru hota hai 🤍',
   },
   {
@@ -902,7 +902,7 @@ export const ACHIEVEMENTS = [
     emoji: '❤️',
     color: '#ed4956',
     title: 'Teen dil',
-    how: 'Teen alag posts ko like karo',
+    how: 'Teen alag posts ko like kariye',
     message: 'Teen posts ko dil de diya — shuruaat acchi hai!',
   },
   {
@@ -912,7 +912,7 @@ export const ACHIEVEMENTS = [
     emoji: '💘',
     color: '#f0568c',
     title: 'Dil hi dil mein',
-    how: 'Feed ki har post ko like karo',
+    how: 'Feed ki har post ko like kariye',
     message: 'Har ek post ko dil diya! Aap toh sachche fan nikle 🤍',
   },
   {
@@ -922,7 +922,7 @@ export const ACHIEVEMENTS = [
     emoji: '✍️',
     color: '#38bdf8',
     title: 'Pehla lafz',
-    how: 'Kisi ek post pe comment karo',
+    how: 'Kisi ek post pe comment kariye',
     message: 'Pehla comment likh diya! Aapki baat humesha yaad rahegi 🤍',
   },
   {
@@ -932,7 +932,7 @@ export const ACHIEVEMENTS = [
     emoji: '💬',
     color: '#0095f6',
     title: 'Baatuni',
-    how: 'Paanch alag posts pe comment karo',
+    how: 'Paanch alag posts pe comment kariye',
     message: 'Paanch posts pe comment! Aapse baat karke accha laga.',
   },
   {
@@ -942,7 +942,7 @@ export const ACHIEVEMENTS = [
     emoji: '🗣️',
     color: '#00b8d4',
     title: 'Har baat pe haazir',
-    how: 'Har post pe ek comment chhod jao',
+    how: 'Har post pe ek comment chhod jaiye',
     message: 'Har post pe kuch na kuch kaha — kamaal ho aap!',
   },
   {
@@ -952,7 +952,7 @@ export const ACHIEVEMENTS = [
     emoji: '👀',
     color: '#a855f7',
     title: 'Sab dekh liya',
-    how: 'Upar ki saari stories khol ke dekho',
+    how: 'Upar ki saari stories khol ke dekhiye',
     message: 'Saari stories dekh daali — ek bhi nahi chhodi!',
   },
   {
@@ -963,7 +963,7 @@ export const ACHIEVEMENTS = [
     color: '#25d366',
     title: 'Poora DJ',
     // Don't give the hiding place away — finding it is half the fun.
-    how: 'Saare gaane suno — player home page pe kahin chhupa hai 🤫',
+    how: 'Saare gaane suniye — player home page pe kahin chhupa hai 🤫',
     message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
   },
   {
@@ -976,8 +976,8 @@ export const ACHIEVEMENTS = [
     emoji: '⏱️',
     color: '#38bdf8',
     title: 'Paanch minute',
-    how: 'Paanch minute site pe bitao',
-    message: 'Paanch minute humare saath! Baithe raho, abhi bahut kuch baaki hai 🤍',
+    how: 'Paanch minute site pe bitaiye',
+    message: 'Paanch minute humare saath! Baithe rahiye, abhi bahut kuch baaki hai 🤍',
   },
   {
     id: 'time-30',
@@ -987,7 +987,7 @@ export const ACHIEVEMENTS = [
     emoji: '☕',
     color: '#f59e0b',
     title: 'Chai ka waqt',
-    how: 'Aadha ghanta site pe bitao',
+    how: 'Aadha ghanta site pe bitaiye',
     message: 'Aadha ghanta ho gaya — itni der toh chai pe baat hoti hai! ☕',
   },
   {
@@ -998,7 +998,7 @@ export const ACHIEVEMENTS = [
     emoji: '⏳',
     color: '#a855f7',
     title: 'Poora ghanta',
-    how: 'Ek ghanta site pe bitao',
+    how: 'Ek ghanta site pe bitaiye',
     message: 'Poora ghanta! Ab toh aap ghar ke hi ho gaye ho 🏡',
   },
   {
@@ -1008,7 +1008,7 @@ export const ACHIEVEMENTS = [
     emoji: '✅',
     color: '#25d366',
     title: 'Aana pakka',
-    how: 'Confirmation form bhar do — aana-jaana bata do',
+    how: 'Confirmation form bhar dijiye — aana-jaana bata dijiye',
     message: 'Aana confirm ho gaya! Ab bas milne ka intezaar hai 🎉',
   },
   {
@@ -1018,7 +1018,7 @@ export const ACHIEVEMENTS = [
     emoji: '🧭',
     color: '#f472b6',
     title: 'Poora ghoom liya',
-    how: 'Saare pages ek baar khol ke dekho',
+    how: 'Saare pages ek baar khol ke dekhiye',
     message: 'Har page dekh liya! Ab aapse zyada koi nahi jaanta is site ko 🧭',
   },
   {
@@ -1030,8 +1030,8 @@ export const ACHIEVEMENTS = [
     emoji: '🧠',
     color: '#f7971e',
     title: 'Quiz champion',
-    how: 'Quiz mein paanch ke paanch sahi karo',
-    message: 'Poora quiz sahi! Humse zyada toh aap jaante ho 🤍',
+    how: 'Quiz mein paanch ke paanch sahi kariye',
+    message: 'Poora quiz sahi! Humse zyada toh aap jaante hain 🤍',
   },
   {
     id: 'hearts-50',
@@ -1040,7 +1040,7 @@ export const ACHIEVEMENTS = [
     emoji: '💕',
     color: '#ff6b81',
     title: 'Dil ka Shikari',
-    how: 'Games → Dil Pakdo mein 50 dil pakdo',
+    how: 'Games → Dil Pakdo mein 50 dil pakdiye',
     message: 'Pachaas dil pakad liye! Aap toh asli dil ke shikari ho 💕',
   },
   {
@@ -1051,7 +1051,7 @@ export const ACHIEVEMENTS = [
     emoji: '💖',
     color: '#ff6b81',
     title: 'Dil Banao Ustaad',
-    how: 'Wedding Crush ke ek game mein 300 points banao',
+    how: 'Wedding Crush ke ek game mein 300 points banaiye',
     message: 'Teen milaye, dil banaye — 300 points! Aap toh match ke ustaad ho 💖',
   },
   {
@@ -1061,7 +1061,7 @@ export const ACHIEVEMENTS = [
     emoji: '💞',
     color: '#a855f7',
     title: 'Love Guru',
-    how: 'Love-o-Meter ko 100% Muhabbat tak le jao',
+    how: 'Love-o-Meter ko 100% Muhabbat tak le jaiye',
     message: 'Zain + Uzma = ♾️ — connection level Infinity, aapne naap liya! 💞',
   },
   {
@@ -1071,7 +1071,7 @@ export const ACHIEVEMENTS = [
     emoji: '🎮',
     color: '#0095f6',
     title: 'Har khel ka khiladi',
-    how: 'Games mein har ek khel kam se kam ek baar khelo',
+    how: 'Games mein har ek khel kam se kam ek baar kheliye',
     message: 'Saare games khel liye! Ab aap official khiladi ho 🎮',
   },
 ]
@@ -1087,7 +1087,7 @@ export function eventMilestoneMessage(label, emoji, days) {
   if (days === 0) return `${emoji} Aaj ${label} hai! Milte hain wahin 🎉`
   if (days === 1) return `${emoji} Kal ${label} hai — bas ek raat aur!`
   if (days === 2) return `${emoji} 2 din baaki hain ${label} ke liye!`
-  if (days === 3) return `${emoji} Sirf 3 din baaki — taiyari shuru karo!`
+  if (days === 3) return `${emoji} Sirf 3 din baaki — taiyari shuru kariye!`
   if (days === 7) return `${emoji} 1 hafta baaki hai ${label} ke liye! 🎊`
   if (days === 14) return `${emoji} 2 hafte baaki hain ${label} ke liye!`
   return `${emoji} ${days} din baaki hain ${label} ke liye!`

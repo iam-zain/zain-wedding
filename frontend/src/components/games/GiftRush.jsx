@@ -109,7 +109,7 @@ export default function GiftRush() {
         ]}
       />
       <p className="mb-2 h-5 text-center text-sm font-semibold" style={{ color: msg ? (msg.ok ? '#25d366' : '#ed4956') : undefined }}>
-        {msg ? msg.text : 'Gift sahi dabbe mein daalo 🎁'}
+        {msg ? msg.text : 'Gift sahi dabbe mein daaliye 🎁'}
       </p>
       <div
         data-testid="gift-arena"
@@ -162,7 +162,7 @@ export default function GiftRush() {
             emoji={score >= 25 ? '🏆' : '🎁'}
             title={score >= 25 ? 'Gift manager of the year! 🏆' : score >= 12 ? 'Tohfe sambhal liye! 🎁' : 'Tohfe bikhar gaye 😅'}
             lines={[`Score: ${score}`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={score >= 25}
             color="#f7971e"

@@ -231,7 +231,7 @@ export default function MorePage() {
               className="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold text-white active:opacity-80"
               style={{ backgroundColor: rank.color }}
             >
-              Khelo
+              Kheliye
             </Link>
           </div>
         )}
@@ -282,7 +282,7 @@ export default function MorePage() {
           <p className="mt-1.5 text-[11px] text-ig-faint">
             {earned === badges.length
               ? '🏆 Saare achievements mil gaye — aap champion ho!'
-              : 'Tap karke dekho kaise milega 🤍'}
+              : 'Tap karke dekhiye kaise milega 🤍'}
           </p>
         </div>
         <ul className="mt-3 grid grid-cols-2 gap-2.5">

@@ -32,7 +32,7 @@ export default function RingStack() {
     setLv(L)
     setStack([])
     setLeft(L.time)
-    setMsg(L.byColour ? 'Upar dikhaye rang ke hisaab se lagao 🎨' : 'Sabse badi ring pehle, sabse chhoti aakhir mein 💍')
+    setMsg(L.byColour ? 'Upar dikhaye rang ke hisaab se lagaiye 🎨' : 'Sabse badi ring pehle, sabse chhoti aakhir mein 💍')
     setPhase('play')
   }
 
@@ -88,7 +88,7 @@ export default function RingStack() {
           ['Level', lv.n + 1, '#f5c518'],
         ]}
       />
-      <p className="mb-2 h-5 text-center text-sm font-semibold">{phase === 'play' || phase === 'won' ? msg : 'Rings ko sahi order mein lagao 💍'}</p>
+      <p className="mb-2 h-5 text-center text-sm font-semibold">{phase === 'play' || phase === 'won' ? msg : 'Rings ko sahi order mein lagaiye 💍'}</p>
       <div
         data-testid="ringstack-arena"
         className="zu-game-arena relative min-h-[430px] overflow-hidden rounded-2xl border border-ig-border p-3"
@@ -152,8 +152,8 @@ export default function RingStack() {
           <GameOverlay
             emoji="💍"
             title="Ring Stack"
-            lines={['Rings ko pole pe sahi order mein lagao', 'Pehle size se (badi → chhoti), phir rang ke order se', 'Galat ring = −2 second!']}
-            button="Shuru karo"
+            lines={['Rings ko pole pe sahi order mein lagaiye', 'Pehle size se (badi → chhoti), phir rang ke order se', 'Galat ring = −2 second!']}
+            button="Shuru kariye"
             onButton={start}
             color="#f5c518"
           />
@@ -161,9 +161,9 @@ export default function RingStack() {
         {phase === 'over' && (
           <GameOverlay
             emoji={lv.n >= 5 ? '🏆' : '💍'}
-            title={lv.n >= 5 ? 'Jeweller ban jao aap! 💎' : 'Time khatam! ⏰'}
+            title={lv.n >= 5 ? 'Jeweller ban jaiye aap! 💎' : 'Time khatam! ⏰'}
             lines={[`${lv.n} level paar kiye`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={lv.n >= 5}
             color="#f5c518"

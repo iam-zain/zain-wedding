@@ -167,8 +167,8 @@ export default function ShootHearts() {
           <GameOverlay
             emoji="🎯"
             title="Cupid's Arrow"
-            lines={['Udte dil pe nishana lagao!', '❤️ +1 · 💍 +3 · 💔 −2', '☠️ ko chhua toh seedha game over!']}
-            button="Nishana lagao 🎯"
+            lines={['Udte dil pe nishana lagaiye!', '❤️ +1 · 💍 +3 · 💔 −2', '☠️ ko chhua toh seedha game over!']}
+            button="Nishana lagaiye 🎯"
             onButton={start}
             color="#ed4956"
           />
@@ -178,7 +178,7 @@ export default function ShootHearts() {
             emoji={score >= 25 ? '🏆' : '🎯'}
             title={endLine}
             lines={[`Score: ${score}`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={score >= 25}
             color="#ed4956"

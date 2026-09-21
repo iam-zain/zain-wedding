@@ -158,7 +158,7 @@ export default function HiddenHeart() {
             emoji="👀"
             title="Dil kahan chhupa hai? 👀"
             lines={['Har board mein ek dil chhupa hai', `Sirf ${ROUND_S} second — phir agla board!`, 'Har baar dil ka rang badlega 🌈']}
-            button="Shuru karo"
+            button="Shuru kariye"
             onButton={start}
             color="#a855f7"
           />
@@ -168,7 +168,7 @@ export default function HiddenHeart() {
             emoji="😴"
             title="Kahan kho gaye?"
             lines={[`${found} dil mile · ${missed} chhoote`]}
-            button="Phir se khelo"
+            button="Phir se kheliye"
             onButton={start}
             color="#a855f7"
           />

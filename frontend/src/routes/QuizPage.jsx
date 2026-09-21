@@ -101,7 +101,7 @@ export default function QuizPage() {
                 WebkitBackgroundClip: 'text',
               }}
             >
-              Humein kitna jaante ho? 🤔
+              Humein kitna jaante hain? 🤔
             </h2>
             <span
               data-testid="quiz-progress"
@@ -210,7 +210,7 @@ export default function QuizPage() {
             className="mt-6 w-full rounded-xl py-3 text-sm font-semibold text-white active:opacity-90"
             style={{ background: `linear-gradient(135deg, ${QUIZ_FROM}, ${QUIZ_VIA})` }}
           >
-            Naye sawaal khelo 🔁
+            Naye sawaal kheliye 🔁
           </button>
           <p className="mt-2 text-[11px] text-ig-faint">Har baar naye sawaal aate hain</p>
         </div>

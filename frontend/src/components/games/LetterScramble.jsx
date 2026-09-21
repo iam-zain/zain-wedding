@@ -24,7 +24,7 @@ const WORDS = [
   ['ISHQ', 'Muhabbat ka bhai'],
   ['KHUSHI', 'Aaj har chehre pe'],
   ['SEHRA', 'Dulhe ke sar pe'],
-  ['RUKHSATI', 'Aansuon wala pal'],
+  ['RUKHSATI', 'Aansuon wale pal'],
   ['JODI', 'Rab ne banayi'],
   ['DAAWAT', 'Biryani wali'],
   ['SALAMI', 'Lifafe mein aati hai'],
@@ -191,7 +191,7 @@ export default function LetterScramble() {
         </p>
         <div className="mt-1 flex justify-center gap-2">
           <button type="button" onClick={hint} className="rounded-full border border-ig-border px-3 py-1.5 text-xs">
-            💡 Ek akshar batao
+            💡 Ek akshar bataiye
           </button>
           <button type="button" onClick={skip} className="rounded-full border border-ig-border px-3 py-1.5 text-xs">
             ⏭️ Chhodo
@@ -201,7 +201,7 @@ export default function LetterScramble() {
         {done && (
           <GameOverlay
             emoji={score === round.length ? '💌' : '✍️'}
-            title={score === round.length ? 'Saare lafz sahi! Khat poora 💌' : score >= 4 ? 'Wah, kya lafz jodte ho! ✍️' : 'Akshar thode ulat gaye 😅'}
+            title={score === round.length ? 'Saare lafz sahi! Khat poora 💌' : score >= 4 ? 'Wah, kya lafz jodte hain! ✍️' : 'Akshar thode ulat gaye 😅'}
             lines={[`${score}/${round.length} sahi`, hints ? `${hints} ishaare liye` : 'Bina ishaare ke! 🌟', newBest ? '✨ Naya best!' : '']}
             button="Agle lafz"
             onButton={again}

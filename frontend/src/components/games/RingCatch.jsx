@@ -160,13 +160,13 @@ export default function RingCatch() {
         {phase === 'ready' && (
           <GameOverlay
             emoji="💍"
-            title="Uzma ka ring pakdo 💍"
+            title="Uzma ka ring pakdiye 💍"
             lines={[
-              'Ring girne se pehle tap karo',
+              'Ring girne se pehle tap kariye',
               'Har level tez hota jayega',
               'Grey nakli ring −1 · 💣 bomb −3',
             ]}
-            button="Shuru karo"
+            button="Shuru kariye"
             onButton={start}
             color="#f7971e"
           />
@@ -176,7 +176,7 @@ export default function RingCatch() {
             emoji={score >= 15 ? '🏆' : '💍'}
             title={endLine}
             lines={[`Score: ${score} · ${rings} rings pakdi`, newBest ? '✨ Naya best score!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={score >= 15}
             color="#f7971e"

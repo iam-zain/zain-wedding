@@ -115,7 +115,7 @@ export default function HoldHeart() {
         ]}
       />
       <p key={flash?.k} className="mb-2 h-5 text-center text-sm font-semibold" style={{ color: flash ? (flash.ok ? '#25d366' : '#ed4956') : undefined, animation: flash ? 'zu-pop 0.2s' : undefined }}>
-        {flash ? flash.text : 'Ungli ghumao, tokri se dil pakdo 🧺'}
+        {flash ? flash.text : 'Ungli ghumaiye, tokri se dil pakdiye 🧺'}
       </p>
       <div
         ref={arena}
@@ -148,8 +148,8 @@ export default function HoldHeart() {
           <GameOverlay
             emoji="🫶"
             title="Dil Sambhalo"
-            lines={['Ungli idhar-udhar karke tokri chalao', '❤️ +1 · 💖 +2 · 💎 +5 bonus', '💔 pakda toh ek jaan gayi — speed badhti jayegi!']}
-            button="Shuru karo"
+            lines={['Ungli idhar-udhar karke tokri chalaiye', '❤️ +1 · 💖 +2 · 💎 +5 bonus', '💔 pakda toh ek jaan gayi — speed badhti jayegi!']}
+            button="Shuru kariye"
             onButton={start}
             color="#a855f7"
           />
@@ -159,7 +159,7 @@ export default function HoldHeart() {
             emoji={score >= 40 ? '🏆' : '🫶'}
             title={score >= 40 ? 'Dil sambhalna koi aapse seekhe! 🫶' : score >= 20 ? 'Achha pakda! 👏' : 'Dil phisal gaye 😅'}
             lines={[`Score: ${score}`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara khelo"
+            button="Dobara kheliye"
             onButton={start}
             win={score >= 40}
             color="#a855f7"

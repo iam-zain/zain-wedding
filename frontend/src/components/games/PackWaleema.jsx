@@ -107,7 +107,7 @@ export default function PackWaleema() {
         ]}
       />
       <p className="mb-2 h-5 text-center text-sm font-semibold" style={{ color: msg ? (msg.ok ? '#25d366' : '#ed4956') : undefined }}>
-        {msg ? msg.text : 'Sirf Waleema ka saamaan tap karke suitcase mein daalo 🧳'}
+        {msg ? msg.text : 'Sirf Waleema ka saamaan tap karke suitcase mein daaliye 🧳'}
       </p>
       <div
         data-testid="pack-arena"
@@ -143,7 +143,7 @@ export default function PackWaleema() {
           <GameOverlay
             emoji="🧳"
             title="Pack for the Waleema"
-            lines={['Belt pe saamaan aa raha hai — Waleema wala tap karo', '👔 👞 💍 📱 💄 = +1', '🍎 🧸 🐟 🍳 jaisi faltu cheezein = −1']}
+            lines={['Belt pe saamaan aa raha hai — Waleema wale tap kariye', '👔 👞 💍 📱 💄 = +1', '🍎 🧸 🐟 🍳 jaisi faltu cheezein = −1']}
             button="Packing shuru!"
             onButton={start}
             color="#0095f6"
@@ -154,7 +154,7 @@ export default function PackWaleema() {
             emoji={score >= 15 ? '🏆' : '🧳'}
             title={score >= 15 ? 'Perfect packing! Waleema ready 🧳✨' : score >= 8 ? 'Achhi packing! 👍' : 'Kuch toh bhool gaye 😅'}
             lines={[`${score} points`, newBest ? '✨ Naya best!' : '']}
-            button="Dobara pack karo"
+            button="Dobara pack kariye"
             onButton={start}
             win={score >= 15}
             color="#0095f6"
