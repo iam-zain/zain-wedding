@@ -11,7 +11,15 @@ export default function StoriesRow({ stories }) {
 
   return (
     <>
-      <div data-testid="stories-row" className="no-scrollbar flex gap-4 overflow-x-auto px-4 py-4">
+      {/* Claims its own horizontal drags — data-swipe-exempt="true" — so
+          scrolling the avatars never gets mistaken for a swipe to the next
+          tab. Unlike a carousel, there's no "let it fall through at the
+          end" case here: this is a plain scrollable list, not paged. */}
+      <div
+        data-testid="stories-row"
+        data-swipe-exempt="true"
+        className="no-scrollbar flex gap-4 overflow-x-auto px-4 py-4"
+      >
         {stories.map((story, i) => {
           const viewed = isViewed(story.id)
           return (
