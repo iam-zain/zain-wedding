@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Client-side access control (deterrent only — no server enforcement).
+// Client-side access control (deterrent only, no server enforcement).
 // Unlock link format:  ?key=BASE64(tierKey:secret)   e.g. tier3:secret3
 // Valid keys add the tier number to localStorage.unlockedTiers (cumulative).
 // ─────────────────────────────────────────────────────────────────────────────

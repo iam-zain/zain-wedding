@@ -135,7 +135,7 @@ function BadgeCard({ badge, onOpen }) {
               />
             </div>
             <p className="mt-1 text-[10px] tabular-nums text-ig-faint">
-              {current} / {goal || '—'}{goal && unit ? ` ${unit}` : ''}
+              {current} / {goal || '-'}{goal && unit ? ` ${unit}` : ''}
             </p>
           </>
         )}
@@ -221,7 +221,7 @@ export default function MorePage() {
                 {rank.title}
               </span>
               <span className="mt-0.5 block text-[11px] text-ig-faint">
-                Best {quizBest}/{QUIZ_PER_ROUND} · dobara khel ke badlo
+                Best {quizBest}/{QUIZ_PER_ROUND} · dobara khel ke badaliye
               </span>
             </span>
             <Link
@@ -236,7 +236,7 @@ export default function MorePage() {
           </div>
         )}
 
-        {/* Explore meter — a summary of the badges directly below it, so it
+        {/* Explore meter, a summary of the badges directly below it, so it
             belongs here rather than competing for space on the profile. */}
         <div data-testid="explore-meter" className="mb-5">
           <div className="flex items-baseline justify-between">
@@ -255,7 +255,7 @@ export default function MorePage() {
           <p className="mt-1.5 text-[11px] text-ig-faint">
             {explorePct === 100
               ? EXPLORE_DONE_MESSAGE
-              : `${explored.count}/${explored.total} pages dekh liye — baaki bhi ghoom aao`}
+              : `${explored.count}/${explored.total} pages dekh liye, baaki bhi ghoom aao`}
           </p>
         </div>
 
@@ -281,7 +281,7 @@ export default function MorePage() {
           </div>
           <p className="mt-1.5 text-[11px] text-ig-faint">
             {earned === badges.length
-              ? '🏆 Saare achievements mil gaye — aap champion ho!'
+              ? '🏆 Saare achievements mil gaye, aap champion ho!'
               : 'Tap karke dekhiye kaise milega 🤍'}
           </p>
         </div>

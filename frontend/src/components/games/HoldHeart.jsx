@@ -111,7 +111,7 @@ export default function HoldHeart() {
       <GameStats
         items={[
           ['Score', score, '#ed4956'],
-          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '—'],
+          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '-'],
         ]}
       />
       <p key={flash?.k} className="mb-2 h-5 text-center text-sm font-semibold" style={{ color: flash ? (flash.ok ? '#25d366' : '#ed4956') : undefined, animation: flash ? 'zu-pop 0.2s' : undefined }}>
@@ -148,7 +148,7 @@ export default function HoldHeart() {
           <GameOverlay
             emoji="🫶"
             title="Dil Sambhalo"
-            lines={['Ungli idhar-udhar karke tokri chalaiye', '❤️ +1 · 💖 +2 · 💎 +5 bonus', '💔 pakda toh ek jaan gayi — speed badhti jayegi!']}
+            lines={['Ungli idhar-udhar karke tokri chalaiye', '❤️ +1 · 💖 +2 · 💎 +5 bonus', '💔 pakda toh ek jaan gayi, speed badhti jayegi!']}
             button="Shuru kariye"
             onButton={start}
             color="#a855f7"

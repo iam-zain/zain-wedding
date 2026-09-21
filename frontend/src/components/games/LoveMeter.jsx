@@ -3,7 +3,7 @@ import { recordBest, recordPlay, useTimeouts } from '../../lib/games'
 import { haptic } from '../../lib/haptics'
 import Confetti from '../Confetti'
 
-// Purely for fun — the result is just the two sliders averaged.
+// Purely for fun, the result is just the two sliders averaged.
 const BANDS = [
   [25, 'Abhi baat shuru hui hai 😅', '#94a3b8'],
   [50, 'Kuch toh hai 👀', '#f7971e'],
@@ -109,7 +109,7 @@ export default function LoveMeter() {
           />
         </div>
         <p className="mt-3 text-3xl font-bold tabular-nums" data-testid="love-result">
-          {shown == null ? '— %' : perfect ? '❤️ 100% Muhabbat' : `${value}%`}
+          {shown == null ? ', %' : perfect ? '❤️ 100% Muhabbat' : `${value}%`}
         </p>
         {perfect && (
           <>
@@ -134,7 +134,7 @@ export default function LoveMeter() {
           {final == null ? 'Pyaar naapiye 💕' : 'Phir se naapiye 🔁'}
         </button>
       </div>
-      <p className="mt-2 text-center text-[11px] text-ig-faint">Sirf mazaak ke liye 😄 — asli pyaar naapa nahi ja sakta.</p>
+      <p className="mt-2 text-center text-[11px] text-ig-faint">Sirf mazaak ke liye 😄, asli pyaar naapa nahi ja sakta.</p>
     </div>
   )
 }

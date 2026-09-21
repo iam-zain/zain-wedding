@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Confetti from './Confetti'
 
-/** Shared reveal modal for easter eggs — confetti burst + message, tap-to-dismiss after a short settle period. */
+/** Shared reveal modal for easter eggs, confetti burst + message, tap-to-dismiss after a short settle period. */
 export default function EasterEggModal({ message, icon = '🤍', caption, settleMs = 1200, onClose, testId = 'easter-egg-modal' }) {
   const [visible, setVisible] = useState(false)
   const [closeable, setCloseable] = useState(false)

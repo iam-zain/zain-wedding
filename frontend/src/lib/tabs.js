@@ -25,7 +25,7 @@ export const MORE_LINKS = [
     to: '/rsvp',
     icon: 'rsvp',
     label: 'Confirmation',
-    hint: 'Aana confirm kariye — kab aur kahan',
+    hint: 'Aana confirm kariye, kab aur kahan',
     // `from`/`to` drive the tile's gradient. Kept here with the entry so a new
     // destination arrives with its own colour rather than inheriting a default.
     from: '#25d366',
@@ -36,7 +36,7 @@ export const MORE_LINKS = [
     to: '/games',
     icon: 'games',
     label: 'Games',
-    hint: 'Dil pakdiye, ring pakdiye — chhote khel 🎮',
+    hint: 'Dil pakdiye, ring pakdiye, chhote chhote khel 🎮',
     from: '#ff6b81',
     via: '#a855f7',
   },

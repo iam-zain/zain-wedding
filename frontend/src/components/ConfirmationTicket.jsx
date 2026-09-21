@@ -1,6 +1,6 @@
 import { siteConfig, RSVP_DIAL_CODE, RSVP_LOCATIONS, RSVP_RELATIONS } from '../config'
 
-// Ticket colours — warm paper against the app's dark ground, so it reads as a
+// Ticket colours, warm paper against the app's dark ground, so it reads as a
 // physical object rather than another card in the feed.
 const INK = '#2b2118'
 const PAPER = '#f6ecd9'
@@ -8,7 +8,7 @@ const PAPER_EDGE = '#e6d7bb'
 const ACCENT = '#a8323b'
 
 function locationName(id) {
-  return RSVP_LOCATIONS.find((l) => l.id === id)?.name || '—'
+  return RSVP_LOCATIONS.find((l) => l.id === id)?.name || '-'
 }
 
 function relation(id) {
@@ -16,7 +16,7 @@ function relation(id) {
 }
 
 /**
- * A stable, ticket-looking reference from the device id — same guest, same
+ * A stable, ticket-looking reference from the device id, same guest, same
  * number, every visit. Not an identifier anyone checks; it's there because a
  * ticket without a number doesn't look like a ticket.
  */
@@ -30,7 +30,7 @@ function ticketNo(userId) {
 function parts(stamp) {
   const ymd = String(stamp || '').slice(0, 10)
   const hm = String(stamp || '').slice(11, 16)
-  if (!ymd) return { date: '—', time: '', weekday: '' }
+  if (!ymd) return { date: '-', time: '', weekday: '' }
   const d = new Date(`${ymd}T00:00:00Z`)
   const date = d.toLocaleDateString('en-IN', {
     day: '2-digit',
@@ -71,7 +71,7 @@ function Leg({ caption, place, stamp, testId }) {
 /**
  * The confirmation, shown as a keepsake pass rather than a summary card.
  *
- * Deliberately generic — no airline, railway or airport language anywhere. It
+ * Deliberately generic, no airline, railway or airport language anywhere. It
  * borrows only the *shape* of a ticket (stub, perforation, reference number),
  * because a guest is not actually travelling on it and a fake boarding pass
  * that names a carrier invites someone to read it as real.
@@ -138,7 +138,7 @@ export default function ConfirmationTicket({ entry, guests }) {
         </div>
       </div>
 
-      {/* Perforation — notches on both sides of a dashed rule */}
+      {/* Perforation, notches on both sides of a dashed rule */}
       <div className="relative" style={{ backgroundColor: PAPER }}>
         <div
           aria-hidden="true"
@@ -179,7 +179,7 @@ export default function ConfirmationTicket({ entry, guests }) {
             {ticketNo(entry.userId)}
           </p>
           <p className="mt-1 text-[10px] leading-snug" style={{ color: `${INK}aa` }}>
-            Shukriya! Aapki jagah pakki hai — bas aa jaiye 🤍
+            Shukriya! Aapki jagah pakki hai, bas aa jaiye 🤍
           </p>
         </div>
       </div>

@@ -99,7 +99,7 @@ export default function TapCorrect() {
     return () => clearTimeout(t)
   }, [left, phase]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Bounce loop — writes transforms straight to the DOM, no React renders.
+  // Bounce loop, writes transforms straight to the DOM, no React renders.
   useEffect(() => {
     if (phase !== 'play') return undefined
     let raf
@@ -154,7 +154,7 @@ export default function TapCorrect() {
         items={[
           ['⏱', `${Math.max(0, left)}s`, left <= 5 ? '#ed4956' : undefined],
           ['Sahi', score, '#25d366'],
-          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '—'],
+          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '-'],
         ]}
       />
       <p key={`${target}-${score}`} className="mb-2 text-center text-base font-semibold" style={{ animation: 'zu-pop 0.2s ease-out' }}>
@@ -192,7 +192,7 @@ export default function TapCorrect() {
           <GameOverlay
             emoji="🎯"
             title="Baraat Reflex"
-            lines={['Cheezein uchhal rahi hain — jo bola jaye, wahi dabaiye', `${ROUND_S} second · galat tap = ek jaan gayi`, 'Har sahi tap ke baad speed badhegi ⚡']}
+            lines={['Cheezein uchhal rahi hain, jo bola jaye, wahi dabaiye', `${ROUND_S} second · galat tap = ek jaan gayi`, 'Har sahi tap ke baad speed badhegi ⚡']}
             button="Shuru kariye"
             onButton={start}
             color="#0095f6"

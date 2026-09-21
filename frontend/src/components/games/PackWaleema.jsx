@@ -143,7 +143,7 @@ export default function PackWaleema() {
           <GameOverlay
             emoji="🧳"
             title="Pack for the Waleema"
-            lines={['Belt pe saamaan aa raha hai — Waleema wale tap kariye', '👔 👞 💍 📱 💄 = +1', '🍎 🧸 🐟 🍳 jaisi faltu cheezein = −1']}
+            lines={['Belt pe saamaan aa raha hai, Waleema wale tap kariye', '👔 👞 💍 📱 💄 = +1', '🍎 🧸 🐟 🍳 jaisi faltu cheezein = −1']}
             button="Packing shuru!"
             onButton={start}
             color="#0095f6"

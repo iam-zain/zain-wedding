@@ -75,7 +75,7 @@ export default function NikahPuzzle() {
     return c < 0 || rr < 0 || c >= size || rr >= size ? -1 : rr * size + c
   }
 
-  // Drag a piece onto another to swap them — or tap one, then the other.
+  // Drag a piece onto another to swap them, or tap one, then the other.
   function onDown(e) {
     if (done) return
     const s = slotAt(e)
@@ -136,7 +136,7 @@ export default function NikahPuzzle() {
           ))}
         </div>
       </div>
-      <p className="mb-2 text-center text-xs text-ig-muted">Tukde kheench ke badlo — ya ek tap, phir doosra tap</p>
+      <p className="mb-2 text-center text-xs text-ig-muted">Tukde kheench ke badaliye, ya ek tap, phir doosra tap</p>
 
       <div className="relative">
         {done && <Confetti count={60} />}

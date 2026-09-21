@@ -91,7 +91,7 @@ export default function CrjExpress() {
       <GameStats
         items={[
           ['Station', round, '#f7971e'],
-          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '—'],
+          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '-'],
         ]}
       />
       <p className="mb-2 h-6 text-center text-sm font-semibold" style={{ color: msg ? (msg.ok ? '#25d366' : '#ed4956') : undefined }}>
@@ -171,7 +171,7 @@ export default function CrjExpress() {
           <GameOverlay
             emoji="🚂"
             title="CRJ Wedding Express"
-            lines={['Chittaranjan se chali baraat wali train!', 'Switch badlo (⬅️ ⬆️ ➡️) ya platform dabaiye', 'Sirf "ZainUz Wedding Station 💕" sahi hai — nakli naamon se bachiye!']}
+            lines={['Chittaranjan se chali baraat wali train!', 'Switch badaliye (⬅️ ⬆️ ➡️) ya platform dabaiye', 'Sirf "ZainUz Wedding Station 💕" sahi hai, nakli naamon se bachiye!']}
             button="Train chalaiye 🚂"
             onButton={start}
             color="#f7971e"

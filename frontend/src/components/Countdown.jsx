@@ -10,12 +10,12 @@ const CLICK_WINDOW_MS = 3000
 const CLICKS_REQUIRED = 5
 const REVEAL_MS = 5000 // Nikah/Waleema inline reveal duration
 
-// Hourglass replacement — a circular progress ring (hollow center, like the
+// Hourglass replacement, a circular progress ring (hollow center, like the
 // story-ring avatars). Driven frame-by-frame in JS (not CSS dasharray
 // tricks, which weren't rendering reliably) so the geometry is exact and
 // verifiable: the gradient grows clockwise from the top anchor to fill the
 // band (10s), holds full (2s), then the anchor end sweeps forward to erase
-// what it just drew — same clockwise direction, same starting point — until
+// what it just drew, same clockwise direction, same starting point, until
 // empty (6s), then holds empty (2s). Repeat.
 const RING_ICON_SIZE = 26
 const RING_ICON_R = 10
@@ -79,9 +79,9 @@ function RingFillIcon() {
       viewBox={`0 0 ${RING_ICON_SIZE} ${RING_ICON_SIZE}`}
       aria-hidden="true"
     >
-      {/* always-visible faint band, like an inactive tab — this is the "ring" at rest */}
+      {/* always-visible faint band, like an inactive tab, this is the "ring" at rest */}
       <circle cx={c} cy={c} r={RING_ICON_R} fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="2.5" />
-      {/* gradient sweep — full circle, a partial arc, or nothing, depending on the phase */}
+      {/* gradient sweep, full circle, a partial arc, or nothing, depending on the phase */}
       {sweep >= 359.9 ? (
         <circle className="ring-progress-arc" cx={c} cy={c} r={RING_ICON_R} fill="none" stroke={`url(#${gradId})`} strokeWidth="2.5" />
       ) : sweep > 0.5 ? (
@@ -173,7 +173,7 @@ export default function Countdown() {
     clearTimeout(pressTimerRef.current)
     pressTimerRef.current = setTimeout(() => setPressed(false), 150)
 
-    // Treasure hunt — skip if already seen
+    // Treasure hunt, skip if already seen
     if (alreadySeen) return
 
     const t = Date.now()
@@ -271,7 +271,7 @@ export default function Countdown() {
                 className="relative h-[104px] transition-transform duration-500"
                 style={{ transformStyle: 'preserve-3d', transform: nikahReveal ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
               >
-                {/* front — original date info */}
+                {/* front, original date info */}
                 <div
                   className="absolute inset-0 flex flex-col items-center justify-center"
                   style={{ backfaceVisibility: 'hidden' }}
@@ -281,7 +281,7 @@ export default function Countdown() {
                   <p className="mt-2 text-sm font-medium text-ig-faint">Wednesday</p>
                   <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
                 </div>
-                {/* back — gradient reveal message */}
+                {/* back, gradient reveal message */}
                 <div
                   className="absolute inset-0 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#ed4956] to-[#feda75] px-2"
                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -302,7 +302,7 @@ export default function Countdown() {
                 className="relative h-[104px] transition-transform duration-500"
                 style={{ transformStyle: 'preserve-3d', transform: waleemaReveal ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
               >
-                {/* front — original date info */}
+                {/* front, original date info */}
                 <div
                   className="absolute inset-0 flex flex-col items-center justify-center"
                   style={{ backfaceVisibility: 'hidden' }}
@@ -312,7 +312,7 @@ export default function Countdown() {
                   <p className="mt-2 text-sm font-medium text-ig-faint">Friday</p>
                   <p className="mt-1 text-sm font-medium text-white/80">7:00 PM</p>
                 </div>
-                {/* back — gradient reveal message */}
+                {/* back, gradient reveal message */}
                 <div
                   className="absolute inset-0 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#ed4956] to-[#feda75] px-2"
                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}

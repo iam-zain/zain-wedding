@@ -6,13 +6,13 @@ import { GameOverlay, GameStats } from './GameShell'
 const COLS = 7
 const ROWS = 9
 const ROUND_S = 5
-// Misses in a row before the game pauses — so a phone left on this page
+// Misses in a row before the game pauses, so a phone left on this page
 // doesn't keep playing (and counting rounds) by itself.
 const MAX_STREAK_MISSES = 3
 // The heart to find changes colour each board. All pre-2019 emoji, so old
 // Android phones draw them instead of empty boxes.
 const HEARTS = ['❤️', '🧡', '💛', '💚', '💙', '💜']
-// Busy wedding clutter. No hearts (or heart-printed things like 💌) in here —
+// Busy wedding clutter. No hearts (or heart-printed things like 💌) in here, 
 // the target has to be the only heart on the board.
 const DECOYS = ['🌸', '🌹', '💐', '🌙', '⭐', '🕌', '🪔', '🎁', '🌼', '🍬', '🎀', '🌷', '✨', '🍭', '🎊', '🪷', '🍓', '👰', '🤵']
 
@@ -157,7 +157,7 @@ export default function HiddenHeart() {
           <GameOverlay
             emoji="👀"
             title="Dil kahan chhupa hai? 👀"
-            lines={['Har board mein ek dil chhupa hai', `Sirf ${ROUND_S} second — phir agla board!`, 'Har baar dil ka rang badlega 🌈']}
+            lines={['Har board mein ek dil chhupa hai', `Sirf ${ROUND_S} second, phir agla board!`, 'Har baar dil ka rang badlega 🌈']}
             button="Shuru kariye"
             onButton={start}
             color="#a855f7"

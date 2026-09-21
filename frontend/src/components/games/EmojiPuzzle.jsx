@@ -96,7 +96,7 @@ export default function EmojiPuzzle() {
         </span>
       </div>
       <div className="relative rounded-2xl border border-ig-border p-5" style={{ background: 'linear-gradient(160deg, rgba(247,151,30,0.14), rgba(244,114,182,0.1))' }}>
-        <p className="text-center text-xs uppercase tracking-widest text-ig-muted">Emoji padho, jawab do 🥰</p>
+        <p className="text-center text-xs uppercase tracking-widest text-ig-muted">Emoji padhiye, jawab dijiye 🥰</p>
         <p key={p.id} className="my-5 text-center text-4xl leading-snug" style={{ animation: 'zu-pop 0.3s ease-out' }}>
           {p.q}
         </p>

@@ -98,7 +98,7 @@ export default function RingBox() {
         items={[
           ['Round', round + 1, '#f7971e'],
           ['Dabbe', count],
-          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '—'],
+          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '-'],
         ]}
       />
       <p className="mb-2 h-6 text-center text-base font-semibold">{phase === 'ready' || phase === 'over' ? 'Ring in the Box 💍' : msg}</p>
@@ -147,7 +147,7 @@ export default function RingBox() {
           <GameOverlay
             emoji="💍"
             title="Ring kahan hai? 👀"
-            lines={['Ek dabbe mein ring hai — dhyaan se dekhiye', 'Dabbe ghoomenge, phir sahi wale chuniye', 'Har round zyada dabbe, tez shuffle!']}
+            lines={['Ek dabbe mein ring hai, dhyaan se dekhiye', 'Dabbe ghoomenge, phir sahi wale chuniye', 'Har round zyada dabbe, tez shuffle!']}
             button="Shuru kariye"
             onButton={start}
             color="#f7971e"

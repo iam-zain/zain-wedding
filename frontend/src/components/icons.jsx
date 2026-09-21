@@ -145,7 +145,7 @@ export const RsvpIcon = ({ active = false, ...p }) => (
   </Svg>
 )
 
-/** Bottom-nav icon for the options hub — a 2x2 grid of entries. */
+/** Bottom-nav icon for the options hub, a 2x2 grid of entries. */
 export const GridIcon = ({ active = false, ...p }) => (
   <Svg fill={active ? 'currentColor' : 'none'} stroke={active ? 'none' : 'currentColor'} {...p}>
     {active ? (
@@ -166,7 +166,7 @@ export const GridIcon = ({ active = false, ...p }) => (
   </Svg>
 )
 
-/** Quiz — a question mark in a rounded square. */
+/** Quiz, a question mark in a rounded square. */
 export const QuizIcon = (p) => (
   <Svg {...p}>
     <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
@@ -175,7 +175,7 @@ export const QuizIcon = (p) => (
   </Svg>
 )
 
-/** Wishes — a speech bubble with a heart inside. */
+/** Wishes, a speech bubble with a heart inside. */
 export const WishesIcon = (p) => (
   <Svg {...p}>
     <path d="M20.5 11.6c0 3.9-3.8 7-8.5 7-1 0-2-.1-2.9-.4L4 20l1.4-3.4A6.6 6.6 0 0 1 3.5 11.6c0-3.9 3.8-7 8.5-7s8.5 3.1 8.5 7z" />
@@ -183,7 +183,7 @@ export const WishesIcon = (p) => (
   </Svg>
 )
 
-/** Games — a gamepad. */
+/** Games, a gamepad. */
 export const GamesIcon = (p) => (
   <Svg {...p}>
     <path d="M7.5 7.5h9a4.5 4.5 0 0 1 4.4 5.4l-.7 3.4a2.4 2.4 0 0 1-4.2 1L14.6 16H9.4L8 17.3a2.4 2.4 0 0 1-4.2-1l-.7-3.4A4.5 4.5 0 0 1 7.5 7.5z" />

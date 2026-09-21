@@ -12,7 +12,7 @@ const STEP_MS = 230 // pop → fall → next cascade
 
 const RUN_POINTS = (len) => (len >= 6 ? 100 : len === 5 ? 50 : len === 4 ? 25 : 10)
 const COMBO_LINES = ['🔥 Combo!', '🔥🔥 Double combo!', '🔥🔥🔥 Dil garden garden ho gaya!', '💥 Unstoppable!']
-const END_WIN = ['Wedding Crush champion! 💍', 'Teen milaiye, dil banaiye — aur banaye bhi! 💕', 'Dilon ki baarish! 💖', 'Match master! 🏆']
+const END_WIN = ['Wedding Crush champion! 💍', 'Teen milaiye, dil banaiye, aur banaye bhi! 💕', 'Dilon ki baarish! 💖', 'Match master! 🏆']
 const END_LOSE = ['Achha khela! 💕', 'Agli baar aur dil banenge 💪', 'Moves khatam, pyaar nahi 🤍']
 
 let nextId = 1
@@ -159,7 +159,7 @@ export default function MatchThree() {
       return
     }
     if (!hasMove(b)) {
-      flashBanner('🔀 Koi chaal nahi — naya board!')
+      flashBanner('🔀 Koi chaal nahi, naya board!')
       later(() => setBoard(newBoard()), 500)
     }
   }
@@ -206,7 +206,7 @@ export default function MatchThree() {
     clearAndFall(b, cleared, combo, goldAt)
   }
 
-  /** 💥 LOVE BLAST — the golden heart clears its 3×3 neighbourhood. */
+  /** 💥 LOVE BLAST, the golden heart clears its 3×3 neighbourhood. */
   function blast(b, at) {
     const [r, c] = rc(at)
     const cleared = new Set()
@@ -324,7 +324,7 @@ export default function MatchThree() {
             title="Wedding Crush 💍"
             lines={[
               '“Teen milaiye, dil banaiye!”',
-              'Ek tile dabaiye, phir bagal wali — dono jagah badal lenge',
+              'Ek tile dabaiye, phir bagal wali, dono jagah badal lenge',
               `3 → 10 · 4 → 25 · 5 → 50 · 6+ → 100 · ${MOVES} chaal`,
               '4 ek line mein ya 2×2 chaukor = 💖 Golden Heart',
               'Golden Heart chalaiye → 💥 LOVE BLAST!',

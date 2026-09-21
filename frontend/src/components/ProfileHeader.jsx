@@ -49,7 +49,7 @@ export default function ProfileHeader() {
   const [egg, setEgg] = useState(null)
   const statTapTimesRef = useRef({})
   const avatarPressTimerRef = useRef(null)
-  // A long-press that fires the egg still emits a click on release — without
+  // A long-press that fires the egg still emits a click on release, without
   // this, the same gesture would toggle the music as a side effect.
   const avatarLongPressFiredRef = useRef(false)
   const unlockedTiers = useUnlockedTiers()
@@ -66,7 +66,7 @@ export default function ProfileHeader() {
       const parsed = new URL(keyParam)
       keyParam = parsed.searchParams.get(ACCESS_KEY_PARAM) || keyParam
     } catch {
-      // not a URL — treat the input as the raw key value
+      // not a URL, treat the input as the raw key value
     }
     const count = applyAccessKeyParam(keyParam)
     if (count > 0) {
@@ -80,7 +80,7 @@ export default function ProfileHeader() {
 
   function handleStatTap(label) {
     // Two taps is a low bar, so ignore further taps while a reveal is already
-    // open — otherwise a guest drumming on the number stacks modals.
+    // open, otherwise a guest drumming on the number stacks modals.
     if (egg) return
     const now = Date.now()
     const recent = (statTapTimesRef.current[label] || []).filter((ts) => now - ts < STAT_TAP_WINDOW_MS)
@@ -125,7 +125,7 @@ export default function ProfileHeader() {
     const result = await shareUrl({
       url: SITE_URL,
       title: profile.displayName,
-      text: `${profile.displayName} — join the celebration! 🎉`,
+      text: `${profile.displayName}, join the celebration! 🎉`,
     })
     if (result === 'copied') toast('🔗 Link copy ho gaya!')
     else if (result === 'failed') toast('Share nahi ho paaya 😅')

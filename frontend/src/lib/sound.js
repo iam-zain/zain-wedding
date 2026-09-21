@@ -1,4 +1,4 @@
-// Tiny synthesized sound effects — no audio assets needed, zero bundle cost.
+// Tiny synthesized sound effects, no audio assets needed, zero bundle cost.
 let ctx
 
 /** Plays a short happy 3-note chime. Silently no-ops if Web Audio is unavailable. */
@@ -20,11 +20,11 @@ export function playChime() {
       osc.stop(start + 0.3)
     })
   } catch {
-    // Web Audio unsupported — visual-only egg still works
+    // Web Audio unsupported, visual-only egg still works
   }
 }
 
-/** Plays a short descending "uh-oh" glitch tone — used by the chaos easter egg. */
+/** Plays a short descending "uh-oh" glitch tone, used by the chaos easter egg. */
 export function playGlitch() {
   try {
     ctx = ctx || new (window.AudioContext || window.webkitAudioContext)()
@@ -40,6 +40,6 @@ export function playGlitch() {
     osc.start(start)
     osc.stop(start + 0.6)
   } catch {
-    // Web Audio unsupported — visual-only egg still works
+    // Web Audio unsupported, visual-only egg still works
   }
 }

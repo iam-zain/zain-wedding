@@ -40,7 +40,7 @@ function computerMove(b, me, them) {
 const WIN_LINES = {
   zain: ['Zain jeet gaya! 🤵🏆', 'Dulhe ki jeet! 🤵', 'Zain ne baazi maar li 💪'],
   uzma: ['Uzma jeet gayi! 👰🏆', 'Dulhan ki jeet! 👰', 'Uzma ne baazi maar li 💅'],
-  draw: ['Barabar! Jodi perfect hai 💕', 'Draw — dono ek doosre ke liye bane hain 💞', 'Koi nahi haara — pyaar jeeta 🤍'],
+  draw: ['Barabar! Jodi perfect hai 💕', 'Draw, dono ek doosre ke liye bane hain 💞', 'Koi nahi haara, pyaar jeeta 🤍'],
 }
 
 export default function ChooseYours() {
@@ -250,7 +250,7 @@ export default function ChooseYours() {
                 }}
                 className="rounded-full border border-ig-border px-5 py-2 text-sm font-semibold active:opacity-80"
               >
-                Team badlo
+                Team badaliye
               </button>
             )}
           </div>

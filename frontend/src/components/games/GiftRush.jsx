@@ -151,7 +151,7 @@ export default function GiftRush() {
           <GameOverlay
             emoji="🎁"
             title="Tohfa Rush"
-            lines={['Shaadi ke tohfe aa rahe hain — chaaron taraf se!', 'Har gift sahi dabbe mein: 🔌 Electronics · 💎 Jewellery · 💕 Love · 🕌 Deen/Shaadi', 'Galat dabba −1 · 5 lagataar sahi = double points 🔥']}
+            lines={['Shaadi ke tohfe aa rahe hain, chaaron taraf se!', 'Har gift sahi dabbe mein: 🔌 Electronics · 💎 Jewellery · 💕 Love · 🕌 Deen/Shaadi', 'Galat dabba −1 · 5 lagataar sahi = double points 🔥']}
             button="Tohfe lao 🎁"
             onButton={start}
             color="#f7971e"

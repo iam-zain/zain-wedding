@@ -9,7 +9,7 @@ const TILT_THRESHOLD = 42
 const HOLD_MS = 700
 
 /**
- * Global — mount once in Layout. Fires once per session when the phone is
+ * Global, mount once in Layout. Fires once per session when the phone is
  * deliberately tilted onto its side.
  *
  * Reads `gamma` (left/right roll) rather than beta, because beta changes just
@@ -43,7 +43,7 @@ export default function TiltEasterEgg() {
       }
     }
 
-    // Listener only — permission is requested elsewhere (useMotionPermission),
+    // Listener only, permission is requested elsewhere (useMotionPermission),
     // so this never puts a second prompt in front of a guest.
     window.addEventListener('deviceorientation', onTilt)
     return () => window.removeEventListener('deviceorientation', onTilt)

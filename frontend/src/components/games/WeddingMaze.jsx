@@ -180,7 +180,7 @@ export default function WeddingMaze() {
     if (phase !== 'play') return
     const c = cellAt(e)
     if (c < 0) return
-    // Start from anywhere on the line (or the head's neighbour) — like lifting a pencil.
+    // Start from anywhere on the line (or the head's neighbour), like lifting a pencil.
     if (pathRef.current.includes(c)) setP(pathRef.current.slice(0, pathRef.current.indexOf(c) + 1))
     drawing.current = true
     try {
@@ -229,7 +229,7 @@ export default function WeddingMaze() {
           style={{
             touchAction: 'none',
             gridTemplateColumns: `repeat(${maze.cols}, minmax(0, 1fr))`,
-            // Red-carpet floor with a golden border — the "road" to the stage.
+            // Red-carpet floor with a golden border, the "road" to the stage.
             background: 'radial-gradient(circle at 50% 40%, rgba(190,30,60,0.35), rgba(80,10,30,0.55))',
             border: '3px solid #d4a64a',
           }}
@@ -271,7 +271,7 @@ export default function WeddingMaze() {
             <GameOverlay
               emoji="👰💕🤵"
               title="Wedding Maze"
-              lines={['Ungli se rasta banaiye — dulhan ko dulhe tak (ya ulta!)', 'Galat raasta? Wapas line pe ungli le jaiye, mit jayega', 'Har level bada maze, time chal raha hai ⏱']}
+              lines={['Ungli se rasta banaiye, dulhan ko dulhe tak (ya ulta!)', 'Galat raasta? Wapas line pe ungli le jaiye, mit jayega', 'Har level bada maze, time chal raha hai ⏱']}
               button="Shuru kariye"
               onButton={start}
               color="#d4a64a"
@@ -290,7 +290,7 @@ export default function WeddingMaze() {
           )}
         </div>
       </div>
-      <p className="mt-2 text-center text-[11px] text-ig-faint">Ungli uthaye bina chalaiye — ya ek-ek khaana tap kariye</p>
+      <p className="mt-2 text-center text-[11px] text-ig-faint">Ungli uthaye bina chalaiye, ya ek-ek khaana tap kariye</p>
     </div>
   )
 }

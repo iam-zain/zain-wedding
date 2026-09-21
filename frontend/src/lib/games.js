@@ -16,9 +16,9 @@ const EMPTY = {
   rings: 0,
   hidden: 0,
   memoryPerfect: 0,
-  trueHeart: 0, // Sachha Dil — rounds cleared, lifetime
-  quick: 0, // Baraat Reflex — correct taps, lifetime
-  puzzles: [], // Emoji Shaadi Puzzle — ids ever solved
+  trueHeart: 0, // Sachha Dil, rounds cleared, lifetime
+  quick: 0, // Baraat Reflex, correct taps, lifetime
+  puzzles: [], // Emoji Shaadi Puzzle, ids ever solved
   played: 0,
   tried: [],
   best: {},
@@ -39,7 +39,7 @@ export function bumpStat(field, n = 1) {
 /**
  * Counts one finished round of `game` (feeds the games-played badges).
  * `countRound: false` marks the game as tried without adding to the round
- * total — for toys like the Love-o-Meter that "finish" in one tap.
+ * total, for toys like the Love-o-Meter that "finish" in one tap.
  */
 export function recordPlay(game, countRound = true) {
   const s = read()

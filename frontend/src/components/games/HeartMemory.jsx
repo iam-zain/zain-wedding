@@ -63,7 +63,7 @@ export default function HeartMemory() {
         }
       }, 350)
     } else {
-      // Only a "real" mistake if you'd already seen one of these cards — a
+      // Only a "real" mistake if you'd already seen one of these cards, a
       // first-ever look can't be remembered, so it isn't held against you.
       if (seen.has(a) || seen.has(b)) {
         setMistakes((m) => m + 1)

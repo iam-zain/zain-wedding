@@ -7,7 +7,7 @@ import { moreLinkById } from '../lib/tabs'
  * Sticky header for a page that lives under the More hub.
  *
  * These pages are intentionally outside the swipe order (see lib/tabs.js), so
- * this arrow is the way back up — without it a guest deep in the RSVP form has
+ * this arrow is the way back up, without it a guest deep in the RSVP form has
  * only the browser's own back button, which PWA guests don't have on screen.
  *
  * The back link carries swipeDir 'left' so returning to the hub plays the same

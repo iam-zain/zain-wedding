@@ -16,7 +16,7 @@ function daysUntil(targetMs, nowMs) {
 /**
  * Shows once per calendar day (localStorage-gated, same idea as the treasure
  * hunt / wedding-day banner) when today lands on one of MILESTONE_DAYS out
- * from Nikah or Waleema. Nikah's day-0 is skipped — WeddingDayBanner already
+ * from Nikah or Waleema. Nikah's day-0 is skipped, WeddingDayBanner already
  * covers "aaj wohi din hai" for that date.
  */
 export default function MilestoneBanner() {

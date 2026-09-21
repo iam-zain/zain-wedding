@@ -29,7 +29,7 @@ function saveSubmission(entry) {
   try {
     localStorage.setItem(RSVP_KEY, JSON.stringify(entry))
   } catch {
-    // quota / private mode — the in-memory state still confirms it for this visit
+    // quota / private mode, the in-memory state still confirms it for this visit
   }
 }
 
@@ -78,7 +78,7 @@ function dayWithin(value, days) {
 /**
  * Reduces anything a guest might type or paste to the bare national number.
  * Contacts apps hand out '+91 98765 43210' and older address books keep the
- * STD-style leading 0 — both must land on the same ten digits, and neither
+ * STD-style leading 0, both must land on the same ten digits, and neither
  * may be truncated from the wrong end.
  */
 function normalizePhone(raw) {
@@ -260,7 +260,7 @@ function GuestSlider({ value, onChange, accentFrom, accentTo }) {
 
       <p className="mt-1.5 text-[11px] text-ig-faint">
         {value === 0
-          ? 'Akele aa rahe hain — koi baat nahi, hum hain na 🤍'
+          ? 'Akele aa rahe hain, koi baat nahi, hum hain na 🤍'
           : `Aap + ${value} ${value === 1 ? 'aur' : 'aur log'} = ${value + 1} log`}
       </p>
     </div>
@@ -295,7 +295,7 @@ export default function RSVPPage() {
   // A confirmation saved under an older, wider window would now be rejected by
   // the server (400) on every retry, leaving the guest staring at "network aate
   // hi pahunch jayega" forever. Such an entry counts as not-yet-confirmed, so
-  // the form comes back — but every field it holds is still used below, so the
+  // the form comes back, but every field it holds is still used below, so the
   // guest only re-picks the dates that fell outside, not their whole answer.
   const [submitted, setSubmitted] = useState(() => {
     if (!stored) return null
@@ -322,7 +322,7 @@ export default function RSVPPage() {
   const filled = [name.trim(), phoneOk, relation, arrivalPlace, arrivalDay, departurePlace, departureDay].filter(Boolean).length
   const total = 7
 
-  // The ONLY place a confirmation is sent — first submit and later retries
+  // The ONLY place a confirmation is sent, first submit and later retries
   // alike. Driving it off state rather than the submit handler means a save
   // made while offline is re-sent on the next visit, and there is no window
   // where both paths fire for the same entry.
@@ -338,7 +338,7 @@ export default function RSVPPage() {
         saveSubmission(synced)
         setSubmitted(synced)
       })
-      .catch(() => {}) // still unreachable — retried on the next visit
+      .catch(() => {}) // still unreachable, retried on the next visit
     return () => { cancelled = true }
   }, [submitted])
 
@@ -372,7 +372,7 @@ export default function RSVPPage() {
       submittedAt: new Date().toISOString(),
       synced: false,
     }
-    // Saved and confirmed locally first — the guest is done either way; the
+    // Saved and confirmed locally first, the guest is done either way; the
     // effect above takes it from here.
     saveSubmission(entry)
     setSubmitted(entry)
@@ -396,7 +396,7 @@ export default function RSVPPage() {
           Aana confirm kariye 🎊
         </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
-          Bas ye bataiye ki kahan aur kab pahunch rahe hain — baaki intezaam hamara. 🤍
+          Bas ye bataiye ki kahan aur kab pahunch rahe hain, baaki intezaam hamara. 🤍
         </p>
       </div>
 
@@ -417,8 +417,8 @@ export default function RSVPPage() {
               Shukriya, {String(submitted.name || '').split(' ')[0]}!
             </p>
             <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-ig-muted">
-              Aapne aana confirm kar diya — humare liye isse badi khushi kuch nahi.
-              Baaki ka intezaam hamara, bas aap waqt pe pahunch jaana 🎊
+              Aapne aana confirm kar diya, humare liye isse badi khushi kuch nahi.
+              Baaki ka intezaam hamara, bas aap waqt pe pahunch jaaiyega 🎊
             </p>
           </div>
 
@@ -433,8 +433,8 @@ export default function RSVPPage() {
 
           <p className="mt-3 text-center text-xs text-ig-faint">
             {submitted.synced === false
-              ? 'Save ho gaya — network aate hi hum tak pahunch jayega 📶'
-              : 'Plan badal gaya? Bas Edit dabaiye — kabhi bhi update kar sakte hain.'}
+              ? 'Save ho gaya, network aate hi hum tak pahunch jayega 📶'
+              : 'Plan badal gaya? Bas Edit dabaiye, kabhi bhi update kar sakte hain.'}
           </p>
         </div>
       ) : (
@@ -483,7 +483,7 @@ export default function RSVPPage() {
             <p className="mt-1 text-[11px] text-ig-faint">
               {phone && !phoneOk
                 ? `${RSVP_PHONE_DIGITS} digit ka mobile number daaliye`
-                : 'WhatsApp wale number behtar hai — updates wahin bhejenge 💬'}
+                : 'WhatsApp wale number behtar hai, updates wahin bhejenge 💬'}
             </p>
           </div>
 
@@ -528,7 +528,7 @@ export default function RSVPPage() {
             testId="rsvp-arrival-section"
             emoji="🛬"
             accent={RSVP_FROM}
-            title="Aana — arrival"
+            title="Aana, arrival"
             subtitle={describeWindow(RSVP_ARRIVAL_WINDOW)}
           >
             <div>
@@ -556,7 +556,7 @@ export default function RSVPPage() {
             testId="rsvp-departure-section"
             emoji="🛫"
             accent={RSVP_VIA}
-            title="Jaana — departure"
+            title="Jaana, departure"
             subtitle={describeWindow(RSVP_DEPARTURE_WINDOW)}
           >
             <div>
@@ -606,7 +606,7 @@ export default function RSVPPage() {
               className="w-full rounded-xl py-3 text-sm font-semibold text-white active:opacity-90"
               style={{ background: `linear-gradient(135deg, ${RSVP_FROM}, ${RSVP_VIA})` }}
             >
-              {filled === total ? 'Confirm 🎉' : `Confirm (${filled}/${total})`}
+              {filled === total ? 'Confirm kijiye 🎉' : `Confirm kijiye (${filled}/${total})`}
             </button>
           </div>
         </form>

@@ -13,7 +13,7 @@ function isTypingIntoField() {
 }
 
 /**
- * Global — mount once in Layout. Typing one of TYPE_ANYWHERE_WORDS anywhere
+ * Global, mount once in Layout. Typing one of TYPE_ANYWHERE_WORDS anywhere
  * on the page (not inside a form field, so it never fights with the comment
  * box or name input) reveals a message.
  */

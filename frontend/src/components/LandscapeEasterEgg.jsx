@@ -3,7 +3,7 @@ import { LANDSCAPE_MESSAGE } from '../config'
 import { useToast } from './toast-context'
 
 /**
- * Global — mount once in Layout. Fires once per session the first time the
+ * Global, mount once in Layout. Fires once per session the first time the
  * device is turned sideways.
  *
  * Deliberately only fires on a portrait -> landscape *transition* rather than

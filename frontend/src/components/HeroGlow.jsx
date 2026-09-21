@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
  * slightly slower than the page on scroll (parallax) and fades out once
  * scrolled past. Pure DOM writes (no React state) so scrolling stays cheap;
  * absolutely positioned + first in the DOM, so every opaque card painted
- * after it in normal flow simply covers it — no z-index needed.
+ * after it in normal flow simply covers it, no z-index needed.
  */
 export default function HeroGlow() {
   const layerRef = useRef(null)

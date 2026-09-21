@@ -16,7 +16,7 @@ export function GameStats({ items }) {
 
 /**
  * Start / game-over card laid over the arena. `win` fires a small confetti
- * burst (small on purpose — old phones).
+ * burst (small on purpose, old phones).
  */
 export function GameOverlay({ emoji, title, lines = [], button, onButton, win = false, color = '#ed4956' }) {
   return (

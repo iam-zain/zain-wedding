@@ -13,7 +13,7 @@ function baseForHour(hour) {
 }
 
 // Bounded random walk toward the current hour's base, so the number drifts
-// organically instead of jumping — a small decorative "vibe" indicator, not
+// organically instead of jumping, a small decorative "vibe" indicator, not
 // a real presence count (that needs a backend we haven't deployed yet).
 function nextCount(current, hour) {
   const base = baseForHour(hour)
@@ -63,7 +63,7 @@ export default function LiveViewers() {
     <button
       type="button"
       data-testid="live-viewers"
-      aria-label={`Live now — ${count} guests browsing`}
+      aria-label={`Live now, ${count} guests browsing`}
       aria-expanded={revealed}
       title="Guests browsing right now"
       onClick={toggleReveal}

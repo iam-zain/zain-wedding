@@ -38,7 +38,7 @@ export default function FeedPage() {
     playChime()
   }
 
-  // "Fan favorite" badge — ranked by likes_base (synchronous, admin-seeded)
+  // "Fan favorite" badge, ranked by likes_base (synchronous, admin-seeded)
   // rather than each PostCard's own live-polled count, so it doesn't need
   // to wait on N separate network calls to settle.
   const mostLovedPostId = useMemo(() => {
@@ -130,7 +130,7 @@ export default function FeedPage() {
 
         {offline && (
           <div data-testid="feed-offline-note" className="px-4 py-2 text-center text-xs text-ig-faint">
-            📵 Offline — purana content dikha rahe hain
+            📵 Offline, purana content dikha rahe hain
           </div>
         )}
 

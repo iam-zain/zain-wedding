@@ -6,7 +6,7 @@ import { KEYS, readJSON, writeJSON } from '../lib/storage'
 const TICK_MS = 15_000
 
 /**
- * Global — mount once in Layout. Accumulates whole minutes spent with the tab
+ * Global, mount once in Layout. Accumulates whole minutes spent with the tab
  * actually visible, across visits, for the time-based badges.
  *
  * Only counts while visible: a tab left open in the background overnight would
@@ -15,7 +15,7 @@ const TICK_MS = 15_000
  * Seconds are kept in a ref and only written to storage when a whole minute
  * has passed. Writing every tick would be ~4 writes a minute, and since the
  * achievement counts hook subscribes to this key, each write re-renders every
- * page that mounts it — the feed included. One write per minute keeps that to
+ * page that mounts it, the feed included. One write per minute keeps that to
  * a single cheap re-render.
  */
 export default function TimeOnSiteTracker() {

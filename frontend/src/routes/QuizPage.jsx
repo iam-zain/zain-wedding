@@ -39,7 +39,7 @@ export default function QuizPage() {
   const perfect = done && total > 0 && score === total
 
   function choose(optionIndex) {
-    if (picked !== null) return // already answering — ignore double taps
+    if (picked !== null) return // already answering, ignore double taps
     setPicked(optionIndex)
 
     const correct = optionIndex === question.answer

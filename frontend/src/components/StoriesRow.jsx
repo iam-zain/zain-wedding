@@ -11,7 +11,7 @@ export default function StoriesRow({ stories }) {
 
   return (
     <>
-      {/* Claims its own horizontal drags — data-swipe-exempt="true" — so
+      {/* Claims its own horizontal drags, data-swipe-exempt="true", so
           scrolling the avatars never gets mistaken for a swipe to the next
           tab. Unlike a carousel, there's no "let it fall through at the
           end" case here: this is a plain scrollable list, not paged. */}
@@ -31,7 +31,7 @@ export default function StoriesRow({ stories }) {
                 // Started HERE, in the tap itself, rather than in the viewer's
                 // mount effect: mobile browsers only allow play() while a user
                 // gesture is still active, and a passive effect runs after
-                // paint — often too late, so the story opened silently.
+                // paint, often too late, so the story opened silently.
                 startStoryMusic()
                 setOpenAt(i)
               }}

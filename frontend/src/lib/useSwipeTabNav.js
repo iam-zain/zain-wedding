@@ -22,7 +22,7 @@ const WHEEL_LOCK_MS = 600 // cooldown after a nav-triggering swipe so one long f
 // carousel and its photos fill the screen, so a finger almost always landed on
 // an exempt element and the gesture died there. A carousel now claims only the
 // direction it can still page in, so a swipe at either end falls through to us
-// — the usual nested-gesture behaviour.
+//, the usual nested-gesture behaviour.
 //
 //   data-swipe-exempt="left"        claims finger-left only
 //   data-swipe-exempt="left right"  claims both
@@ -31,9 +31,9 @@ const EXEMPT_SELECTOR = '[data-swipe-exempt]'
 const BOTH = new Set(['left', 'right'])
 
 // ── Two vocabularies, deliberately kept apart ────────────────────────────────
-// FINGER direction — which way the fingers physically moved. `claims` are
+// FINGER direction, which way the fingers physically moved. `claims` are
 // keyed by this, because a carousel reasons about its own drag.
-// TAB direction — which side the incoming page slides in from, which is also
+// TAB direction, which side the incoming page slides in from, which is also
 // how stepTo() reads it ('right' = further along the tab bar).
 //
 // They are opposites: dragging the fingers LEFT pulls the NEXT tab in from the
@@ -55,7 +55,7 @@ function claimedDirections(target) {
 }
 
 /**
- * A modal/overlay (EasterEggModal, StoryViewer) is open — they all set this
+ * A modal/overlay (EasterEggModal, StoryViewer) is open, they all set this
  * while visible, so don't navigate out from under one. Re-checked at the end
  * of a gesture as well, since one can open mid-swipe.
  */
@@ -64,14 +64,14 @@ function isBlocked() {
 }
 
 /**
- * Global — mount once in Layout. A horizontal swipe moves one step along the
+ * Global, mount once in Layout. A horizontal swipe moves one step along the
  * bottom-nav tab order (see lib/tabs.js): swipe right to go forward, left to
  * go back.
  *
  * Touch is handled with native Touch Events rather than Pointer Events. The
  * pointer-based version kept dying on real phones: the browser hands a touch
  * off to its own scroll/back-navigation gesture partway through and fires
- * `pointercancel`, and `setPointerCapture` — the workaround for that — fails
+ * `pointercancel`, and `setPointerCapture`, the workaround for that, fails
  * silently whenever the captured node re-renders out from under it, which the
  * feed does constantly. Touch Events don't get retargeted, `touchend` always
  * carries the final coordinates in `changedTouches`, and a non-passive
@@ -105,11 +105,11 @@ export function useSwipeTabNav() {
         if (Math.hypot(dx, dy) < INTENT_PX) return false
         g.horizontal = Math.abs(dx) > Math.abs(dy) * HORIZONTAL_DOMINANCE
         if (!g.horizontal) {
-          g = null // vertical intent — this is a scroll, abandon for good
+          g = null // vertical intent, this is a scroll, abandon for good
           return false
         }
         // Whatever is under the finger can still move this way itself (a
-        // carousel that has another photo in that direction) — let it.
+        // carousel that has another photo in that direction), let it.
         if (g.claims?.has(fingerDirFromDrag(dx))) {
           g = null
           return false
@@ -135,7 +135,7 @@ export function useSwipeTabNav() {
     // ── Touch ─────────────────────────────────────────────────────────────
     function onTouchStart(e) {
       if (e.touches.length !== 1) {
-        g = null // pinch / multi-finger — never a tab swipe
+        g = null // pinch / multi-finger, never a tab swipe
         return
       }
       const t = e.touches[0]
@@ -168,7 +168,7 @@ export function useSwipeTabNav() {
     }
 
     // Touch pointers fire `pointercancel` the moment the browser takes an
-    // interest in the gesture — the very failure mode this rewrite exists to
+    // interest in the gesture, the very failure mode this rewrite exists to
     // dodge. Only a cancelled *mouse* drag should abandon the gesture; a
     // cancelled touch pointer is ignored, because the Touch Events above are
     // still delivering it.
@@ -176,7 +176,7 @@ export function useSwipeTabNav() {
       if (e.pointerType === 'mouse') g = null
     }
 
-    // ── Mouse drag (desktop only — touch is handled above) ────────────────
+    // ── Mouse drag (desktop only, touch is handled above) ────────────────
     function onPointerDown(e) {
       if (e.pointerType !== 'mouse' || e.button !== 0) return
       begin(e.clientX, e.clientY, e.target)
@@ -201,12 +201,12 @@ export function useSwipeTabNav() {
     function onWheel(e) {
       if (isBlocked()) return
       const claims = claimedDirections(e.target)
-      // Vertical scroll clearly dominates — not a swipe attempt at all, ignore entirely.
+      // Vertical scroll clearly dominates, not a swipe attempt at all, ignore entirely.
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) {
         wheelAccum = 0
         return
       }
-      // A horizontal-dominant two-finger gesture — stop the browser's own
+      // A horizontal-dominant two-finger gesture, stop the browser's own
       // back/forward-navigation swipe from firing underneath ours.
       if (e.cancelable) e.preventDefault()
 

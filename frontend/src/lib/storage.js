@@ -39,7 +39,7 @@ export function writeJSON(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value))
   } catch {
-    /* quota / private mode — ignore */
+    /* quota / private mode, ignore */
   }
   emit(key)
 }

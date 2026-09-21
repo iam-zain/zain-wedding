@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { playChime } from '../lib/sound'
 
-/** Hidden route — no link in the app points here. Find it, and it's yours. */
+/** Hidden route, no link in the app points here. Find it, and it's yours. */
 export default function SecretPage() {
   useEffect(() => {
     playChime()

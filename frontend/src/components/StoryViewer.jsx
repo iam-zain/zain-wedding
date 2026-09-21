@@ -36,7 +36,7 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
     setIndex((i) => (i > 0 ? i - 1 : i))
   }
 
-  // The track is started by the story circle's tap handler (see StoriesRow —
+  // The track is started by the story circle's tap handler (see StoriesRow, 
   // it has to happen inside the gesture for mobile autoplay), so this owns
   // only the other half: stop it when the viewer closes. Not keyed on `index`,
   // so moving between stories neither restarts nor swaps the music.
@@ -104,7 +104,7 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
   // to do exactly that, which left this viewer centred somewhere down the
   // document with only its music audible.
   return createPortal(
-    /* Backdrop — full screen, dims on desktop */
+    /* Backdrop, full screen, dims on desktop */
     <div
       data-testid="story-viewer"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 sm:bg-black/60"
@@ -112,7 +112,7 @@ export default function StoryViewer({ stories, startIndex = 0, onClose, onViewed
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {/* Story card — full screen on mobile, phone-sized panel on desktop */}
+      {/* Story card, full screen on mobile, phone-sized panel on desktop */}
       <div
         className="egg-tap relative flex flex-col bg-black
           w-full h-full

@@ -5,12 +5,12 @@ import { useToast } from './toast-context'
 const DELAY_MS = 3000 // let the feed settle before showing anything
 
 /**
- * Global — mount once in Layout. Greets the guest according to the hour on
+ * Global, mount once in Layout. Greets the guest according to the hour on
  * their own clock: late-night scrolling, morning baraat, evening getting-ready,
  * and the 7 PM start every function shares.
  *
  * Fires at most ONCE per session even if a guest leaves the tab open across a
- * window boundary — the hour is read once on mount rather than polled, because
+ * window boundary, the hour is read once on mount rather than polled, because
  * a second greeting an hour later reads as a bug rather than a charm.
  */
 export default function TimeOfDayEasterEgg() {

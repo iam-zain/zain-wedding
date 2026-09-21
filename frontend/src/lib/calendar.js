@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// .ics (RFC 5545) generation — entirely client-side, so "Add to calendar"
+// .ics (RFC 5545) generation, entirely client-side, so "Add to calendar"
 // works offline and needs no backend.
 //
 // Times in site.json carry an explicit +05:30 offset, so they're converted to
@@ -105,7 +105,7 @@ export function buildIcs(events, meta = {}) {
  * Hands the guest an .ics file.
  *
  * iOS Safari ignores the `download` attribute, so rather than silently doing
- * nothing there we open the blob in a new tab — iOS recognises the calendar
+ * nothing there we open the blob in a new tab, iOS recognises the calendar
  * MIME type and offers to add the events from its own viewer.
  */
 export function downloadIcs(filename, content) {

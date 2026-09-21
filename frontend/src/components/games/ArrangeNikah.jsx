@@ -6,7 +6,7 @@ import { GameOverlay } from './GameShell'
 // Each set is listed in its correct order.
 const SETS = [
   {
-    title: 'Zain ❤️ Uzma ki shaadi — asli dates!',
+    title: 'Zain ❤️ Uzma ki shaadi, asli dates!',
     items: ['🤝 Baat Pakki', '💛 Haldi · 26 Oct', '🌿 Mehendi · 27 Oct', '📜 Nikah · 28 Oct', '😴 Aaraam ka din · 29 Oct', '🍽️ Walima · 30 Oct'],
   },
   {
@@ -78,7 +78,7 @@ export default function ArrangeNikah() {
       }, 1500)
     } else {
       haptic('warn')
-      setLine(`${marks.filter(Boolean).length}/${marks.length} sahi jagah pe — laal wale dobara lagaiye`)
+      setLine(`${marks.filter(Boolean).length}/${marks.length} sahi jagah pe, laal wale dobara lagaiye`)
       later(() => {
         // Keep the right ones in place, send the wrong ones back.
         setTries((t) => t + 1)
@@ -114,7 +114,7 @@ export default function ArrangeNikah() {
       </div>
       <div className="relative rounded-2xl border border-ig-border p-4" style={{ background: 'linear-gradient(160deg, rgba(37,211,102,0.12), rgba(245,197,24,0.12))' }}>
         <p className="text-center text-base font-semibold">{set.title}</p>
-        <p className="text-center text-[11px] text-ig-muted">Sahi tartib mein tap kariye — pehle se aakhir tak</p>
+        <p className="text-center text-[11px] text-ig-muted">Sahi tartib mein tap kariye, pehle se aakhir tak</p>
 
         <ol className="mt-3 space-y-1.5" data-testid="arrange-slots">
           {set.items.map((_, i) => {
@@ -133,7 +133,7 @@ export default function ArrangeNikah() {
                   }}
                 >
                   <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-ig-elevated text-[10px] font-bold">{i + 1}</span>
-                  <span className={item ? '' : 'text-ig-faint'}>{item || '—'}</span>
+                  <span className={item ? '' : 'text-ig-faint'}>{item || '-'}</span>
                 </button>
               </li>
             )

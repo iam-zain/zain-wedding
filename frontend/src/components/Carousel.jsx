@@ -15,7 +15,7 @@ const PINCH_TRIGGER_DELTA_PX = 40 // change in two-finger spread that counts as 
 // via Pointer Events; touch-action: pan-y leaves vertical feed scroll to the
 // browser so a horizontal swipe here never fights the page scroll.
 // onDoubleTap is forwarded from the parent (double-tap-to-like).
-// onPinch is forwarded too — fires once per pinch-in/out gesture on the image.
+// onPinch is forwarded too, fires once per pinch-in/out gesture on the image.
 export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carousel' }) {
   const list = images && images.length ? images : []
   const multiple = list.length > 1
@@ -84,7 +84,7 @@ export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carou
   }
 
   // React registers onWheel as a passive listener, so preventDefault() there
-  // silently no-ops (and warns) — a horizontal trackpad swipe would still
+  // silently no-ops (and warns), a horizontal trackpad swipe would still
   // trigger the browser's own scroll/back-forward gesture underneath our
   // paging. A manually attached, non-passive listener is required instead.
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carou
 
       // Momentum flings keep emitting deltaX for a while after the gesture
       // ends, so extend the lock on every event and only release it once the
-      // stream truly goes quiet — a fixed one-shot timer would let a long
+      // stream truly goes quiet, a fixed one-shot timer would let a long
       // fling slip a second step in before it decelerates.
       clearTimeout(w.unlockTimer)
       w.unlockTimer = setTimeout(() => {
@@ -123,7 +123,7 @@ export default function Carousel({ images, onDoubleTap, onPinch, testId = 'carou
     }
   }, [list.length])
 
-  // Two-finger pinch — plain (native) Touch Events, since Pointer Events
+  // Two-finger pinch, plain (native) Touch Events, since Pointer Events
   // track one finger at a time. Passive/read-only: never blocks the page's
   // own pinch-zoom, just notices the gesture and reports it once.
   useEffect(() => {

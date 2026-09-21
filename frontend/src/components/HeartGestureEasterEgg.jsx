@@ -5,7 +5,7 @@ import EasterEggModal from './EasterEggModal'
 
 const MIN_POINTS = 8
 const MIN_SIZE = 60 // px
-const MAX_SIZE = 500 // px — ignore huge full-screen drags
+const MAX_SIZE = 500 // px, ignore huge full-screen drags
 const MIN_DURATION_MS = 250
 const MAX_DURATION_MS = 5000
 const COOLDOWN_MS = 15000
@@ -47,7 +47,7 @@ function looksLikeHeart(points) {
 }
 
 /**
- * Global — mount once in Layout. Passive pointer tracking only (never calls
+ * Global, mount once in Layout. Passive pointer tracking only (never calls
  * preventDefault), so it can't interfere with scrolling, taps, or swipes
  * elsewhere on the page.
  */
@@ -61,7 +61,7 @@ export default function HeartGestureEasterEgg() {
   useEffect(() => {
     function onDown(e) {
       // Interactive controls (like the post like-button) have their own
-      // tap/double-tap/long-press gestures — never let this global heart-
+      // tap/double-tap/long-press gestures, never let this global heart-
       // drawing recognizer compete with those.
       if (e.target.closest?.('button, a, input, textarea, select')) return
       draggingRef.current = true

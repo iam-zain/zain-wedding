@@ -19,7 +19,7 @@ import TiltEasterEgg from './TiltEasterEgg'
 import TimeOnSiteTracker from './TimeOnSiteTracker'
 
 // Re-mounts (via the pathname key) on every route change so its entrance
-// animation replays; direction comes from navigate(path, { state }) —
+// animation replays; direction comes from navigate(path, { state }), 
 // set by the swipe gesture, and by BottomNav for tap-triggered switches too.
 function PageTransition({ children }) {
   const location = useLocation()
@@ -46,7 +46,7 @@ export default function Layout() {
   }, [pathname, markVisited])
 
   // The record player lives on the feed's avatar, and that's the only place
-  // with a control to stop it — so leaving the feed stops the track rather
+  // with a control to stop it, so leaving the feed stops the track rather
   // than stranding a guest on another tab with unstoppable music.
   useEffect(() => {
     if (pathname !== '/') stopMusic()

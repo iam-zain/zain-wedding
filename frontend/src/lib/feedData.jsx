@@ -2,14 +2,14 @@
 // Single owner of the feed's remote data: posts, stories and live like counts.
 //
 // Everything is loaded once behind the launch splash so the feed paints its
-// final state in one go — no skeleton, no cached-then-fresh content swap, and
+// final state in one go, no skeleton, no cached-then-fresh content swap, and
 // no like counts jumping a second after the photos appear. Falls back to
 // whatever the service worker has cached when the network is unavailable.
 // ─────────────────────────────────────────────────────────────────────────────
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { fetchPosts, fetchPostsFresh, fetchStories, fetchStoriesFresh, getLikeCounts } from './api'
 
-// Don't hold the splash hostage to a slow network — fall back to cache after this.
+// Don't hold the splash hostage to a slow network, fall back to cache after this.
 const FIRST_LOAD_TIMEOUT = 6000
 // On a warm cache the data lands in ~50ms; without a floor the splash is a
 // flicker rather than a moment. Long enough to read one line.
@@ -37,14 +37,14 @@ export function FeedDataProvider({ children }) {
   const [offline, setOffline] = useState(false)
 
   const lastFreshAt = useRef(0)
-  // Every known post — access filtering is the feed's business, and polling a
+  // Every known post, access filtering is the feed's business, and polling a
   // locked post's count is harmless.
   const likeIdsRef = useRef([])
   const likesInFlightRef = useRef(null)
 
   // The server is authoritative. An earlier version clamped each count with
   // Math.max(server, current), which meant a device could only ever revise a
-  // count upward — once it had shown 94 it would ignore the server saying 94
+  // count upward, once it had shown 94 it would ignore the server saying 94
   // was wrong, and any overshoot became permanent. PostCard still floors the
   // display at this device's own like, which covers the sub-second window
   // between an optimistic bump and the POST that confirms it.
@@ -57,7 +57,7 @@ export function FeedDataProvider({ children }) {
       .then((fresh) => {
         setLikeCounts((cur) => ({ ...cur, ...fresh }))
       })
-      .catch(() => {}) // partial/failed refresh — keep showing what we have
+      .catch(() => {}) // partial/failed refresh, keep showing what we have
       .finally(() => { likesInFlightRef.current = null })
     likesInFlightRef.current = run
     return run
@@ -98,7 +98,7 @@ export function FeedDataProvider({ children }) {
       try {
         loaded = await withTimeout(refreshContent(), FIRST_LOAD_TIMEOUT)
       } catch {
-        loaded = false // timed out — cache below
+        loaded = false // timed out, cache below
       }
       if (cancelled) return
       if (!loaded) {
@@ -129,7 +129,7 @@ export function FeedDataProvider({ children }) {
     const onVisible = () => {
       if (document.visibilityState !== 'visible') return
       // Background timers are throttled (frozen outright on mobile), so the
-      // poll below can't be trusted to have kept up — always pull counts on
+      // poll below can't be trusted to have kept up, always pull counts on
       // return, independent of the content-refresh cooldown.
       refreshLikes()
       if (Date.now() - lastFreshAt.current < REFRESH_COOLDOWN) return

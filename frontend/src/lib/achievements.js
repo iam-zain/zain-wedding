@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Achievement engine. Pure functions over a `counts` snapshot — no storage and
+// Achievement engine. Pure functions over a `counts` snapshot, no storage and
 // no React in here, so the rules stay testable and the UI owns the side effects.
 //
 // counts shape:
@@ -39,7 +39,7 @@ export function achievementById(id) {
   return ACHIEVEMENTS.find((def) => def.id === id)
 }
 
-/** Every badge paired with this device's progress — drives the badge shelf. */
+/** Every badge paired with this device's progress, drives the badge shelf. */
 export function achievementList(counts, unlockedIds = []) {
   return ACHIEVEMENTS.map((def) => ({
     ...def,

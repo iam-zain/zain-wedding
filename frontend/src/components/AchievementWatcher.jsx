@@ -7,7 +7,7 @@ import { useAchievements } from '../lib/storage'
 import { playChime } from '../lib/sound'
 import EasterEggModal from './EasterEggModal'
 
-/** Global — mount once inside Layout (needs FeedDataProvider above it). */
+/** Global, mount once inside Layout (needs FeedDataProvider above it). */
 export default function AchievementWatcher() {
   const counts = useAchievementCounts()
   const { list: unlocked, add: unlock } = useAchievements()

@@ -18,7 +18,7 @@ function shuffled(list) {
  * Shuffles a question's options and follows the correct one to its new slot.
  *
  * The answer is tracked by identity rather than by re-finding the string,
- * because two options could in principle share text — re-finding would then
+ * because two options could in principle share text, re-finding would then
  * mark the wrong slot correct.
  */
 function shuffleOptions(question) {
@@ -33,7 +33,7 @@ function shuffleOptions(question) {
 
 /**
  * One round: QUIZ_PER_ROUND questions drawn at random from the pool, each with
- * its options shuffled too — so a guest replaying can't coast on remembering
+ * its options shuffled too, so a guest replaying can't coast on remembering
  * that the answer was "C" last time.
  *
  * Takes whatever the pool holds if it's smaller than a full round, so trimming

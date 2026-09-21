@@ -11,7 +11,7 @@ const DRESSCODE_PLACEHOLDER = '/assets/dresscode/placeholder.svg'
 const byDateAsc = (a, b) => Date.parse(a.date) - Date.parse(b.date)
 
 /**
- * Each function's own colours, keyed by event id — drawn from the dress code
+ * Each function's own colours, keyed by event id, drawn from the dress code
  * it already carries, so the page looks like the outfits guests are being
  * asked to wear. Falls back to the neutral card if an id isn't listed, so a
  * new event in site.json renders fine before anyone picks colours for it.
@@ -132,7 +132,7 @@ export default function EventsPage() {
         siteUrl: siteConfig.profile?.link,
       }),
     )
-    toast('📅 Calendar file ban gayi — apne calendar mein add kar lijiye!', { duration: 4500 })
+    toast('📅 Calendar file ban gayi, apne calendar mein add kar lijiye!', { duration: 4500 })
   }
 
   return (
@@ -146,7 +146,7 @@ export default function EventsPage() {
       <div className="px-4 pt-5">
         <h2 className="text-lg font-semibold">Saare Functions 🎊</h2>
         <p className="mt-0.5 text-sm text-ig-muted">
-          Har function ka din, jagah aur dress code — sab kuch yahan 🤍
+          Har function ka din, jagah aur dress code, sab kuch yahan 🤍
         </p>
 
         <EventTimeline />

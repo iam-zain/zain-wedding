@@ -14,7 +14,7 @@ const TARGETS = [
   ['🕌', 'Masjid'],
   ['❤️', 'Dil'],
 ]
-// Party clutter — none of these may be a target.
+// Party clutter, none of these may be a target.
 const CLUTTER = ['🌸', '🌼', '🌷', '🍬', '🎀', '✨', '🎊', '🍭', '🍓', '🎁', '⭐', '🌺', '🍰', '🍩', '🎈', '👰', '🤵', '🥁', '🍛', '🌿', '🧁', '🎉']
 const FOUND_LINES = ['Mil gaya! ✨', 'Kya nazar hai! 👀', 'Wah! 🎯', 'Pakad liya! 💪']
 

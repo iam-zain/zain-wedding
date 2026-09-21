@@ -20,7 +20,7 @@ const LEVELS = [
 /**
  * A solvable board: walk one snake through every cell, randomly
  * mirrored/rotated, then cut it into k pieces. Each piece's two ends are a
- * pair of dots — so a full, non-crossing solution always exists.
+ * pair of dots, so a full, non-crossing solution always exists.
  */
 function makeLevel(n, k) {
   let snake = []
@@ -179,7 +179,7 @@ export default function HeartConnect() {
         </span>
         <span className="rounded-full bg-ig-card px-3 py-1 tabular-nums">Bhara {Math.round((filled / (n * n)) * 100)}%</span>
       </div>
-      <p className="mb-2 text-center text-sm">Ek jaise dil jodiye — lines ek doosre ko kaatein nahi 💞</p>
+      <p className="mb-2 text-center text-sm">Ek jaise dil jodiye, lines ek doosre ko kaatein nahi 💞</p>
       <div className="relative">
         {solved && <Confetti count={50} />}
         <div

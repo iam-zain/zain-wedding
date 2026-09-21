@@ -22,7 +22,7 @@ import { BookmarkIcon, CommentIcon, HeartIcon, ShareIcon } from './icons'
 // Holding the like button this long triggers the rising-hearts shower.
 const HEART_LONG_PRESS_MS = 450
 // A tap's own animation waits this long before playing. A second tap inside
-// the window makes it a double-tap, which owns a different animation — so the
+// the window makes it a double-tap, which owns a different animation, so the
 // single-tap pop has to be cancellable rather than fire the instant it lands.
 const DOUBLE_TAP_WINDOW_MS = 250
 const BUTTON_REACT_MS = 850
@@ -31,7 +31,7 @@ const FLOAT_HEART_LIFE_MS = 1800
 // 8 evenly-spaced directions (every 45°) for the YouTube-style radiating burst.
 const BURST_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315]
 
-/** [r, g, b] with each 0-255, or null — anything else is ignored. */
+/** [r, g, b] with each 0-255, or null, anything else is ignored. */
 function validTint(t) {
   if (!Array.isArray(t) || t.length !== 3) return null
   return t.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? t : null
@@ -100,7 +100,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   const singleTapTimerRef = useRef(null)
   const buttonReactTimerRef = useRef(null)
   // A double-tap emits click, click AND dblclick, so like() can be re-entered
-  // two or three times before `liked` has re-rendered — each one POSTing
+  // two or three times before `liked` has re-rendered, each one POSTing
   // another increment. This latches on the first call instead.
   const likeSentRef = useRef(false)
 
@@ -144,13 +144,13 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
     }
   }
 
-  // Big centered burst over the photo — the classic double-tap-to-like moment.
+  // Big centered burst over the photo, the classic double-tap-to-like moment.
   function triggerPhotoBurst() {
     setBurst(true)
     setTimeout(() => setBurst(false), 900)
   }
 
-  // Floating reaction anchored right at the like button — used for every
+  // Floating reaction anchored right at the like button, used for every
   // button-triggered interaction, so feedback always appears where the
   // thumb actually is (rather than up on the photo, easy to miss).
   function triggerButtonReaction() {
@@ -161,7 +161,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
 
   /**
    * Drops the single-tap pop, whether it is still queued or already on screen.
-   * The richer gestures call this first so their own animation plays alone —
+   * The richer gestures call this first so their own animation plays alone, 
    * a slow double-tap can outrun DOUBLE_TAP_WINDOW_MS, and clearing the timer
    * alone would leave the pop mid-flight underneath the burst.
    */
@@ -178,7 +178,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   }
 
   // A handful of small hearts, random size/drift/duration, rising from the
-  // button toward the top of the screen and fading — fixed-positioned (not
+  // button toward the top of the screen and fading, fixed-positioned (not
   // relative to the button) so they can travel well past the post card.
   function spawnFloatingHearts() {
     const rect = heartButtonRef.current?.getBoundingClientRect()
@@ -211,7 +211,7 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
   // window so it can be withdrawn if a second tap follows; the like itself is
   // never deferred, so the heart still fills instantly.
   //
-  // longPressFiredRef is deliberately NOT reset here — the pointerdown that
+  // longPressFiredRef is deliberately NOT reset here, the pointerdown that
   // starts the next press owns that, so the trailing click AND dblclick of a
   // press that turned into a long-press are both suppressed.
   function onLikeButtonClick() {
@@ -291,8 +291,8 @@ export default function PostCard({ post, isMostLoved = false, liveCount = 0, onL
       data-testid={`post-card-${post.id}`}
       data-tint={tint ? tint.join(',') : ''}
       className="mb-1 border-b border-ig-border pb-2 transition-[background] duration-700"
-      // The cover's own colour as one even wash behind the whole post —
-      // header, photo, actions, caption and comments — so each post reads as
+      // The cover's own colour as one even wash behind the whole post, 
+      // header, photo, actions, caption and comments, so each post reads as
       // a single card. Stays plain black when the post has no colour.
       style={tint ? { background: tintGradient(tint) } : undefined}
     >

@@ -183,7 +183,7 @@ export default function BuildBouquet() {
             </p>
           </div>
         ) : (
-          <p className="text-center text-sm text-ig-muted">Phool chuniye ({MAX} tak) — hum naam denge 💐</p>
+          <p className="text-center text-sm text-ig-muted">Phool chuniye ({MAX} tak), hum naam denge 💐</p>
         )}
 
         <Bouquet flowers={bq} big={mode === 'free'} />
@@ -225,7 +225,7 @@ export default function BuildBouquet() {
           <GameOverlay
             emoji="💐"
             title="Build the Bouquet"
-            lines={['Order ke hisaab se phool lagaiye', `${ROUND_S} second — jitne bouquet utne points`, 'Galat phool apne aap hat jayega']}
+            lines={['Order ke hisaab se phool lagaiye', `${ROUND_S} second, jitne bouquet utne points`, 'Galat phool apne aap hat jayega']}
             button="Dukaan kholo 💐"
             onButton={start}
             color="#f472b6"

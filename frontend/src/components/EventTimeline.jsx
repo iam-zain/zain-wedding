@@ -26,7 +26,7 @@ const STEPS = [BAAT_PAKKI, ...(siteConfig.events || [])]
 const STEP_COLORS = ['#f0b429', '#f7c948', '#79b473', '#e8b4a0', '#a1547f']
 
 /**
- * The whole story in one row, with a spotlight that walks along it — one step
+ * The whole story in one row, with a spotlight that walks along it, one step
  * lit at a time, five seconds each, then round again.
  *
  * The cycle is a plain index on a timer rather than CSS animation-delay per

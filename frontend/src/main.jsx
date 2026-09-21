@@ -10,7 +10,7 @@ try {
   console.log('%c🤍 Zain & Uzma', 'font-size:18px;font-weight:bold;color:#ed4956')
   console.log(CONSOLE_EASTER_EGG_MESSAGE)
 } catch {
-  // console unavailable — harmless no-op
+  // console unavailable, harmless no-op
 }
 
 createRoot(document.getElementById('root')).render(

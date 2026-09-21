@@ -52,7 +52,7 @@ function WishCard({ wish, isMine, accent, liked, live, onLike }) {
 
   function tap() {
     // `liked` comes from props and may not have re-rendered between two fast
-    // taps, so latch locally too — otherwise one double-tap posts two likes.
+    // taps, so latch locally too, otherwise one double-tap posts two likes.
     if (liked || sentRef.current) return // one like per device
     sentRef.current = true
     setPop(true)
@@ -144,7 +144,7 @@ export default function WishesPage() {
     let cancelled = false
     getLikeCounts(wishIds.split(','))
       .then((counts) => { if (!cancelled) setLikeCounts((cur) => ({ ...cur, ...counts })) })
-      .catch(() => {}) // counts are decoration — the wall still works without them
+      .catch(() => {}) // counts are decoration, the wall still works without them
     return () => { cancelled = true }
   }, [wishIds])
 
@@ -212,7 +212,7 @@ export default function WishesPage() {
           Duaon ka silsila 🤍
         </h2>
         <p className="mt-0.5 text-sm text-ig-muted">
-          Do lafz likh jaiye — dua, mubarakbaad ya koi purani yaad. Hum sab padhenge.
+          Do lafz likh jaiye, dua, mubarakbaad ya koi purani yaad. Hum sab padhenge.
         </p>
       </div>
 
@@ -271,7 +271,7 @@ export default function WishesPage() {
             data-testid="wishes-retry"
             className="text-sm text-ig-blue"
           >
-            Load nahi hua — dobara try kariye
+            Load nahi hua, dobara try kariye
           </button>
         )}
 

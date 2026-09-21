@@ -6,7 +6,7 @@ import EasterEggModal from './EasterEggModal'
 const IDLE_MS = 25000
 const ACTIVITY_EVENTS = ['mousemove', 'touchstart', 'keydown', 'scroll', 'wheel', 'pointerdown']
 
-/** Global — mount once in Layout. Shows a centered reveal once per session after ~25s of no interaction. */
+/** Global, mount once in Layout. Shows a centered reveal once per session after ~25s of no interaction. */
 export default function IdleEasterEgg() {
   const [message, setMessage] = useState(null)
   const shownRef = useRef(false)

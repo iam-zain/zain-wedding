@@ -44,7 +44,7 @@ export async function fetchStoriesFresh() {
 }
 
 // ── Likes ─────────────────────────────────────────────────────────────────────
-// Requests per batch when refreshing many posts — under the API Gateway burst limit.
+// Requests per batch when refreshing many posts, under the API Gateway burst limit.
 const LIKE_FETCH_CHUNK = 4
 
 /**
@@ -63,7 +63,7 @@ export async function likePost(postId, userId) {
   return { count: typeof data.count === 'number' ? data.count : null }
 }
 
-// GET /like is unauthenticated — sending x-api-key would force a CORS
+// GET /like is unauthenticated, sending x-api-key would force a CORS
 // preflight on every poll for nothing.
 export async function getLikeCount(postId) {
   if (LOCAL_MODE) return { count: null }
@@ -98,7 +98,7 @@ async function getLikeCountsFanOut(postIds) {
 let batchLikesUnavailable = false
 
 /**
- * Live like counts for many posts — { [postId]: count }.
+ * Live like counts for many posts, { [postId]: count }.
  *
  * ONE request for the whole feed. The old per-post fan-out issued a request
  * per post per poll per device against a stage throttled to 10 rps / 5 burst
@@ -125,7 +125,7 @@ export async function getLikeCounts(postIds) {
       // so keep using the batch route and just fall through this cycle.
       if (res.status === 404) batchLikesUnavailable = true
     } catch {
-      // Network error — fall back for this cycle.
+      // Network error, fall back for this cycle.
     }
   }
 
@@ -136,7 +136,7 @@ export async function getLikeCounts(postIds) {
 /**
  * Sends a guest confirmation. Upserted server-side on userId, so calling this
  * again after an edit updates that guest's row rather than adding a duplicate.
- * Resolves false in LOCAL_MODE (no backend configured) — the caller still has
+ * Resolves false in LOCAL_MODE (no backend configured), the caller still has
  * its localStorage copy either way.
  */
 export async function submitRsvp(entry) {
@@ -153,7 +153,7 @@ export async function submitRsvp(entry) {
 // ── Wishes wall ───────────────────────────────────────────────────────────────
 // Stored as comments on synthetic post ids (see WISHES_SHARDS). This reuses the
 // comment endpoints that are ALREADY deployed, so the wall works without any
-// backend change — at the cost of the same 25-per-post cap, which the shards
+// backend change, at the cost of the same 25-per-post cap, which the shards
 // work around.
 
 /**
@@ -161,11 +161,11 @@ export async function submitRsvp(entry) {
  *
  * Walks shards in order and stops at the first one that isn't full. Because
  * writes always target the lowest non-full shard, a non-full shard means every
- * later shard is still empty — so the common case costs exactly one request
+ * later shard is still empty, so the common case costs exactly one request
  * rather than one per shard, which matters against a stage throttled to
  * 10 rps / 5 burst globally.
  *
- * Returns `{ wishes, nextShard, full }` — `nextShard` is where a new wish
+ * Returns `{ wishes, nextShard, full }`, `nextShard` is where a new wish
  * should go, or null when every shard is full.
  */
 export async function getWishes() {
@@ -177,7 +177,7 @@ export async function getWishes() {
     try {
       batch = await getComments(shard)
     } catch {
-      // A shard that fails to load shouldn't blank the whole wall — show what
+      // A shard that fails to load shouldn't blank the whole wall, show what
       // we have and let the caller retry.
       break
     }
@@ -206,7 +206,7 @@ export async function postWish({ text, userName, userId }, preferredShard) {
       return await postComment(WISHES_SHARDS[i], { text, userName, userId })
     } catch (err) {
       if (err?.message !== 'COMMENT_LIMIT') throw err
-      // This shard filled up between the read and the write — try the next.
+      // This shard filled up between the read and the write, try the next.
     }
   }
   throw new Error('WISHES_FULL')

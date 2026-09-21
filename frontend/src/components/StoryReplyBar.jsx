@@ -108,7 +108,7 @@ export default function StoryReplyBar({ storyId, onActivity }) {
       )}
 
       {/*
-        z-20 puts this above the prev/next tap zones (z-10) — without that the
+        z-20 puts this above the prev/next tap zones (z-10), without that the
         zones would swallow every tap here and advance the story instead.
         Pointer events are stopped so the card's long-press egg doesn't arm
         while someone is typing a reply.

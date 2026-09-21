@@ -10,7 +10,7 @@ import { useToast } from './toast-context'
 const LOW_LEVEL = 0.15
 const CRITICAL_LEVEL = 0.05
 
-/** Global — mount once in Layout. Fires once per session if the Battery API reports a low, non-charging device — or, separately, once when the device is plugged in. No-ops where unsupported (most browsers). */
+/** Global, mount once in Layout. Fires once per session if the Battery API reports a low, non-charging device, or, separately, once when the device is plugged in. No-ops where unsupported (most browsers). */
 export default function BatteryEasterEgg() {
   const toast = useToast()
   const firedRef = useRef(false)
@@ -51,7 +51,7 @@ export default function BatteryEasterEgg() {
 
       // Critical is checked BEFORE the ordinary low nudge and latches both, so
       // a phone sliding from 15% to 4% gets the gentle line once and then the
-      // urgent one — never the gentle one again afterwards.
+      // urgent one, never the gentle one again afterwards.
       if (!battery.charging && battery.level <= CRITICAL_LEVEL && !criticalFiredRef.current) {
         criticalFiredRef.current = true
         firedRef.current = true
@@ -75,7 +75,7 @@ export default function BatteryEasterEgg() {
         battery.addEventListener('chargingchange', check)
       })
       .catch(() => {
-        // Battery API blocked/unsupported — silently skip
+        // Battery API blocked/unsupported, silently skip
       })
 
     return () => {

@@ -6,7 +6,7 @@ import { GameOverlay, GameStats } from './GameShell'
 const LIVES = 3
 const REAL = '❤️'
 
-/** Round `n` (0-based): more tiles, more fakes, less time — and from round 8 a sneaky 🧡. */
+/** Round `n` (0-based): more tiles, more fakes, less time, and from round 8 a sneaky 🧡. */
 let roundSeq = 0
 
 function makeRound(n) {
@@ -112,7 +112,7 @@ export default function TrueHeart() {
       <GameStats
         items={[
           ['Round', round, '#ed4956'],
-          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '—'],
+          ['Jaan', '❤️'.repeat(Math.max(0, lives)) || '-'],
         ]}
       />
       <p className="mb-1 text-center text-sm font-semibold">Sirf sachha dil ❤️ dabaiye!</p>
@@ -150,7 +150,7 @@ export default function TrueHeart() {
           <GameOverlay
             emoji="😳"
             title="Sachha Dil"
-            lines={['Sirf sachha dil ❤️ dabaiye — saare!', '💔 dabaya toh jaan gayi', 'Har round tez — aage 🧡 aur 🖤 bhi dhokha denge']}
+            lines={['Sirf sachha dil ❤️ dabaiye, saare!', '💔 dabaya toh jaan gayi', 'Har round tez, aage 🧡 aur 🖤 bhi dhokha denge']}
             button="Shuru kariye"
             onButton={start}
             color="#ed4956"

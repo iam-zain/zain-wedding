@@ -4,7 +4,7 @@ import { haptic } from '../lib/haptics'
 import { useToast } from './toast-context'
 
 /**
- * Global — mount once in Layout. Announces the connection dropping, and the
+ * Global, mount once in Layout. Announces the connection dropping, and the
  * recovery only if we actually saw it drop first (so a guest who opens the app
  * online is never told the network "came back").
  */
@@ -25,7 +25,7 @@ export default function OfflineEasterEgg() {
       toast(ONLINE_MESSAGE, { duration: 3500 })
     }
 
-    // navigator.onLine is only trustworthy as "definitely offline" — a true
+    // navigator.onLine is only trustworthy as "definitely offline", a true
     // value can still mean a captive portal. Good enough for a greeting.
     if (typeof navigator !== 'undefined' && navigator.onLine === false) onOffline()
 

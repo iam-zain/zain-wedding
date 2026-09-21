@@ -14,7 +14,7 @@ const FALL_MS = 1800
 const REASSEMBLE_PAUSE_MS = 500
 const TILE_COLORS = ['#262626', '#0095f6', '#ed4956', '#feda75', '#25d366', '#962fbf']
 
-// Grabs a random sample of currently-visible UI elements to "detach" and fall —
+// Grabs a random sample of currently-visible UI elements to "detach" and fall, 
 // rendered as plain colored tiles (not clones of the real nodes), so nothing
 // about the real React tree is ever touched.
 function sampleTiles() {
@@ -36,7 +36,7 @@ function sampleTiles() {
 }
 
 /**
- * Global — mount once in Layout. A gentle shake reveals confetti; a much
+ * Global, mount once in Layout. A gentle shake reveals confetti; a much
  * harder one makes the UI look like it's fallen apart, then reassembles.
  */
 export default function ShakeEasterEgg() {
@@ -60,7 +60,7 @@ export default function ShakeEasterEgg() {
     onVigorousShake: () => {
       if (chaosPhase !== 'idle') return
       const captured = sampleTiles()
-      if (captured.length < MIN_TILES) return // not enough on screen right now — skip quietly
+      if (captured.length < MIN_TILES) return // not enough on screen right now, skip quietly
 
       setTiles(captured)
       setChaosPhase('wobbling')

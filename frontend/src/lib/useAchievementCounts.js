@@ -21,7 +21,7 @@ import {
  *
  * Totals come from useVisibleFeed, NOT from feedData's raw arrays. The raw
  * files hold hidden posts, tier-locked items, out-of-window posts and expired
- * stories that this guest will never see — counting those made "like every
+ * stories that this guest will never see, counting those made "like every
  * post" read 0/16 when only 8 were reachable, so the badge could never be
  * earned. The goal has to be what's actually on screen.
  *
@@ -59,7 +59,7 @@ export function useAchievementCounts() {
 
   // A guest can like a post that later gets hidden, so their stored count can
   // exceed what's currently visible. Clamping keeps the shelf from showing an
-  // impossible "9 / 8" — progressFor still treats count >= goal as complete.
+  // impossible "9 / 8", progressFor still treats count >= goal as complete.
   const visibleIds = useMemo(() => new Set(visiblePosts.map((p) => p.id)), [visiblePosts])
   const visibleStoryIds = useMemo(() => new Set(visibleStories.map((s) => s.id)), [visibleStories])
 
@@ -67,7 +67,7 @@ export function useAchievementCounts() {
   // EXPLORE_PAGES can't leave someone stuck above 100%.
   const exploredCount = EXPLORE_PAGES.filter((path) => visited.includes(path)).length
   const minutesOnSite = typeof minutes === 'number' && Number.isFinite(minutes) ? minutes : 0
-  // A confirmation counts once it exists at all — whether it has reached the
+  // A confirmation counts once it exists at all, whether it has reached the
   // server yet is a network detail the guest shouldn't be graded on.
   const rsvpDone = rsvp && rsvp.arrival && rsvp.departure ? 1 : 0
 

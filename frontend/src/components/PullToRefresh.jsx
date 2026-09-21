@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
-const NORMAL_THRESHOLD = 70 // px pulled — triggers a normal refresh
-const EGG_THRESHOLD = 150 // px pulled — triggers the bonus easter egg instead
+const NORMAL_THRESHOLD = 70 // px pulled, triggers a normal refresh
+const EGG_THRESHOLD = 150 // px pulled, triggers the bonus easter egg instead
 const MAX_PULL = 190
 const DAMPING = 0.45
 
@@ -35,13 +35,13 @@ export default function PullToRefresh({ onRefresh, onEgg, children }) {
     const dy = e.clientY - startRef.current.y
 
     if (dy < 0) {
-      // Pulling back up — reset, but keep tracking in case they pull down again.
+      // Pulling back up, reset, but keep tracking in case they pull down again.
       pullRef.current = 0
       setPull(0)
       return
     }
     if (dy === 0) return
-    // Momentarily more horizontal than vertical (e.g. brushing a carousel) —
+    // Momentarily more horizontal than vertical (e.g. brushing a carousel), 
     // hold the current pull rather than resetting it, so a single off-axis
     // frame doesn't kill an otherwise-good gesture.
     if (Math.abs(dy) < Math.abs(dx) * 1.5) return

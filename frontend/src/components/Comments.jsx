@@ -110,7 +110,7 @@ export default function Comments({ postId, expanded, onToggle }) {
               onClick={load}
               className="py-2 text-sm text-ig-blue"
             >
-              Couldn’t load — tap to retry
+              Couldn’t load, tap to retry
             </button>
           )}
 

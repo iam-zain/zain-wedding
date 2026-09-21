@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Background music — one module-level <audio> element for the whole app.
+// Background music, one module-level <audio> element for the whole app.
 //
 // Module scope (not component state) on purpose: ProfileHeader unmounts on
 // route changes, and a hook-owned Audio would keep playing with no UI left to
@@ -55,7 +55,7 @@ export function toggleMusic() {
     // Recorded only once playback actually starts, so a track blocked by
     // autoplay policy never counts toward the "heard them all" badge.
     .then(() => addToSet(KEYS.playedTracks, track))
-    .catch(() => emit()) // autoplay blocked — element stays paused
+    .catch(() => emit()) // autoplay blocked, element stays paused
 }
 
 /**
@@ -71,7 +71,7 @@ export function stopMusic() {
 }
 
 /**
- * One random track for a story viewing. Plays ONCE — not looped — and any
+ * One random track for a story viewing. Plays ONCE, not looped, and any
  * avatar track is stopped first so the two can never overlap.
  *
  * Reuses a single element across viewings rather than making a new Audio each
@@ -87,7 +87,7 @@ export function startStoryMusic() {
   storyAudio.src = pickRandom(MUSIC_TRACKS)
   storyAudio.volume = VOLUME
   storyPausedByTabSwitch = false
-  storyAudio.play().catch(() => {}) // autoplay blocked — silence, not an error
+  storyAudio.play().catch(() => {}) // autoplay blocked, silence, not an error
 }
 
 /** Stops the story track and rewinds it. No-op when nothing is playing. */
@@ -131,7 +131,7 @@ function subscribe(listener) {
 const getSnapshot = () => !!audio && !audio.paused
 const getServerSnapshot = () => false
 
-/** `{ isPlaying, toggle }` — playback survives route changes. */
+/** `{ isPlaying, toggle }`, playback survives route changes. */
 export function useMusic() {
   const isPlaying = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
   return { isPlaying, toggle: toggleMusic }

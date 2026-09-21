@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Single source of truth for all front-end configuration & tunables.
-// Edit here — not scattered across components.
+// Edit here, not scattered across components.
 // ─────────────────────────────────────────────────────────────────────────────
 import siteConfig from '@config/site.json'
 
-// Pick one avatar per page load from `profile.avatarUrls` — gives returning
+// Pick one avatar per page load from `profile.avatarUrls`, gives returning
 // guests a fresh look each visit. No persistence needed; re-picking the same
 // one on a later refresh is fine.
 const AVATAR_FALLBACK = '/assets/avatars/avatar-1.png'
@@ -15,7 +15,7 @@ siteConfig.profile.avatarUrl =
     : AVATAR_FALLBACK
 
 // A handful of script faces for the "Zain & Uzma" wordmark (header, splash,
-// ticket, page titles — anything wearing font-logo). One is picked per page
+// ticket, page titles, anything wearing font-logo). One is picked per page
 // load and pushed onto the CSS variable those all read from, so the whole
 // visit is consistent even though the class list never changes.
 const LOGO_FONTS = ['Grand Hotel', 'Dancing Script', 'Great Vibes', 'Parisienne', 'Sacramento', 'Alex Brush']
@@ -60,7 +60,7 @@ export const API_KEY = import.meta.env.VITE_API_KEY || ''
 /** Where posts.json / stories.json + images live. */
 export const DATA_BASE_URL = (import.meta.env.VITE_DATA_BASE_URL || '/data').replace(/\/$/, '')
 
-/** True when no real API is configured — likes/comments fall back to localStorage. */
+/** True when no real API is configured, likes/comments fall back to localStorage. */
 export const LOCAL_MODE = API_BASE_URL === ''
 
 /** Canonical URL shared via the Web Share API. */
@@ -70,7 +70,7 @@ export const SITE_URL =
 // ── Easter egg ───────────────────────────────────────────────────────────────
 /** Secret messages shown on the countdown treasure hunt. One is picked at random. */
 export const SECRET_MESSAGES = [
-  "🤫 Ye secret code-word hai: 'Harry porter ki pen' 🐙 — Isse Waleema mein ek special dish milega! ✨",
+  "🤫 Ye secret code-word hai: 'Harry porter ki pen' 🐙, Isse Waleema mein ek special dish milega! ✨",
   "🎉 Mubarak ho! Aap officially Wedding Detective ban gaye hain. 🕵️",
   "🫣 Ab itna bhi mat tap kariye... website sharma jayegi.",
   "🏅 Achievement Unlocked: Curious Guest (+100 XP)",
@@ -82,26 +82,26 @@ export const SECRET_MESSAGES = [
 /** Fun messages for the profile-stats double-tap easter egg. One is picked at random per stat. */
 export const STAT_EASTER_EGGS = {
   posts: [
-    "📸 Itne saare posts scroll kar liye — you deserve a virtual hug!",
+    "📸 Itne saare posts scroll kar liye, you deserve a virtual hug!",
     "Behind every post, ek chhota sa kissa hai. Thanks for reading them all 🤍",
-    "🖼️ Har post ek yaad hai — aur aap sab dekh rahe hain. Shukriya!",
+    "🖼️ Har post ek yaad hai, aur aap sab dekh rahe hain. Shukriya!",
     "😄 Ginne baithe ho kya? Hum bhi nahi gin paaye.",
     "✨ Itni photos toh humne shaadi se pehle hi kharch kar di!",
-    "📷 Aur bhi aayengi — shaadi ke baad toh poora album banega.",
+    "📷 Aur bhi aayengi, shaadi ke baad toh poora album banega.",
   ],
   guests: [
     "🎉 Itne guests ke beech, aap ek khaas guest hain!",
-    "The more the merrier — glad you're one of them 💫",
-    "🎊 Sabko bulaya hai — aur har ek ka intezaar hai.",
+    "The more the merrier, glad you're one of them 💫",
+    "🎊 Sabko bulaya hai, aur har ek ka intezaar hai.",
     "😅 Itne log aa rahe hain... khaana kam na pad jaye!",
     "🤍 Har naam ke peeche ek rishta hai.",
     "📖 List lambi hai, par dil usse bhi bada.",
   ],
   families: [
-    "👨‍👩‍👧‍👦 Do families, ek dil se jud rahi hain — welcome to it!",
+    "👨‍👩‍👧‍👦 Do families, ek dil se jud rahi hain, welcome to it!",
     "Families jud rahi hain, aur aap is jashn ka hissa hain ✨",
     "🏡 Do ghar, ek kahani.",
-    "🤝 Do parivaar mile — ab sab ek hain.",
+    "🤝 Do parivaar mile, ab sab ek hain.",
     "💫 Do se shuru, hamesha ke liye.",
     "🫂 Do families, ek hi chhat ke neeche.",
   ],
@@ -109,9 +109,9 @@ export const STAT_EASTER_EGGS = {
 
 /** Shown on a long-press of the profile avatar. One is picked at random. */
 export const AVATAR_LONGPRESS_MESSAGES = [
-  "🤍 Thoda ruk kar dekhne ke liye shukriya — dil se milte hain, waqt lagta hai.",
-  "🎵 Music ke peeche ek chhota sa raaz bhi hai — dhoondte rehna!",
-  "🎶 Tap karke dekhiye — gaana bhi bajta hai!",
+  "🤍 Thoda ruk kar dekhne ke liye shukriya, dil se milte hain, waqt lagta hai.",
+  "🎵 Music ke peeche ek chhota sa raaz bhi hai, dhoondte rehna!",
+  "🎶 Tap karke dekhiye, gaana bhi bajta hai!",
   "👀 Itni der dekhoge toh dulha sharma jayega.",
   "💍 Ek tasveer, hazaar kahaniyan.",
 ]
@@ -120,21 +120,21 @@ export const AVATAR_LONGPRESS_MESSAGES = [
 /** Shown when a post's avatar or username is tapped, which scrolls back to the top. */
 export const POST_HEADER_TAP_MESSAGES = [
   "⬆️ Chaliye, shuru se dekhte hain!",
-  "🏠 Wapas ghar aa gaye — profile yahin hai.",
+  "🏠 Wapas ghar aa gaye, profile yahin hai.",
   "🚀 Seedha upar! Kuch miss toh nahi kiya?",
-  "👆 Upar se phir se — har post ek nayi yaad.",
+  "👆 Upar se phir se, har post ek nayi yaad.",
   "💍 Zain & Uzma ki taraf se wapas swagat hai!",
   "📜 Kahani shuru se suniyega? Chaliye!",
-  "🎈 Upar chale — countdown bhi dekh lijiye!",
+  "🎈 Upar chale, countdown bhi dekh lijiye!",
   "🤍 Scroll karte karte thak gaye? Lijiye, seedha top pe.",
 ]
 
-export const LOGO_TAP_MESSAGE = "✨ Made with 🤍 for this big day — thanks for finding this!"
+export const LOGO_TAP_MESSAGE = "✨ Made with 🤍 for this big day, thanks for finding this!"
 
-/** Comment secret word — case-insensitive substring match triggers a fun reply toast. */
+/** Comment secret word, case-insensitive substring match triggers a fun reply toast. */
 export const COMMENT_EASTER_EGG = {
   word: 'shaadi mubarak',
-  reply: '🎊 Aapko bhi shaadi mubarak — dhundne ke liye shukriya!',
+  reply: '🎊 Aapko bhi shaadi mubarak, dhundne ke liye shukriya!',
 }
 
 /** Shown once per session when the app is opened on the wedding day itself. */
@@ -143,17 +143,17 @@ export const WEDDING_DAY_MESSAGE = { title: 'Aaj wohi din hai! 🎉', subtitle: 
 /** Shown on a long-press inside the story viewer. One is picked at random. */
 export const STORY_LONGPRESS_MESSAGES = [
   "🤍 Ruk gaye? Yeh moment bhi yaad rakhna.",
-  "📸 Har story ke peeche ek pal hai — dekhne ke liye shukriya.",
-  "⏸️ Rok ke dekh rahe hain — yeh pal bhi khaas hai.",
+  "📸 Har story ke peeche ek pal hai, dekhne ke liye shukriya.",
+  "⏸️ Rok ke dekh rahe hain, yeh pal bhi khaas hai.",
   "🤍 Kuch lamhe aise hi thehar jaane chahiye.",
   "✨ Ek aur baar dekh lijiye, ji nahi bharega.",
 ]
 
 /** Shown after a very hard/vigorous shake "breaks" and reassembles the UI. One is picked at random. */
 export const CHAOS_EASTER_EGG_MESSAGES = [
-  "😅 Relax, relax — the app's fine! Bas thoda mazaak tha.",
+  "😅 Relax, relax, the app's fine! Bas thoda mazaak tha.",
   "🫠 Panicked for a sec? Same. Sab kuch wapas normal hai.",
-  "🔧 Kuch nahi tuta — bas test kar rahe the kitna zor se hila sakte hain.",
+  "🔧 Kuch nahi tuta, bas test kar rahe the kitna zor se hila sakte hain.",
   "🌀 Itna hilaaya ki sab ghoom gaya! Ab theek hai.",
   "🫨 Shaadi se pehle hi itna josh? Sambhal ke!",
 ]
@@ -178,12 +178,12 @@ export const TYPE_ANYWHERE_WORDS = [
 ]
 export const TYPE_ANYWHERE_MESSAGES = [
   "🕌 Nikah ka zikr kiya aur website bhi khush ho gayi!",
-  "💍 Shaadi ho ya waleema, jo bhi type kariye — dil se yehi ek baat hai.",
+  "💍 Shaadi ho ya waleema, jo bhi type kariye, dil se yehi ek baat hai.",
   "🤍 Yeh lafz humein bhi pasand hai. Milte hain jashn mein!",
   "🥘 Bhookh lag gayi kya? Waleema tak sabr kariye!",
-  "🌿 Yeh lafz likhte hi mehek aa gayi — milte hain function mein!",
+  "🌿 Yeh lafz likhte hi mehek aa gayi, milte hain function mein!",
   "🎺 Baraat ka naam liya? Taiyari shuru kariye phir!",
-  "👀 Naam le liya humara — kaan garam ho gaye!",
+  "👀 Naam le liya humara, kaan garam ho gaye!",
   "💌 Likh diya toh dil tak pahunch gaya!",
   "🎉 Yeh lafz sunke hi mood ban gaya!",
 ]
@@ -201,11 +201,11 @@ export function isLikeMilestone(n) {
 
 const LIKE_MILESTONE_TEMPLATES = [
   "🎉 {n} likes! Aapke jaisa pyaar hi toh chahiye tha.",
-  "💫 {n} likes — is post ne dil jeet liya!",
-  "🤍 {n} logon ne pyaar dikhaya — shukriya!",
-  "✨ {n} likes ho gaye — chhota sa milestone, bada sa shukriya!",
+  "💫 {n} likes, is post ne dil jeet liya!",
+  "🤍 {n} logon ne pyaar dikhaya, shukriya!",
+  "✨ {n} likes ho gaye, chhota sa milestone, bada sa shukriya!",
   "🎊 {n} likes! Sab ka pyaar ek jagah.",
-  "💞 {n} dil — aur ginte rahenge!",
+  "💞 {n} dil, aur ginte rahenge!",
 ]
 
 export function likeMilestoneMessage(n) {
@@ -219,11 +219,11 @@ export const PULL_REFRESH_EGG_MESSAGE = "🤍 Itna kheenchiyega toh rishta ban j
 /** Shown at the very bottom of the feed, after the last post. */
 export const FEED_END_MESSAGE = {
   title: "Bas itna hi tha... abhi ke liye 🤍",
-  subtitle: "Baaki sab shaadi mein milte hain — tab tak scroll karte rahiye, hum kahin nahi ja rahe!",
+  subtitle: "Baaki sab shaadi mein milte hain, tab tak scroll karte rahiye, hum kahin nahi ja rahe!",
 }
 
 /** Shown when a heart-shaped drag gesture is recognized anywhere on screen. */
-export const HEART_GESTURE_MESSAGE = "❤️ Dil banaya aapne? Humein bhi mehsoos hua — shukriya itna pyaar dikhane ke liye."
+export const HEART_GESTURE_MESSAGE = "❤️ Dil banaya aapne? Humein bhi mehsoos hua, shukriya itna pyaar dikhane ke liye."
 
 /** Shown once per session after ~25s of no interaction. One picked at random. */
 export const IDLE_EASTER_EGG_MESSAGES = [
@@ -238,10 +238,10 @@ export const IDLE_EASTER_EGG_MESSAGES = [
 ]
 
 /** Shown once per session for visitors browsing very late at night. */
-export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe hain? Neend bhi zaroori hai — subah shaadi ki tayyari bhi toh karni hai!"
+export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe hain? Neend bhi zaroori hai, subah shaadi ki tayyari bhi toh karni hai!"
 
 /**
- * Time-of-day greetings, checked in order — the FIRST window that contains the
+ * Time-of-day greetings, checked in order, the FIRST window that contains the
  * current hour wins, so they must not overlap. Hours are the visitor's own
  * local clock, `from` inclusive and `to` exclusive.
  *
@@ -250,38 +250,38 @@ export const NIGHT_OWL_MESSAGE = "🌙 Itni raat ko bhi scroll kar rahe hain? Ne
  */
 export const TIME_OF_DAY_MESSAGES = [
   { from: 1, to: 5, message: NIGHT_OWL_MESSAGE },
-  { from: 6, to: 9, message: "🌅 Subah ho gayi — baraat ke liye ready ho jaiye!" },
-  { from: 17, to: 19, message: "👗 Paanch baj gaye — taiyari shuru kariye, function shaam ko hai!" },
-  { from: 19, to: 21, message: "🕌 Saat baj gaye — abhi toh function shuru hua hoga. Aa jaiye!" },
+  { from: 6, to: 9, message: "🌅 Subah ho gayi, baraat ke liye ready ho jaiye!" },
+  { from: 17, to: 19, message: "👗 Paanch baj gaye, taiyari shuru kariye, function shaam ko hai!" },
+  { from: 19, to: 21, message: "🕌 Saat baj gaye, abhi toh function shuru hua hoga. Aa jaiye!" },
 ]
 
 /** Shown once per session when the device battery is low and not charging. */
-export const BATTERY_LOW_MESSAGE = "🔋 Battery kam hai — thodi charge kar lijiye, shaadi lambi chalegi!"
+export const BATTERY_LOW_MESSAGE = "🔋 Battery kam hai, thodi charge kar lijiye, shaadi lambi chalegi!"
 
-/** Printed to the browser console on app start — a little something for curious devs. */
+/** Printed to the browser console on app start, a little something for curious devs. */
 export const CONSOLE_EASTER_EGG_MESSAGE = "Aap yahan tak dhundte huye aa gaye? Milte hain shaadi mein! 🎉"
 
 /** Shown inline on the Nikah side of the events card for 5s on a double-tap. One picked at random. */
 export const NIKAH_EGG_MESSAGES = [
-  "🕌 Nikah ke woh chand lamhe humesha yaad rahenge — jald milte hain!",
-  "💍 Do dilon ki ek kahani shuru hone wali hai — Nikah ka intezaar hai!",
-  "🤍 Nikah ki barkat sab par ho — aap zaroor aana!",
-  "📖 Ijab-o-qubool ka woh pal — sabse khaas lamha hoga.",
+  "🕌 Nikah ke woh chand lamhe humesha yaad rahenge, jald milte hain!",
+  "💍 Do dilon ki ek kahani shuru hone wali hai, Nikah ka intezaar hai!",
+  "🤍 Nikah ki barkat sab par ho, aap zaroor aana!",
+  "📖 Ijab-o-qubool ka woh pal, sabse khaas lamha hoga.",
 ]
 
 /** Shown inline on the Waleema side of the events card for 5s on a tap. One picked at random. */
 export const WALEEMA_EGG_MESSAGES = [
-  "🎊 Waleema ki dawat mein maza hi kuch aur hoga — miss mat karna!",
-  "🍽️ Khaane ka poora intezaam hai — bas aap aa jaiye!",
-  "✨ Waleema wali raat khaas hogi — saath mein manaate hain!",
-  "🎶 Gaana-bajana, khaana aur ek yaadgaar shaam — Waleema mein zaroor aana!",
+  "🎊 Waleema ki dawat mein maza hi kuch aur hoga, miss mat karna!",
+  "🍽️ Khaane ka poora intezaam hai, bas aap aa jaiye!",
+  "✨ Waleema wali raat khaas hogi, saath mein manaate hain!",
+  "🎶 Gaana-bajana, khaana aur ek yaadgaar shaam, Waleema mein zaroor aana!",
 ]
 
 /** Shown once when the device loses its connection. */
 export const OFFLINE_MESSAGE = "📴 Network gaya, par pyaar nahi 🤍 Jo dekh chuke ho woh yahin hai."
 
 /** Shown once when the connection comes back. */
-export const ONLINE_MESSAGE = "📶 Network wapas aa gaya — chaliye, aage dekhte hain!"
+export const ONLINE_MESSAGE = "📶 Network wapas aa gaya, chaliye, aage dekhte hain!"
 
 /** Shown once per session when the device is plugged in and charging. */
 export const BATTERY_CHARGING_MESSAGE = "🔌 Charge ho raha hai? Ab toh poori raat scroll kariye!"
@@ -289,14 +289,14 @@ export const BATTERY_CHARGING_MESSAGE = "🔌 Charge ho raha hai? Ab toh poori r
 /** Shown once when the battery reaches a full charge. */
 export const BATTERY_FULL_MESSAGE = "🔋 Full charge! Ab toh poori shaadi cover kar lijiyega 📸"
 
-/** Shown once when the battery is critically low — more urgent than the 15% nudge. */
+/** Shown once when the battery is critically low, more urgent than the 15% nudge. */
 export const BATTERY_CRITICAL_MESSAGE = "🪫 Battery bilkul khatam hone wali hai! Jaldi charge pe lagaiye."
 
 /** Shown the first time the phone is tilted noticeably. */
 export const TILT_MESSAGE = "📱 Phone tedha kar ke kya dhoond rahe hain? Sab kuch saamne hi hai 😄"
 
 /**
- * The day the rishta was settled — the start of the timeline the countdown
+ * The day the rishta was settled, the start of the timeline the countdown
  * shows on its third tap. Not in site.json because it isn't an event guests
  * attend; it's the beginning of the story.
  */
@@ -305,19 +305,19 @@ export const BAAT_PAKKI = { label: 'Baat pakki', emoji: '🤝', date: '2026-05-3
 // ── Explore meter ────────────────────────────────────────────────────────────
 /**
  * Routes that count toward "poora ghoom liya". Only pages a guest can reach by
- * tapping — /psst is deliberately absent, since it's a secret and demanding it
+ * tapping, /psst is deliberately absent, since it's a secret and demanding it
  * would make the meter impossible for anyone who never found it.
  */
 export const EXPLORE_PAGES = ['/', '/events', '/more', '/rsvp', '/quiz', '/saved', '/wishes', '/games']
 
-export const EXPLORE_TITLE = 'Kitna ghoom liya?'
-export const EXPLORE_DONE_MESSAGE = '🧭 Poori website ghoom li — kuch nahi chhoda!'
+export const EXPLORE_TITLE = 'Kitna ghoom liye?'
+export const EXPLORE_DONE_MESSAGE = '🧭 Poori website ghoom li, kuch nahi chhoda!'
 
 /** Shown when a screenshot is (heuristically) detected. */
-export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej dijiye — group mein daal dena!"
+export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej dijiye, group mein daal dena!"
 
 /** Shown the first time the phone is turned sideways. */
-export const LANDSCAPE_MESSAGE = "🔄 Phone ghuma diya! Ab tasveerein aur badi lagengi — maza aayega."
+export const LANDSCAPE_MESSAGE = "🔄 Phone ghuma diya! Ab tasveerein aur badi lagengi, maza aayega."
 
 /** Shown when a guest pinch-zooms a post photo. One picked at random. */
 export const PINCH_ZOOM_MESSAGES = [
@@ -332,11 +332,11 @@ export const PINCH_ZOOM_MESSAGES = [
 /** Quick-reaction emoji on the story viewer, Instagram-style. */
 export const STORY_REACTIONS = ['❤️', '🔥', '😂', '🥹', '👏', '🤍']
 
-export const STORY_REPLY_THANKS = '💬 Reply mil gaya — shukriya!'
+export const STORY_REPLY_THANKS = '💬 Reply mil gaya, shukriya!'
 
 // ── Quiz ─────────────────────────────────────────────────────────────────────
 /**
- * "How well do you know us" questions. Scored entirely on the device — no
+ * "How well do you know us" questions. Scored entirely on the device, no
  * backend, no submission, nothing stored beyond the best score below.
  *
  * Every answer here is drawn from the `events` block in config/site.json, so
@@ -387,16 +387,16 @@ export const QUIZ_QUESTIONS = [
   {
     id: 'rest-day',
     question: '29 October ko kaunsa function hai?',
-    options: ['Walima', 'Mehendi', 'Koi nahi — aaram ka din', 'Haldi'],
+    options: ['Walima', 'Mehendi', 'Koi nahi, aaram ka din', 'Haldi'],
     answer: 2,
   },
   {
-    // The gap is the days BETWEEN the two — 29 October alone, so one day.
+    // The gap is the days BETWEEN the two, 29 October alone, so one day.
     // This once answered "2 din", which is the difference between the dates,
     // not the gap. Options now name the free day so it can't be read twice.
     id: 'nikah-walima-gap',
     question: 'Nikah aur Walima ke beech kitne din ka gap hai?',
-    options: ['Koi gap nahi — usi din', 'Ek din (29 October free)', 'Do din', 'Teen din'],
+    options: ['Koi gap nahi, usi din', 'Ek din (29 October free)', 'Do din', 'Teen din'],
     answer: 1,
   },
   {
@@ -533,7 +533,7 @@ export const QUIZ_QUESTIONS = [
     answer: 1,
   },
   {
-    // Gaya is its own district as well as a city — which is exactly why it
+    // Gaya is its own district as well as a city, which is exactly why it
     // makes a decent question.
     id: 'gaya-district',
     question: 'Gaya kis zile mein hai?',
@@ -558,7 +558,7 @@ export const QUIZ_QUESTIONS = [
 
   // ── About the couple ───────────────────────────────────────────────────────
   // UNLIKE everything above, these answers come from Zain & Uzma directly and
-  // are NOT derivable from site.json — the verification script that checks the
+  // are NOT derivable from site.json, the verification script that checks the
   // rest cannot check these. If a detail here changes, it has to be corrected
   // by hand; nothing else in the codebase knows it.
   {
@@ -594,7 +594,7 @@ export const QUIZ_QUESTIONS = [
   {
     id: 'zain-food',
     question: 'Zain ka favourite khana?',
-    options: ['Non-veg — kuch bhi chalega', 'Pure veg thali', 'Sirf mithai', 'Chinese'],
+    options: ['Non-veg, kuch bhi chalega', 'Pure veg thali', 'Sirf mithai', 'Chinese'],
     answer: 0,
   },
   {
@@ -652,7 +652,7 @@ export const QUIZ_QUESTIONS = [
     answer: 0,
   },
   {
-    // The diplomatic answer IS the answer — and the only safe one to print on
+    // The diplomatic answer IS the answer, and the only safe one to print on
     // a page the whole family will read.
     id: 'fav-fufi',
     question: 'Zain ki sabse favourite fufi kaun?',
@@ -680,7 +680,7 @@ export const QUIZ_QUESTIONS = [
   },
 
   // ── Just for fun ───────────────────────────────────────────────────────────
-  // No right answer in any factual sense — the joke is the answer. Written so
+  // No right answer in any factual sense, the joke is the answer. Written so
   // the punchline never pins anything on a named, real person: "sab milke" and
   // "jo sabse paas rehta hai" are jokes about weddings, not about anyone's
   // family. Keep any future additions to that rule.
@@ -756,7 +756,7 @@ export const QUIZ_QUESTIONS = [
       'Jo keh raha tha "main toh bilkul nahi nachunga" 💃',
       'Jo sach mein dance jaanta hai',
       'Jo DJ ke paas khada hai',
-      'Koi nahi — sab sharma rahe hainnge',
+      'Koi nahi, sab sharma rahe hainnge',
     ],
     answer: 0,
   },
@@ -789,7 +789,7 @@ export const QUIZ_QUESTIONS = [
     answer: 1,
   },
   {
-    // Asks about the outcome rather than the winner — naming the winner means
+    // Asks about the outcome rather than the winner, naming the winner means
     // naming a side of the family.
     id: 'joota-chhupai',
     question: 'Joota chhupai ka asli natija kya hota hai?',
@@ -826,7 +826,7 @@ export const QUIZ_TITLES = [
     emoji: '🎉',
     title: 'Pakka wale dost',
     color: '#a855f7',
-    message: 'Chaar sahi — aap dhyan se sab padhte ho!',
+    message: 'Chaar sahi, aap dhyan se sab padhte ho!',
   },
   {
     min: 3,
@@ -840,14 +840,14 @@ export const QUIZ_TITLES = [
     emoji: '😅',
     title: 'Door ke rishtedaar',
     color: '#25d366',
-    message: 'Do sahi — shaadi mein milke sab seekh lenge!',
+    message: 'Do sahi, shaadi mein milke sab seekh lenge!',
   },
   {
     min: 0,
     emoji: '🫣',
     title: 'Shaadi mein naye ho?',
     color: '#ed4956',
-    message: 'Koi baat nahi — Events page pe sab likha hai, dobara try kariye!',
+    message: 'Koi baat nahi, Events page pe sab likha hai, dobara try kariye!',
   },
 ]
 
@@ -862,7 +862,7 @@ export const QUIZ_BEST_KEY = 'quizBest'
  * ceiling to shards x 25 without touching the backend. Shards fill strictly in
  * order, which is what lets the reader stop at the first non-full one.
  *
- * Only ever APPEND to this list — removing or reordering an id orphans every
+ * Only ever APPEND to this list, removing or reordering an id orphans every
  * wish already stored under it.
  */
 export const WISHES_SHARDS = [
@@ -874,7 +874,7 @@ export const WISHES_SHARDS = [
   'wishes-6',
 ]
 
-export const WISHES_EMPTY_MESSAGE = 'Abhi tak koi paigham nahi — pehla aap likhiye 🤍'
+export const WISHES_EMPTY_MESSAGE = 'Abhi tak koi paigham nahi, pehla aap likhiye 🤍'
 export const WISHES_FULL_MESSAGE = 'Wishes wall bhar gayi 🙏 Itna pyaar dene ke liye shukriya!'
 export const WISHES_THANKS_MESSAGE = '🤍 Shukriya! Aapka paigham humesha yaad rahega.'
 
@@ -903,7 +903,7 @@ export const ACHIEVEMENTS = [
     color: '#ed4956',
     title: 'Teen dil',
     how: 'Teen alag posts ko like kariye',
-    message: 'Teen posts ko dil de diya — shuruaat acchi hai!',
+    message: 'Teen posts ko dil de diya, shuruaat acchi hai!',
   },
   {
     id: 'like-all',
@@ -943,7 +943,7 @@ export const ACHIEVEMENTS = [
     color: '#00b8d4',
     title: 'Har baat pe haazir',
     how: 'Har post pe ek comment chhod jaiye',
-    message: 'Har post pe kuch na kuch kaha — kamaal ho aap!',
+    message: 'Har post pe kuch na kuch kaha, kamaal ho aap!',
   },
   {
     id: 'stories-all',
@@ -953,7 +953,7 @@ export const ACHIEVEMENTS = [
     color: '#a855f7',
     title: 'Sab dekh liya',
     how: 'Upar ki saari stories khol ke dekhiye',
-    message: 'Saari stories dekh daali — ek bhi nahi chhodi!',
+    message: 'Saari stories dekh daali, ek bhi nahi chhodi!',
   },
   {
     id: 'music-all',
@@ -962,8 +962,8 @@ export const ACHIEVEMENTS = [
     emoji: '🎧',
     color: '#25d366',
     title: 'Poora DJ',
-    // Don't give the hiding place away — finding it is half the fun.
-    how: 'Saare gaane suniye — player home page pe kahin chhupa hai 🤫',
+    // Don't give the hiding place away, finding it is half the fun.
+    how: 'Saare gaane suniye, player home page pe kahin chhupa hai 🤫',
     message: 'Saare gaane sun liye! Shaadi ki playlist aapke hawale.',
   },
   {
@@ -988,7 +988,7 @@ export const ACHIEVEMENTS = [
     color: '#f59e0b',
     title: 'Chai ka waqt',
     how: 'Aadha ghanta site pe bitaiye',
-    message: 'Aadha ghanta ho gaya — itni der toh chai pe baat hoti hai! ☕',
+    message: 'Aadha ghanta ho gaya, itni der toh chai pe baat hoti hai! ☕',
   },
   {
     id: 'time-60',
@@ -1008,7 +1008,7 @@ export const ACHIEVEMENTS = [
     emoji: '✅',
     color: '#25d366',
     title: 'Aana pakka',
-    how: 'Confirmation form bhar dijiye — aana-jaana bata dijiye',
+    how: 'Confirmation form bhar dijiye, aana-jaana bata dijiye',
     message: 'Aana confirm ho gaya! Ab bas milne ka intezaar hai 🎉',
   },
   {
@@ -1052,7 +1052,7 @@ export const ACHIEVEMENTS = [
     color: '#ff6b81',
     title: 'Dil Banao Ustaad',
     how: 'Wedding Crush ke ek game mein 300 points banaiye',
-    message: 'Teen milaye, dil banaye — 300 points! Aap toh match ke ustaad ho 💖',
+    message: 'Teen milaye, dil banaye, 300 points! Aap toh match ke ustaad ho 💖',
   },
   {
     id: 'love-100',
@@ -1062,7 +1062,7 @@ export const ACHIEVEMENTS = [
     color: '#a855f7',
     title: 'Love Guru',
     how: 'Love-o-Meter ko 100% Muhabbat tak le jaiye',
-    message: 'Zain + Uzma = ♾️ — connection level Infinity, aapne naap liya! 💞',
+    message: 'Zain + Uzma = ♾️, connection level Infinity, aapne naap liya! 💞',
   },
   {
     id: 'games-all',
@@ -1085,9 +1085,9 @@ export const MILESTONE_DAYS = [50, 30, 20, 14, 10, 7, 3, 2, 1, 0]
 /** Builds a milestone message for a given event label/emoji and days remaining. */
 export function eventMilestoneMessage(label, emoji, days) {
   if (days === 0) return `${emoji} Aaj ${label} hai! Milte hain wahin 🎉`
-  if (days === 1) return `${emoji} Kal ${label} hai — bas ek raat aur!`
+  if (days === 1) return `${emoji} Kal ${label} hai, bas ek raat aur!`
   if (days === 2) return `${emoji} 2 din baaki hain ${label} ke liye!`
-  if (days === 3) return `${emoji} Sirf 3 din baaki — taiyari shuru kariye!`
+  if (days === 3) return `${emoji} Sirf 3 din baaki, taiyari shuru kariye!`
   if (days === 7) return `${emoji} 1 hafta baaki hai ${label} ke liye! 🎊`
   if (days === 14) return `${emoji} 2 hafte baaki hain ${label} ke liye!`
   return `${emoji} ${days} din baaki hain ${label} ke liye!`
@@ -1130,7 +1130,7 @@ export const SPLASH_MESSAGES = [
 ]
 
 // ── Guest confirmation (RSVP) ────────────────────────────────────────────────
-/** The only two places guests arrive at / leave from — everything runs between them. */
+/** The only two places guests arrive at / leave from, everything runs between them. */
 export const RSVP_LOCATIONS = [
   { id: 'chittaranjan', name: 'Chittaranjan', emoji: '🚉', hint: 'Haldi • Mehendi • Walima' },
   { id: 'gaya', name: 'Gaya', emoji: '🕌', hint: 'Nikah' },
@@ -1143,7 +1143,7 @@ export const RSVP_DEPARTURE_WINDOW = { start: '2026-10-28', end: '2026-11-03' }
 /**
  * "26 Oct se 30 Oct ke beech" for a window. Derived rather than written out,
  * because the previous hardcoded subtitles kept saying 24 Oct and 3 Nov after
- * the windows moved — the form and its own caption disagreed.
+ * the windows moved, the form and its own caption disagreed.
  */
 export function describeWindow({ start, end }) {
   const fmt = (ymd) =>
@@ -1158,7 +1158,7 @@ export function describeWindow({ start, end }) {
 /** Pre-filled time so a guest only has to adjust it, never type it from scratch. */
 export const RSVP_DEFAULT_TIME = '12:00'
 
-/** Contact number: Indian national format — 10 digits starting 6-9. */
+/** Contact number: Indian national format, 10 digits starting 6-9. */
 /** Extra people a guest can say they're bringing. 0 is a valid, common answer. */
 export const RSVP_GUESTS_MIN = 0
 export const RSVP_GUESTS_MAX = 9
@@ -1169,13 +1169,13 @@ export const RSVP_RELATIONS = [
     id: 'dadi',
     emoji: '🏠',
     label: 'Dadi Ghar Wale',
-    line: 'Dadi ghar ka pyaar — jahan se sab kuch shuru hua.',
+    line: 'Dadi ghar ka pyaar, jahan se sab kuch shuru hua.',
   },
   {
     id: 'nani',
     emoji: '🏡',
     label: 'Nani Ghar Wale',
-    line: 'Nani ghar ki mithaas — bachpan ki poori duniya wahin thi.',
+    line: 'Nani ghar ki mithaas, bachpan ki poori duniya wahin thi.',
   },
   {
     id: 'friend',

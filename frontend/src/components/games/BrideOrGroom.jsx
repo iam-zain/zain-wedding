@@ -11,7 +11,7 @@ const ITEMS = [
   ['👑', 'Sehra', 'g', 'Sehra dulhe ke sar pe sajta hai'],
   ['🐎', 'Ghodi pe aana', 'g', 'Ghodi dulhe ki sawari hai 🐎'],
   ['👟', 'Joote chori hona', 'g', 'Saaliyon ka target dulhe ke joote 😅'],
-  ['💍', 'Ring pehenna', 'both', 'Dono pehente hain — trick question! 😉'],
+  ['💍', 'Ring pehenna', 'both', 'Dono pehente hain, trick question! 😉'],
   ['⌚', 'Watch dekhte rehna', 'both', 'Dono late hain, dono ghadi dekhte hain ⌚'],
   ['😭', 'Rukhsati pe rona', 'b', 'Ab dulha bhi ro de toh alag baat hai 😄'],
   ['📸', '"Bas ek aur photo"', 'both', 'Ye bimari dono ko hai 📸'],

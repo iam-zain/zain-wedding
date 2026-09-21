@@ -143,7 +143,7 @@ export default function RingCatch() {
                 left: `${i.x}%`,
                 '--fall': `${ARENA_H + 10}px`,
                 animation: `zu-fall ${i.fall}ms linear forwards`,
-                // Fake rings are real rings gone grey — easy to spot once you look.
+                // Fake rings are real rings gone grey, easy to spot once you look.
                 filter: i.kind === 'fake' ? 'grayscale(1) brightness(0.8)' : undefined,
               }}
             >

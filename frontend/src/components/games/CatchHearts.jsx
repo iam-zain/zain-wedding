@@ -13,12 +13,12 @@ const OBJECTS = [
   [['💖', 2, true], 16],
   [['💔', -1, false], 12],
   [['💍', 5, false], 5],
-  // Non-hearts — tapping these costs a point.
+  // Non-hearts, tapping these costs a point.
   [['🍬', -1, false], 5],
   [['🎈', -1, false], 5],
   [['🌸', -1, false], 5],
   [['⭐', -1, false], 4],
-  // The couple wander through too — sweet, but not a heart.
+  // The couple wander through too, sweet, but not a heart.
   [['👰', -1, false], 3],
   [['🤵', -1, false], 3],
 ]
