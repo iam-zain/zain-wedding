@@ -14,6 +14,33 @@ siteConfig.profile.avatarUrl =
     ? avatarUrls[Math.floor(Math.random() * avatarUrls.length)]
     : AVATAR_FALLBACK
 
+// A handful of script faces for the "Zain & Uzma" wordmark (header, splash,
+// ticket, page titles — anything wearing font-logo). One is picked per page
+// load and pushed onto the CSS variable those all read from, so the whole
+// visit is consistent even though the class list never changes.
+const LOGO_FONTS = ['Grand Hotel', 'Dancing Script', 'Great Vibes', 'Parisienne', 'Sacramento', 'Alex Brush']
+if (typeof document !== 'undefined') {
+  const font = LOGO_FONTS[Math.floor(Math.random() * LOGO_FONTS.length)]
+  document.documentElement.style.setProperty('--font-logo', `"${font}", cursive`)
+}
+
+// Same idea for the wordmark's wording: which name leads, and what sits
+// between them. Rewrites displayName in place, so every place that already
+// reads siteConfig.profile.displayName picks this up for free.
+const CONNECTORS = ['&', 'weds', 'with', 'and']
+;(() => {
+  const raw = siteConfig.profile?.displayName || ''
+  // Strip the trailing ring emoji (and any other pictographs) to split on
+  // the names alone; re-added after, so it always sits at the very end.
+  const noEmoji = raw.replace(/[\u{1F1E6}-\u{1FAFF}\u{2600}-\u{27BF}️]/gu, '').trim()
+  const [a, b] = noEmoji.split('&').map((s) => s.trim())
+  if (a && b) {
+    const swapped = Math.random() < 0.5
+    const connector = CONNECTORS[Math.floor(Math.random() * CONNECTORS.length)]
+    siteConfig.profile.displayName = `${swapped ? b : a} ${connector} ${swapped ? a : b} 💍`
+  }
+})()
+
 export { siteConfig }
 
 // ── Tunables ────────────────────────────────────────────────────────────────

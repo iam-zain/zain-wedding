@@ -100,10 +100,10 @@ export default function FeedPage() {
         }}
       >
         <ProfileHeader />
+        <StoriesRow stories={visibleStories} />
         <Countdown />
         <WeddingDayBanner />
         <MilestoneBanner />
-        <StoriesRow stories={visibleStories} />
 
         <div className="border-t border-ig-border" />
 

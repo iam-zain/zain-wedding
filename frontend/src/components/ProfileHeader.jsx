@@ -7,7 +7,7 @@ import { playChime } from '../lib/sound'
 import { haptic } from '../lib/haptics'
 import { useToast } from './toast-context'
 import EasterEggModal from './EasterEggModal'
-import { DownloadIcon, ExternalLinkIcon, HangerIcon, KeyIcon, MoreIcon, RsvpIcon, ShareIcon, WhatsAppIcon } from './icons'
+import { DownloadIcon, ExternalLinkIcon, HangerIcon, KeyIcon, MoreIcon, ShareIcon, WhatsAppIcon } from './icons'
 import { useMusic } from '../lib/musicPlayer'
 
 // A double-tap, and a tight window so it reads as one deliberate gesture
@@ -347,12 +347,12 @@ export default function ProfileHeader() {
           Dress Code
         </Link>
         <Link
-          to="/rsvp"
+          to="/more"
           data-testid="profile-rsvp-link"
           className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-ig-card px-3 py-1.5 text-sm font-semibold text-ig-text active:opacity-90"
         >
-          <RsvpIcon size={16} />
-          Confirmation
+          <MoreIcon size={16} />
+          More
         </Link>
       </div>
       </section>
