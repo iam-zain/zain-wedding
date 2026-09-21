@@ -314,7 +314,7 @@ export const EXPLORE_TITLE = 'Kitna ghoom liye?'
 export const EXPLORE_DONE_MESSAGE = '🧭 Poori website ghoom li, kuch nahi chhoda!'
 
 /** Shown when a screenshot is (heuristically) detected. */
-export const SCREENSHOT_MESSAGE = "📸 Screenshot le liya? Humein bhi bhej dijiye, group mein daal dena!"
+export const SCREENSHOT_MESSAGE = "📸 Screenshot le liye? Humein bhi bhej dijiye, group mein daal dena!"
 
 /** Shown the first time the phone is turned sideways. */
 export const LANDSCAPE_MESSAGE = "🔄 Phone ghuma diya! Ab tasveerein aur badi lagengi, maza aayega."
@@ -951,7 +951,7 @@ export const ACHIEVEMENTS = [
     goal: 'all',
     emoji: '👀',
     color: '#a855f7',
-    title: 'Sab dekh liya',
+    title: 'Sab dekh liye',
     how: 'Upar ki saari stories khol ke dekhiye',
     message: 'Saari stories dekh daali, ek bhi nahi chhodi!',
   },
@@ -1019,7 +1019,7 @@ export const ACHIEVEMENTS = [
     color: '#f472b6',
     title: 'Poora ghoom liya',
     how: 'Saare pages ek baar khol ke dekhiye',
-    message: 'Har page dekh liya! Ab aapse zyada koi nahi jaanta is site ko 🧭',
+    message: 'Har page dekh liye! Ab aapse zyada koi nahi jaanta is site ko 🧭',
   },
   {
     // Rides the same count/total engine: `count` is the best round score and
@@ -1041,7 +1041,7 @@ export const ACHIEVEMENTS = [
     color: '#ff6b81',
     title: 'Khel Shuru',
     how: 'Games section mein koi bhi ek game kheliye',
-    message: 'Pehla game khel liya! Ab toh shuruaat ho gayi 💕',
+    message: 'Pehla game khel liye! Ab toh shuruaat ho gayi 💕',
   },
   {
     id: 'games-five',
@@ -1051,7 +1051,7 @@ export const ACHIEVEMENTS = [
     color: '#ff6b81',
     title: 'Panch Khel Ustaad',
     how: 'Games section mein kam se kam 5 baar khel chukiye',
-    message: 'Paanch baar khel liya! Aap toh match ke ustaad ho 💖',
+    message: 'Paanch baar khel liye! Aap toh match ke ustaad hain 💖',
   },
   {
     id: 'love-100',
@@ -1071,7 +1071,7 @@ export const ACHIEVEMENTS = [
     color: '#0095f6',
     title: 'Har khel ka khiladi',
     how: 'Games mein har ek khel kam se kam ek baar kheliye',
-    message: 'Saare games khel liye! Ab aap official khiladi ho 🎮',
+    message: 'Saare games khel liye! Ab aap official khiladi hain 🎮',
   },
 ]
 
